@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('file_types', function (Blueprint $table) {
-            $table->id();
+        Schema::create('workers', function (Blueprint $table) {
+            $table->string('user-email')->primary();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('file_types');
+        Schema::dropIfExists('workers');
     }
 };
