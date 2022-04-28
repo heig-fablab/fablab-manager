@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('hash-name');
+            $table->string('hash_name');
             $table->timestamps();
         });
     }

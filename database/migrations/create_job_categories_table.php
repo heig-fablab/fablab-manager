@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('validators', function (Blueprint $table) {
-            $table->string('user-email')->primary();
-            $table->timestamps();
+        Schema::create('job_categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('validators');
+        Schema::dropIfExists('job_categories');
     }
 };

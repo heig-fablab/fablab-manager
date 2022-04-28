@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Device extends Model
+class JobCategory extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name', 
-        'image_path', 
-        'description'
+        'name'
     ];
 
     public $timestamps = false;
+    protected $table = 'job_categories';
 }

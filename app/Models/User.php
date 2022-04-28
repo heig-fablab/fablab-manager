@@ -17,19 +17,8 @@ class User extends Model
         'password'
     ];
 
-    /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'email';
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
     public $timestamps = false;
+    protected $primaryKey = 'email';
 
     /**
      * Get the validator user.

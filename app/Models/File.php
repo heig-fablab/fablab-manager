@@ -12,6 +12,6 @@ class File extends Model
 
     protected $fillable = [
         'name', 
-        'hash-name'
+        'hash_name'
     ];
 }

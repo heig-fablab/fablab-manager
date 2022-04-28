@@ -10,20 +10,10 @@ class FileType extends Model
     use HasFactory;
 
     protected $fillable = [
-        'type-name'
+        'type_name'
     ];
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'file-types';
 
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
     public $timestamps = false;
+    protected $table = 'file_types';
 }

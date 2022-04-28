@@ -11,7 +11,7 @@ class Job extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'job-type', 
+        'title',
         'description',
         'deadline',
         'rating',

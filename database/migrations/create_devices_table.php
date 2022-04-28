@@ -16,9 +16,8 @@ return new class extends Migration
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image-path');
+            $table->string('image_path');
             $table->longText('description');
-            $table->timestamps();
         });
     }
 
