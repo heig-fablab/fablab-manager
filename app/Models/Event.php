@@ -12,4 +12,9 @@ class Event extends Model
     protected $fillable = [
         'data'
     ];
+
+    public function job()
+    {
+        return $this->belongsTo(Job::class, 'id_job');
+    }
 }

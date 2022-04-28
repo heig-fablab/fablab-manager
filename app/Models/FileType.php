@@ -13,7 +13,11 @@ class FileType extends Model
         'type_name'
     ];
 
-
     public $timestamps = false;
     protected $table = 'file_types';
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
 }

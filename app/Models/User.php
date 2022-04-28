@@ -20,11 +20,34 @@ class User extends Model
     public $timestamps = false;
     protected $primaryKey = 'email';
 
-    /**
-     * Get the validator user.
-     */
-    public function validator()
+    public function user_jobs()
     {
-        return $this->belongsTo('App\Validator', 'foreign_key', 'other_key');
+        return $this->hasMany(Job::class, 'user_email');
+    }
+
+    public function technician_jobs()
+    {
+        return $this->hasMany(Job::class, 'technician_email');
+    }
+
+    public function validator_jobs()
+    {
+        return $this->hasMany(Job::class, 'validator_email');
+    }
+
+    public function sended_messages()
+    {
+        return $this->hasMany(Message::class, 'sender_email');
+    }
+
+    public function received_messages()
+    {
+        return $this->hasMany(Message::class, 'receiver_email');
+    }
+
+    // Many to many
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user', 'id_user', 'id_role');
     }
 }

@@ -14,4 +14,14 @@ class File extends Model
         'name', 
         'hash_name'
     ];
+
+    public function file_type()
+    {
+        return $this->belongsTo(FileType::class, 'id_file_type');
+    }
+
+    public function job()
+    {
+        return $this->belongsTo(Job::class, 'id_job');
+    }
 }

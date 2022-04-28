@@ -15,4 +15,9 @@ class JobCategory extends Model
 
     public $timestamps = false;
     protected $table = 'job_categories';
+
+    public function jobs()
+    {
+        return $this->hasMany(Job::class);
+    }
 }

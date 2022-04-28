@@ -26,4 +26,41 @@ class Job extends Model
     protected $attributes = [
         'status' => 'new',
     ];
+
+    // From many relationships
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    // From foreign keys
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_email');
+    }
+
+    public function technician()
+    {
+        return $this->belongsTo(User::class, 'technician_email');
+    }
+
+    public function validator()
+    {
+        return $this->belongsTo(User::class, 'validator_email');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(JobCategory::class, 'id_category');
+    }
+
+    public function file()
+    {
+        return $this->belongsTo(File::class, 'id_file');
+    }
 }
