@@ -84,20 +84,17 @@ pour le mettre dans "resources/views/app.blade.php".
 
 ## Use
 
-https://www.webune.com/forums/wepyap.html
-
+Start by running this command to install dependencies:
+````
 composer install
+````
 
-php artisan key:generate
-
-chmod 755 -R fablab-manager/
-
-It use Laravel Sail, so go in the repo with the command "cd" and then type:
+It use Laravel Sail, so go use the following command:
 ````
 ./vendor/bin/sail up
 ````
 
-You can also create an alias like that:
+You can also create an alias for _sail_ like that:
 ````
 alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 ````
@@ -114,19 +111,20 @@ default developement server in on port 80
 ````
 ./vendor/bin/phpunit
 ````
-ou
+or
 ````
 ./vendor/bin/sail artisan test
 ````
 
 ### Test coverage
+Not unable yet!
 ````
 ./vendor/bin/sail artisan test --coverage
 ````
 
 ## Support
 
-## Contribuer
+## Contribute
 
 ## Authors
 
