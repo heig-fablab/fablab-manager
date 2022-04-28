@@ -19,11 +19,36 @@ TODO
 
 #### PHP Installation
 
+https://thishosting.rocks/install-php-on-ubuntu/
+
+php.ini
+````
+sudo apt install openssl php-common php-curl php-json php-mbstring php-mysql php-xml php-zip
+````
+
 #### Composer installation
 https://getcomposer.org/doc/00-intro.md
 
 Under Windows part:
 https://getcomposer.org/Composer-Setup.exe
+
+
+````
+sudo apt-get upgrade
+````
+
+````	
+sudo apt-get install php
+````
+
+````
+php --version
+````
+
+Under Linux part:
+````
+curl -sS https://getcomposer.org/installer | php
+````
 
 #### Laravel configuration
 
@@ -58,6 +83,14 @@ Ces trois éléments du dossier "dist" doivent ensuite être déposés dans le d
 pour le mettre dans "resources/views/app.blade.php".
 
 ## Use
+
+https://www.webune.com/forums/wepyap.html
+
+composer install
+
+php artisan key:generate
+
+chmod 755 -R fablab-manager/
 
 It use Laravel Sail, so go in the repo with the command "cd" and then type:
 ````
