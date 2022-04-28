@@ -14,4 +14,11 @@ class Device extends Model
         'image-path', 
         'description'
     ];
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 }

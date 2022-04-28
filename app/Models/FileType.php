@@ -19,4 +19,11 @@ class FileType extends Model
      * @var string
      */
     protected $table = 'file-types';
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 }

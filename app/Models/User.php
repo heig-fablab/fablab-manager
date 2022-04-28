@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'email', 
@@ -22,6 +23,13 @@ class User extends Model
      * @var string
      */
     protected $primaryKey = 'email';
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 
     /**
      * Get the validator user.

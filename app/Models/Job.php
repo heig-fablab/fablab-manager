@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Job extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'job-type', 
@@ -15,5 +16,14 @@ class Job extends Model
         'deadline',
         'rating',
         'status'
+    ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'status' => 'new',
     ];
 }
