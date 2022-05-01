@@ -18,6 +18,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::apiResource('devices', DeviceController::class);
+
+Route::apiResource('files', FileController::class);
+
+Route::apiResource('file_types', FileTypeController::class);
+
+Route::apiResource('job_categories', JobCategoryController::class);
+
+Route::apiResource('jobs', JobController::class);
+
+Route::apiResource('messages', MessageController::class);
+
+Route::apiResource('users', UserController::class);
+
 /*Route::prefix('/user')->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
 });

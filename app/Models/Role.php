@@ -5,16 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Role extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'data'
+        'name'
     ];
 
-    public function job()
+    public $timestamps = false;
+
+    public function users()
     {
-        return $this->belongsTo(Job::class, 'id_job');
+        return $this->belongsToMany(User::class, 'user_has_role', 'id_role', 'id_user');
     }
 }
