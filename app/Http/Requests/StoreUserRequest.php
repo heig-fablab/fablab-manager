@@ -13,7 +13,8 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        // Will be managed in a policy
+        return true;
     }
 
     /**
@@ -23,6 +24,7 @@ class StoreUserRequest extends FormRequest
      */
     public function rules()
     {
+        // TODO
         return [
             //
         ];

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('deadline');
             $table->tinyInteger('rating');
             $table->enum('status', ['new', 'assigned', 'ongoing', 'on-hold','completed'])->default('new');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
