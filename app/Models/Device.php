@@ -16,4 +16,9 @@ class Device extends Model
     ];
 
     public $timestamps = false;
+
+    public function categories()
+    {
+        return $this->belongsToMany(Device::class, 'job_category_has_device', 'id_device', 'id_category');
+    }
 }

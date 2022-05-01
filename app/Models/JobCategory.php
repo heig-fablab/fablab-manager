@@ -20,4 +20,15 @@ class JobCategory extends Model
     {
         return $this->hasMany(Job::class);
     }
+
+    // Many to many
+    public function devices()
+    {
+        return $this->belongsToMany(Device::class, 'job_category_has_device', 'id_category', 'id_device');
+    }
+
+    public function file_types()
+    {
+        return $this->belongsToMany(FileType::class, 'job_category_has_file_type', 'id_category', 'id_file_type');
+    }
 }

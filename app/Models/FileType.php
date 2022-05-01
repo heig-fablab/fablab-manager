@@ -20,4 +20,9 @@ class FileType extends Model
     {
         return $this->hasMany(File::class);
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(FileType::class, 'job_category_has_file_type', 'id_file_type', 'id_category');
+    }
 }
