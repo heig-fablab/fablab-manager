@@ -17,28 +17,8 @@ class DeviceController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $devices = Device::all();
+        return DeviceResource::collection($devices);
     }
 
     /**
@@ -47,20 +27,22 @@ class DeviceController extends Controller
      * @param  \App\Models\Device  $device
      * @return \Illuminate\Http\Response
      */
-    public function show(Device $device)
+    public function show($id)
     {
-        //
+        return new DeviceResource(Device::find($id));
     }
 
-    /**
-     * Show the form for editing the specified resource.
+        /**
+     * Store a newly created resource in storage.
      *
-     * @param  \App\Models\Device  $device
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit(Device $device)
+    public function store(StoreDeviceRequest $request)
     {
-        //
+        // doesn't work
+        $device = Device::create($request->validated());
+        return new DeviceResource($device);
     }
 
     /**
@@ -70,9 +52,12 @@ class DeviceController extends Controller
      * @param  \App\Models\Device  $device
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Device $device)
+    //public function update(StoreDeviceRequest $request, Device $device)
+    public function update(StoreDeviceRequest $request)
     {
-        //
+        $device = Device::find($request->id);
+        $device->update($request->validated());
+        return new DeviceResource($device);
     }
 
     /**
@@ -81,8 +66,11 @@ class DeviceController extends Controller
      * @param  \App\Models\Device  $device
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Device $device)
+    public function destroy($id)
     {
-        //
+        Device::find($id)->delete();
+        return response()->json([
+            'message' => "Device deleted successfully!"
+        ], 200);
     }
 }

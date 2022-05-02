@@ -19,6 +19,6 @@ class Device extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Device::class, 'job_category_has_device', 'id_device', 'id_category');
+        return $this->belongsToMany(JobCategory::class, 'job_category_has_device', 'id_device', 'id_category');
     }
 }

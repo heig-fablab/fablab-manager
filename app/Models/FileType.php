@@ -10,7 +10,7 @@ class FileType extends Model
     use HasFactory;
 
     protected $fillable = [
-        'type_name'
+        'name'
     ];
 
     public $timestamps = false;
@@ -23,6 +23,6 @@ class FileType extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(FileType::class, 'job_category_has_file_type', 'id_file_type', 'id_category');
+        return $this->belongsToMany(JobCategory::class, 'job_category_has_file_type', 'id_file_type', 'id_category');
     }
 }
