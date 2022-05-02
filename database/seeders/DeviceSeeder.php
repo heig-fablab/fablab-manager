@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use App\Models\Device;
 
 class DeviceSeeder extends Seeder
 {
@@ -14,7 +17,7 @@ class DeviceSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('devices')->insert([
+        Device::insert([
             'name' => 'Formlabs Form 3',
             'image_path' => Str::random(10),
             'description' => 'Avec cette imprimante industrielle, réalisez vos pièces en résine allant jusqu\'à une dimension de 14.5 x 14.5 x 18.5 cm, avec une précision inégalée de 25 μm.',

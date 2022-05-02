@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class JobCategorySeeder extends Seeder
 {
@@ -42,7 +43,7 @@ class JobCategorySeeder extends Seeder
             'name' => 'autre',
         ]);
 
-        DB::table('job_category_has_device')->insert([
+        /*DB::table('job_category_has_device')->insert([
             'id_category' => 0,
             'id_device' => 0,
         ],
@@ -82,6 +83,6 @@ class JobCategorySeeder extends Seeder
         [
             'id_category' => 0,
             'id_file_type' => 5,
-        ]);
+        ]);*/
     }
 }

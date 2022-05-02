@@ -25,11 +25,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('devices', DeviceController::class);
+//Route::apiResource('devices', DeviceController::class);
+ 
+Route::prefix('/devices')->controller(DeviceController::class)->group(function () { 
+    Route::get('', 'index');
+    Route::get('/{id}', 'show');
+    Route::post('', 'store');
+    Route::put('', 'update');
+    Route::delete('/{id}', 'destroy');
+}); // todo -> verify admin via middleware
 
 Route::apiResource('files', FileController::class);
 
-Route::apiResource('file_types', FileTypeController::class);
+Route::apiResource('file_types', FileTypeController::class); // todo -> verify admin via middleware
 
 Route::apiResource('job_categories', JobCategoryController::class);
 

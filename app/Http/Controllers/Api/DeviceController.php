@@ -22,16 +22,17 @@ class DeviceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the specified resource.
      *
+     * @param  \App\Models\Device  $device
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function show($id)
     {
-        // don't implement this
+        return new DeviceResource(Device::find($id));
     }
 
-    /**
+        /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -39,29 +40,9 @@ class DeviceController extends Controller
      */
     public function store(StoreDeviceRequest $request)
     {
-        return new DeviceResource(Device::create($request->validated()));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Device  $device
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Device $device)
-    {
+        // doesn't work
+        $device = Device::create($request->validated());
         return new DeviceResource($device);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Device  $device
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Device $device)
-    {
-        // don't implement this
     }
 
     /**
@@ -71,8 +52,10 @@ class DeviceController extends Controller
      * @param  \App\Models\Device  $device
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreDeviceRequest $request, Device $device)
+    //public function update(StoreDeviceRequest $request, Device $device)
+    public function update(StoreDeviceRequest $request)
     {
+        $device = Device::find($request->id);
         $device->update($request->validated());
         return new DeviceResource($device);
     }
@@ -83,9 +66,9 @@ class DeviceController extends Controller
      * @param  \App\Models\Device  $device
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Device $device)
+    public function destroy($id)
     {
-        $device->delete();
+        Device::find($id)->delete();
         return response()->json([
             'message' => "Device deleted successfully!"
         ], 200);

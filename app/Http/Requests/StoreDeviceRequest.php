@@ -24,9 +24,10 @@ class StoreDeviceRequest extends FormRequest
      */
     public function rules()
     {
-        // TODO
         return [
-            //
+            'name' => ['required'],
+            'image_path'  => ['required'],
+            'description' => ['required'],
         ];
     }
 }

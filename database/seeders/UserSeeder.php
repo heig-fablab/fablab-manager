@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -14,32 +17,32 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('devices')->insert([
+        DB::table('users')->insert([
             'email' => 'admin@heig-vd.ch',
             'name' => 'admin',
             'surname' => 'admin',
-            'description' => Hash::make('password'),
+            'password' => Hash::make('password'),
         ],
         [
             'email' => 'worker@heig-vd.ch',
             'name' => Str::random(10),
             'surname' => Str::random(10),
-            'description' => Hash::make('password'),
+            'password' => Hash::make('password'),
         ],
         [
             'email' => 'validator@heig-vd.ch',
             'name' => Str::random(10),
             'surname' => Str::random(10),
-            'description' => Hash::make('password'),
+            'password' => Hash::make('password'),
         ],
         [
             'email' => 'requestor@heig-vd.ch',
             'name' => Str::random(10),
             'surname' => Str::random(10),
-            'description' => Hash::make('password'),
+            'password' => Hash::make('password'),
         ]);
 
-        DB::table('user_has_role')->insert([
+        /*DB::table('user_has_role')->insert([
             'email_user' => 'admin@heig-vd.ch',
             'id_role' => 0,
         ],
@@ -54,6 +57,6 @@ class UserSeeder extends Seeder
         [
             'email_user' => 'requestor@heig-vd.ch',
             'id_role' => 3,
-        ]);
+        ]);*/
     }
 }
