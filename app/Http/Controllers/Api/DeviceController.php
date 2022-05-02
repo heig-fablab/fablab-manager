@@ -17,7 +17,8 @@ class DeviceController extends Controller
      */
     public function index()
     {
-        //
+        $devices = Device::all();
+        return DeviceResource::collection($devices);
     }
 
     /**
@@ -27,7 +28,7 @@ class DeviceController extends Controller
      */
     public function create()
     {
-        //
+        // don't implement this
     }
 
     /**
@@ -36,9 +37,9 @@ class DeviceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreDeviceRequest $request)
     {
-        //
+        return new DeviceResource(Device::create($request->validated()));
     }
 
     /**
@@ -49,7 +50,7 @@ class DeviceController extends Controller
      */
     public function show(Device $device)
     {
-        //
+        return new DeviceResource($device);
     }
 
     /**
@@ -60,7 +61,7 @@ class DeviceController extends Controller
      */
     public function edit(Device $device)
     {
-        //
+        // don't implement this
     }
 
     /**
@@ -70,9 +71,10 @@ class DeviceController extends Controller
      * @param  \App\Models\Device  $device
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Device $device)
+    public function update(StoreDeviceRequest $request, Device $device)
     {
-        //
+        $device->update($request->validated());
+        return new DeviceResource($device);
     }
 
     /**
@@ -83,6 +85,9 @@ class DeviceController extends Controller
      */
     public function destroy(Device $device)
     {
-        //
+        $device->delete();
+        return response()->json([
+            'message' => "Device deleted successfully!"
+        ], 200);
     }
 }

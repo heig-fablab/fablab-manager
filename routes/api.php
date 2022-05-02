@@ -2,6 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\DeviceController;
+use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\FileTypeController;
+use App\Http\Controllers\Api\JobCategoryController;
+use App\Http\Controllers\Api\JobController;
+use App\Http\Controllers\Api\MessageController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------

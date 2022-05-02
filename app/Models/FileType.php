@@ -10,7 +10,7 @@ class FileType extends Model
     use HasFactory;
 
     protected $fillable = [
-        'type_name'
+        'name'
     ];
 
     public $timestamps = false;
