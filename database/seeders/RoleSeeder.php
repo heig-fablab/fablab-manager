@@ -17,14 +17,17 @@ class RoleSeeder extends Seeder
     {
         DB::table('roles')->insert([
             'name' => 'admin',
-        ],
-        [
+        ]);
+
+        DB::table('roles')->insert([
             'name' => 'worker',
-        ],
-        [
+        ]);
+
+        DB::table('roles')->insert([
             'name' => 'validator',
-        ],
-        [
+        ]);
+        
+        DB::table('roles')->insert([
             'name' => 'requestor',
         ]);
     }

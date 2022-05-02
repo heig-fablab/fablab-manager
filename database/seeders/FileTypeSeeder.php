@@ -17,20 +17,25 @@ class FileTypeSeeder extends Seeder
     {
         DB::table('file_types')->insert([
             'name' => 'dxf',
-        ],
-        [
+        ]);
+
+        DB::table('file_types')->insert([
             'name' => 'step',
-        ],
-        [
+        ]);
+
+        DB::table('file_types')->insert([
             'name' => 'stl',
-        ],
-        [
+        ]);
+
+        DB::table('file_types')->insert([
             'name' => 'pdf',
-        ],
-        [
+        ]);
+
+        DB::table('file_types')->insert([
             'name' => 'swlprt',
-        ],
-        [
+        ]);
+
+        DB::table('file_types')->insert([
             'name' => 'gcode',
         ]);
     }

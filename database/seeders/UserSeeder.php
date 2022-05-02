@@ -22,20 +22,23 @@ class UserSeeder extends Seeder
             'name' => 'admin',
             'surname' => 'admin',
             'password' => Hash::make('password'),
-        ],
-        [
+        ]);
+        
+        DB::table('users')->insert([
             'email' => 'worker@heig-vd.ch',
             'name' => Str::random(10),
             'surname' => Str::random(10),
             'password' => Hash::make('password'),
-        ],
-        [
+        ]);
+
+        DB::table('users')->insert([
             'email' => 'validator@heig-vd.ch',
             'name' => Str::random(10),
             'surname' => Str::random(10),
             'password' => Hash::make('password'),
-        ],
-        [
+        ]);
+
+        DB::table('users')->insert([
             'email' => 'requestor@heig-vd.ch',
             'name' => Str::random(10),
             'surname' => Str::random(10),

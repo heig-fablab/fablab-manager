@@ -17,29 +17,37 @@ class JobCategorySeeder extends Seeder
     {
         DB::table('job_categories')->insert([
             'name' => 'routage électronique / electrical-routing',
-        ],
-        [
+        ]);
+
+        DB::table('job_categories')->insert([
             'name' => 'assemblage électronique',
-        ],
-        [
+        ]);
+
+        DB::table('job_categories')->insert([
             'name' => 'cablage',
-        ],
-        [
+        ]);
+
+        DB::table('job_categories')->insert([
             'name' => 'usinage conventionnel',
-        ],
-        [
+        ]);
+
+        DB::table('job_categories')->insert([
             'name' => 'impression 3d',
-        ],
-        [
+        ]);
+
+        DB::table('job_categories')->insert([
             'name' => 'découpe laser',
-        ],
-        [
+        ]);
+
+        DB::table('job_categories')->insert([
             'name' => 'gravure laser',
-        ],
-        [
+        ]);
+
+        DB::table('job_categories')->insert([
             'name' => 'test',
-        ],
-        [
+        ]);
+        
+        DB::table('job_categories')->insert([
             'name' => 'autre',
         ]);
 
