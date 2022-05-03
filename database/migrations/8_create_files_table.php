@@ -13,11 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->longText('data');
+            $table->unsignedBigInteger('id_file_type');
+            $table->unsignedBigInteger('id_job');
+            $table->string('name');
+            $table->string('hash_name');
+            $table->softDeletes();
             $table->timestamps();
 
+            $table->foreign('id_file_type')->references('id')->on('file_types');
             $table->foreign('id_job')->references('id')->on('jobs');
         });
     }
@@ -29,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('files');
     }
 };

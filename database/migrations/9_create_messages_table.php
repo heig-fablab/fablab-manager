@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_job');
+            $table->string('sender_email');
+            $table->string('receiver_email');
             $table->longText('text');
             $table->timestamps();
 

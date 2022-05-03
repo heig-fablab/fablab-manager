@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_category');
+            $table->string('requestor_email');
+            $table->string('worker_email');
+            $table->string('validator_email');
             $table->string('title');
             $table->longText('description')->nullable();
             $table->date('deadline');

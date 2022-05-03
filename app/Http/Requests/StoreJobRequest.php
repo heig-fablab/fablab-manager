@@ -27,14 +27,14 @@ class StoreJobRequest extends FormRequest
         // TODO
         return [
             'title' => ['required'],
-            'id_category' => ['required'],
-            'requestor_email' => ['required', 'max:320'],
-            'worker_email' => ['required', 'max:320'],
-            'validator_email' => ['nullable', 'max:320'],
             'description' => ['nullable'],
             'deadline' => ['required'],
             'rating' => ['nullable'],
             'status' => ['nullable'],
+            'id_category' => ['required'],
+            'requestor_email' => ['required', 'max:320'],
+            'worker_email' => ['required', 'max:320'],
+            'validator_email' => ['nullable', 'max:320'],
         ];
     }
 }
