@@ -10,7 +10,8 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'data'
+        'data',
+        'id_job'
     ];
 
     public function job()

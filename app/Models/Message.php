@@ -11,7 +11,9 @@ class Message extends Model
 
     protected $fillable = [
         'text',
-        'id_job'
+        'id_job',
+        'sender_email',
+        'receiver_email'
     ];
 
     public function sender()

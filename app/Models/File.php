@@ -13,7 +13,9 @@ class File extends Model
 
     protected $fillable = [
         'name', 
-        'hash_name'
+        'hash_name',
+        'id_file_type',
+        'id_job'
     ];
 
     public function file_type()
