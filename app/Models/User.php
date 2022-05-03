@@ -21,14 +21,14 @@ class User extends Model
     public $timestamps = false;
     protected $primaryKey = 'email';
 
-    public function user_jobs()
+    public function requestor_jobs()
     {
-        return $this->hasMany(Job::class, 'user_email');
+        return $this->hasMany(Job::class, 'requestor_email');
     }
 
-    public function technician_jobs()
+    public function worker_jobs()
     {
-        return $this->hasMany(Job::class, 'technician_email');
+        return $this->hasMany(Job::class, 'worker_email');
     }
 
     public function validator_jobs()

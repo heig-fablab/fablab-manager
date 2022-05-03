@@ -47,19 +47,19 @@ class UserSeeder extends Seeder
 
         /*DB::table('user_has_role')->insert([
             'email_user' => 'admin@heig-vd.ch',
-            'id_role' => 0,
-        ],
-        [
-            'email_user' => 'worker@heig-vd.ch',
             'id_role' => 1,
         ],
         [
-            'email_user' => 'validator@heig-vd.ch',
+            'email_user' => 'worker@heig-vd.ch',
             'id_role' => 2,
         ],
         [
-            'email_user' => 'requestor@heig-vd.ch',
+            'email_user' => 'validator@heig-vd.ch',
             'id_role' => 3,
+        ],
+        [
+            'email_user' => 'requestor@heig-vd.ch',
+            'id_role' => 4,
         ]);*/
     }
 }

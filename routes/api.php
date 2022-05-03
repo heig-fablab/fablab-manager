@@ -26,7 +26,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //Route::apiResource('devices', DeviceController::class);
- 
 Route::prefix('/devices')->controller(DeviceController::class)->group(function () { 
     Route::get('', 'index');
     Route::get('/{id}', 'show');
@@ -41,7 +40,22 @@ Route::apiResource('file_types', FileTypeController::class); // todo -> verify a
 
 Route::apiResource('job_categories', JobCategoryController::class);
 
-Route::apiResource('jobs', JobController::class);
+//Route::apiResource('jobs', JobController::class);
+/*Route::resource('photos', PhotoController::class)->only([
+    'index', 'show'
+]);*/
+Route::prefix('/jobs')->controller(JobController::class)->group(function () { 
+    Route::get('', 'index');
+    Route::get('/user/{email}', 'user_jobs');
+    Route::get('/requestor/{email}', 'user_as_requestor_jobs');
+    Route::get('/worker/{email}', 'user_as_worker_jobs'); // todo verify role ->middleware()
+    Route::get('/validator/{email}', 'user_as_validator_jobs'); // todo verify role ->middleware()
+    Route::get('/{id}', 'show');
+    Route::post('', 'store');
+    Route::put('', 'update');
+    //Route::patch('/{id}', 'update_status');
+    Route::delete('/{id}', 'destroy');
+});
 
 Route::apiResource('messages', MessageController::class);
 

@@ -17,28 +17,27 @@ class JobController extends Controller
      */
     public function index()
     {
-        //
+        return JobResource::collection(Job::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function user_jobs($email)
     {
-        //
+        return JobResource::collection(Job::get_user_jobs($email));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function user_as_requestor_jobs($email)
     {
-        //
+        return JobResource::collection(Job::get_requestor_jobs($email));
+    }
+    
+    public function user_as_worker_jobs($email)
+    {
+        return JobResource::collection(Job::get_worker_jobs($email));
+    }
+
+    public function user_as_validator_jobs($email)
+    {
+        return JobResource::collection(Job::get_validator_jobs($email));
     }
 
     /**
@@ -47,20 +46,22 @@ class JobController extends Controller
      * @param  \App\Models\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function show(Job $job)
+    public function show($id)
     {
-        //
+        return new JobResource(Job::findOrFail($id));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Store a newly created resource in storage.
      *
-     * @param  \App\Models\Job  $job
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit(Job $job)
+    public function store(StoreJobRequest $request)
     {
-        //
+        $job = Job::create($request->validated());
+        //$request->requestor_email
+        return new JobResource($job);
     }
 
     /**
@@ -70,9 +71,11 @@ class JobController extends Controller
      * @param  \App\Models\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Job $job)
+    public function update(StoreJobRequest $request)
     {
-        //
+        $job = Job::find($request->id);
+        $job->update($request->validated());
+        return new JobResource($job);
     }
 
     /**
@@ -83,6 +86,9 @@ class JobController extends Controller
      */
     public function destroy(Job $job)
     {
-        //
+        Job::find($id)->delete();
+        return response()->json([
+            'message' => "Job deleted successfully!"
+        ], 200);
     }
 }

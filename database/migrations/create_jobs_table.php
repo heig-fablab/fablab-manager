@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->longText('description');
             $table->date('deadline');
-            $table->tinyInteger('rating');
+            $table->tinyInteger('rating')->nullable();
             $table->enum('status', ['new', 'assigned', 'ongoing', 'on-hold','completed'])->default('new');
             $table->softDeletes();
             $table->timestamps();

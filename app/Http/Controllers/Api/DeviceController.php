@@ -40,7 +40,6 @@ class DeviceController extends Controller
      */
     public function store(StoreDeviceRequest $request)
     {
-        // doesn't work
         $device = Device::create($request->validated());
         return new DeviceResource($device);
     }

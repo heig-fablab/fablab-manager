@@ -52,10 +52,6 @@ class JobCategorySeeder extends Seeder
         ]);
 
         /*DB::table('job_category_has_device')->insert([
-            'id_category' => 0,
-            'id_device' => 0,
-        ],
-        [
             'id_category' => 1,
             'id_device' => 1,
         ],
@@ -64,15 +60,15 @@ class JobCategorySeeder extends Seeder
             'id_device' => 2,
         ],
         [
-            'id_category' => 0,
+            'id_category' => 3,
             'id_device' => 3,
+        ],
+        [
+            'id_category' => 1,
+            'id_device' => 4,
         ]);
 
         DB::table('job_category_has_file_type')->insert([
-            'id_category' => 0,
-            'id_file_type' => 0,
-        ],
-        [
             'id_category' => 1,
             'id_file_type' => 1,
         ],
@@ -81,16 +77,20 @@ class JobCategorySeeder extends Seeder
             'id_file_type' => 2,
         ],
         [
-            'id_category' => 0,
+            'id_category' => 3,
             'id_file_type' => 3,
         ],
         [
-            'id_category' => 0,
+            'id_category' => 1,
             'id_file_type' => 4,
         ],
         [
-            'id_category' => 0,
+            'id_category' => 1,
             'id_file_type' => 5,
+        ],
+        [
+            'id_category' => 1,
+            'id_file_type' => 6,
         ]);*/
     }
 }
