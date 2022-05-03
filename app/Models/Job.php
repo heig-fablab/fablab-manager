@@ -18,9 +18,9 @@ class Job extends Model
         'rating',
         'status',
         'id_category',
-        'id_requestor',
-        'id_worker',
-        'id_validator'
+        'requestor_email',
+        'worker_email',
+        'validator_email'
     ];
 
     /**
@@ -36,25 +36,26 @@ class Job extends Model
     public static function get_user_jobs($email)
     {
         // We could do verification to see if he has role
-        $jobs = get_requestor_jobs($email);
-        array_push($jobs, get_worker_jobs($email));
-        array_push($jobs, get_validator_jobs($email));
+        $jobs = Job::get_requestor_jobs($email);
+        // jobs is not array type -> to check
+        array_push($jobs, Job::get_worker_jobs($email));
+        array_push($jobs, Job::get_validator_jobs($email));
         return $jobs;
     }
 
     public static function get_requestor_jobs($email)
     {
-        return get_jobs($email, 'requestor');
+        return Job::get_jobs($email, 'requestor');
     }
 
     public static function get_worker_jobs($email)
     {
-        return get_jobs($email, 'worker');
+        return Job::get_jobs($email, 'worker');
     }
 
     public static function get_validator_jobs($email)
     {
-        return get_jobs($email, 'validator');
+        return Job::get_jobs($email, 'validator');
     }
 
     private static function get_jobs($email, $role_user)
