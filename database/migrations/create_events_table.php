@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->longText('data');
             $table->timestamps();
+
+            $table->foreign('id_job')->references('id')->on('jobs');
         });
     }
 

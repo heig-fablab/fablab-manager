@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('hash_name');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('id_file_type')->references('id')->on('file_types');
+            $table->foreign('id_job')->references('id')->on('jobs');
         });
     }
 

@@ -17,6 +17,10 @@ return new class extends Migration
             $table->id();
             $table->longText('text');
             $table->timestamps();
+
+            $table->foreign('id_job')->references('id')->on('jobs');
+            $table->foreign('sender_email')->references('email')->on('users');
+            $table->foreign('receiver_email')->references('email')->on('users');
         });
     }
 

@@ -16,7 +16,11 @@ class Job extends Model
         'description',
         'deadline',
         'rating',
-        'status'
+        'status',
+        'id_category',
+        'id_requestor',
+        'id_worker',
+        'id_validator'
     ];
 
     /**
