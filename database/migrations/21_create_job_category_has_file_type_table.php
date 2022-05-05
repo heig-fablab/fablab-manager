@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('job_category_has_file_type', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_job_category');
+            $table->unsignedBigInteger('id_category');
             $table->unsignedBigInteger('id_file_type');
 
-            $table->foreign('id_job_category')->references('id')->on('job_categories');
+            $table->foreign('id_category')->references('id')->on('job_categories');
             $table->foreign('id_file_type')->references('id')->on('file_types');
         });
     }
