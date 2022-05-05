@@ -20,6 +20,7 @@ class JobController extends Controller
 
     public function show($id)
     {
+        // TODO -> return perhaps also files and messages
         return new JobResource(Job::findOrFail($id));
     }
 

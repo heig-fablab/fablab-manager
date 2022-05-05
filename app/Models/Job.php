@@ -56,7 +56,7 @@ class Job extends Model
         return Job::get_jobs($email, 'validator');
     }
 
-    private static function get_jobs($email, $role_user)
+    protected static function get_jobs($email, $role_user)
     {
         return Job::where($role_user.'_email', $email)->get();
         // To see if we need more infos
