@@ -12,3 +12,6 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+/database/migrations/old
+/app/Http/Controllers/old
+/app/Models/old
