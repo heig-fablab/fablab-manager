@@ -10,79 +10,58 @@ use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // TODO: perhaps dependance injection -> https://laravel.com/docs/9.x/controllers#dependency-injection-and-controllers
+
+    // API Standard function
     public function index()
     {
-        //
+        return JobResource::collection(Job::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show($id)
     {
-        //
+        return new JobResource(Job::findOrFail($id));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreJobRequest $request)
     {
-        //
+        $job = Job::create($request->validated());
+        return new JobResource($job);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Job  $job
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Job $job)
+    public function update(StoreJobRequest $request)
     {
-        //
+        $job = Job::findOrFail($request->id);
+        $job->update($request->validated());
+        return new JobResource($job);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Job  $job
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Job $job)
+    public function destroy($id)
     {
-        //
+        Job::findOrFail($id)->delete();
+        return response()->json([
+            'message' => "Job deleted successfully!"
+        ], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Job  $job
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Job $job)
+    // Others function
+    public function user_jobs($email)
     {
-        //
+        return JobResource::collection(Job::get_user_jobs($email));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Job  $job
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Job $job)
+    public function user_as_requestor_jobs($email)
     {
-        //
+        return JobResource::collection(Job::get_requestor_jobs($email));
+    }
+    
+    public function user_as_worker_jobs($email)
+    {
+        return JobResource::collection(Job::get_worker_jobs($email));
+    }
+
+    public function user_as_validator_jobs($email)
+    {
+        return JobResource::collection(Job::get_validator_jobs($email));
     }
 }

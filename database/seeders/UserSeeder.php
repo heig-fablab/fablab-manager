@@ -44,22 +44,5 @@ class UserSeeder extends Seeder
             'surname' => Str::random(10),
             'password' => Hash::make('password'),
         ]);
-
-        /*DB::table('user_has_role')->insert([
-            'email_user' => 'admin@heig-vd.ch',
-            'id_role' => 0,
-        ],
-        [
-            'email_user' => 'worker@heig-vd.ch',
-            'id_role' => 1,
-        ],
-        [
-            'email_user' => 'validator@heig-vd.ch',
-            'id_role' => 2,
-        ],
-        [
-            'email_user' => 'requestor@heig-vd.ch',
-            'id_role' => 3,
-        ]);*/
     }
 }

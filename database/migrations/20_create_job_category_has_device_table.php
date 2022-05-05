@@ -13,9 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('job_categories', function (Blueprint $table) {
+        Schema::create('job_category_has_device', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->unsignedBigInteger('id_category');
+            $table->unsignedBigInteger('id_device');
+
+            $table->foreign('id_category')->references('id')->on('job_categories');
+            $table->foreign('id_device')->references('id')->on('devices');
         });
     }
 
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('job_categories');
+        Schema::dropIfExists('job_category_has_device');
     }
 };

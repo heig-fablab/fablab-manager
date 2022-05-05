@@ -10,6 +10,7 @@ class JobCategory extends Model
     use HasFactory;
 
     protected $fillable = [
+        'acronym',
         'name'
     ];
 

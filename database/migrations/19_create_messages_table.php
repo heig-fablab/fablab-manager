@@ -15,8 +15,15 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_job');
+            $table->string('sender_email');
+            $table->string('receiver_email');
             $table->longText('text');
             $table->timestamps();
+
+            $table->foreign('id_job')->references('id')->on('jobs');
+            $table->foreign('sender_email')->references('email')->on('users');
+            $table->foreign('receiver_email')->references('email')->on('users');
         });
     }
 

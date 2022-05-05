@@ -16,7 +16,11 @@ class Job extends Model
         'description',
         'deadline',
         'rating',
-        'status'
+        'status',
+        'id_category',
+        'requestor_email',
+        'worker_email',
+        'validator_email'
     ];
 
     /**
@@ -28,7 +32,43 @@ class Job extends Model
         'status' => 'new',
     ];
 
-    // From many relationships
+    // Service methods
+    public static function get_user_jobs($email)
+    {
+        return Job::where('requestor_email', $email)
+        ->orWhere('worker_email', $email)
+        ->orWhere('validator_email', $email)
+        ->get();
+    }
+
+    public static function get_requestor_jobs($email)
+    {
+        return Job::get_jobs($email, 'requestor');
+    }
+
+    public static function get_worker_jobs($email)
+    {
+        return Job::get_jobs($email, 'worker');
+    }
+
+    public static function get_validator_jobs($email)
+    {
+        return Job::get_jobs($email, 'validator');
+    }
+
+    private static function get_jobs($email, $role_user)
+    {
+        return Job::where($role_user.'_email', $email)->get();
+        // To see if we need more infos
+        /*->join('categories', 'jobs.id_category', '=', 'categories.id')
+        ->join('users as validators', 'jobs.requestor_email', '=', 'users.email')
+        ->join('users as workers', 'jobs.worker_email', '=', 'workers.email')
+        ->join('users as validators', 'jobs.validator_email', '=', 'validators.email')
+        ->select('jobs.*', 'categories.id', 'validators.email', 'workers.email', 'validators.email')*/
+        
+    }
+
+    // Has Many
     public function messages()
     {
         return $this->hasMany(Message::class);
@@ -39,15 +79,15 @@ class Job extends Model
         return $this->hasMany(Event::class);
     }
 
-    // From foreign keys
-    public function user()
+    // BelongsTo
+    public function requestor()
     {
-        return $this->belongsTo(User::class, 'user_email');
+        return $this->belongsTo(User::class, 'requestor_email');
     }
 
-    public function technician()
+    public function worker()
     {
-        return $this->belongsTo(User::class, 'technician_email');
+        return $this->belongsTo(User::class, 'worker_email');
     }
 
     public function validator()

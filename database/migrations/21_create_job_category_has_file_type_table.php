@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('job_category_has_file_type', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('hash_name');
-            $table->softDeletes();
-            $table->timestamps();
+            $table->unsignedBigInteger('id_category');
+            $table->unsignedBigInteger('id_file_type');
+
+            $table->foreign('id_category')->references('id')->on('job_categories');
+            $table->foreign('id_file_type')->references('id')->on('file_types');
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('job_category_has_file_type');
     }
 };

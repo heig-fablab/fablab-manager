@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('jobs', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->longText('description');
-            $table->date('deadline');
-            $table->tinyInteger('rating');
-            $table->enum('status', ['new', 'assigned', 'ongoing', 'on-hold','completed'])->default('new');
-            $table->softDeletes();
+            $table->unsignedBigInteger('id_job');
+            $table->longText('data');
             $table->timestamps();
+
+            $table->foreign('id_job')->references('id')->on('jobs');
         });
     }
 
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jobs');
+        Schema::dropIfExists('events');
     }
 };
