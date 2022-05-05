@@ -35,12 +35,10 @@ class Job extends Model
     // Service methods
     public static function get_user_jobs($email)
     {
-        // We could do verification to see if he has role
-        $jobs = Job::get_requestor_jobs($email);
-        // jobs is not array type -> to check
-        array_push($jobs, Job::get_worker_jobs($email));
-        array_push($jobs, Job::get_validator_jobs($email));
-        return $jobs;
+        return Job::where('requestor_email', $email)
+        ->orWhere('worker_email', $email)
+        ->orWhere('validator_email', $email)
+        ->get();
     }
 
     public static function get_requestor_jobs($email)
@@ -60,19 +58,15 @@ class Job extends Model
 
     private static function get_jobs($email, $role_user)
     {
-        return Job::where($role_user.'_email', $email)
+        return Job::where($role_user.'_email', $email)->get();
+        // To see if we need more infos
         /*->join('categories', 'jobs.id_category', '=', 'categories.id')
         ->join('users as validators', 'jobs.requestor_email', '=', 'users.email')
         ->join('users as workers', 'jobs.worker_email', '=', 'workers.email')
         ->join('users as validators', 'jobs.validator_email', '=', 'validators.email')
         ->select('jobs.*', 'categories.id', 'validators.email', 'workers.email', 'validators.email')*/
-        ->get();
+        
     }
-
-    /*public function add_new_job($email)
-    {
-        return Job::where('validator_email', $email)->get();
-    }*/
 
     // Has Many
     public function messages()
