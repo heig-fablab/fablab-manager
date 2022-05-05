@@ -19,11 +19,36 @@ TODO
 
 #### PHP Installation
 
+https://thishosting.rocks/install-php-on-ubuntu/
+
+php.ini
+````
+sudo apt install openssl php-common php-curl php-json php-mbstring php-mysql php-xml php-zip
+````
+
 #### Composer installation
 https://getcomposer.org/doc/00-intro.md
 
 Under Windows part:
 https://getcomposer.org/Composer-Setup.exe
+
+
+````
+sudo apt-get upgrade
+````
+
+````	
+sudo apt-get install php
+````
+
+````
+php --version
+````
+
+Under Linux part:
+````
+curl -sS https://getcomposer.org/installer | php
+````
 
 #### Laravel configuration
 
@@ -59,14 +84,38 @@ pour le mettre dans "resources/views/app.blade.php".
 
 ## Use
 
-It use Laravel Sail, so go in the repo with the command "cd" and then type:
+1. Start by running this command to install dependencies:
+````
+composer install
+````
+
+2. It use Laravel Sail, so go use the following command:
 ````
 ./vendor/bin/sail up
 ````
 
-You can also create an alias like that:
+3. You can also create an alias for _sail_ like that:
 ````
 alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
+````
+
+4. Copy the .env.example and adapt it to your needs.
+
+5. Generate your key for the first time:
+````
+./vendor/bin/sail artisan key:generate
+````
+
+6. Run the migrations:
+````
+./vendor/bin/sail artisan migrate:fresh --seed
+
+./vendor/bin/sail artisan migrate
+````
+
+7. Run the seeds:
+````
+./vendor/bin/sail artisan db:seed
 ````
 
 ### Default port
@@ -81,19 +130,20 @@ default developement server in on port 80
 ````
 ./vendor/bin/phpunit
 ````
-ou
+or
 ````
 ./vendor/bin/sail artisan test
 ````
 
 ### Test coverage
+Not unable yet!
 ````
 ./vendor/bin/sail artisan test --coverage
 ````
 
 ## Support
 
-## Contribuer
+## Contribute
 
 ## Authors
 

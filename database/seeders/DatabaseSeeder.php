@@ -14,6 +14,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+      $this->call([
+        DeviceSeeder::class,
+        FileTypeSeeder::class,
+        JobCategorySeeder::class,
+        RoleSeeder::class,
+        UserSeeder::class,
+        DeviceJobCategorySeeder::class,
+        FileTypeJobCategorySeeder::class,
+        RoleUserSeeder::class,
+      ]);
+
         // \App\Models\User::factory(10)->create();
         /*User::insert([
             'name' => 'Ludwig',

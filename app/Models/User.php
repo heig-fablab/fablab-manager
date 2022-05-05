@@ -2,43 +2,57 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable
+class User extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
+    use SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $primaryKey = 'switch_uuid';
+
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'switch_uuid',
+        'email', 
+        'name', 
+        'surname',
+        'password'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    // Options
+    public $timestamps = false;
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    // Has many
+    public function requestor_jobs()
+    {
+        return $this->hasMany(Job::class, 'client_switch_uuid');
+    }
+
+    public function worker_jobs()
+    {
+        return $this->hasMany(Job::class, 'worker_switch_uuid');
+    }
+
+    public function validator_jobs()
+    {
+        return $this->hasMany(Job::class, 'validator_switch_uuid');
+    }
+
+    public function sended_messages()
+    {
+        return $this->hasMany(Message::class, 'sender_switch_uuid');
+    }
+
+    public function received_messages()
+    {
+        return $this->hasMany(Message::class, 'receiver_switch_uuid');
+    }
+
+    // Belongs to many
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }
