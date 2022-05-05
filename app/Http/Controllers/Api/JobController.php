@@ -20,7 +20,9 @@ class JobController extends Controller
 
     public function show($id)
     {
-        return new JobResource(Job::findOrFail($id));
+        $job = Job::findOrFail($id);
+        // TODO: add others values from relations
+        return new JobResource($job);
     }
 
     public function store(StoreJobRequest $request)
@@ -45,23 +47,23 @@ class JobController extends Controller
     }
 
     // Others function
-    public function user_jobs($email)
+    public function user_jobs($switch_uuid)
     {
-        return JobResource::collection(Job::get_user_jobs($email));
+        return JobResource::collection(Job::get_user_jobs($switch_uuid));
     }
 
-    public function user_as_requestor_jobs($email)
+    public function user_as_client_jobs($switch_uuid)
     {
-        return JobResource::collection(Job::get_requestor_jobs($email));
+        return JobResource::collection(Job::get_client_jobs($switch_uuid));
     }
     
-    public function user_as_worker_jobs($email)
+    public function user_as_worker_jobs($switch_uuid)
     {
-        return JobResource::collection(Job::get_worker_jobs($email));
+        return JobResource::collection(Job::get_worker_jobs($switch_uuid));
     }
 
-    public function user_as_validator_jobs($email)
+    public function user_as_validator_jobs($switch_uuid)
     {
-        return JobResource::collection(Job::get_validator_jobs($email));
+        return JobResource::collection(Job::get_validator_jobs($switch_uuid));
     }
 }

@@ -31,10 +31,10 @@ class StoreJobRequest extends FormRequest
             'deadline' => ['required'],
             'rating' => ['nullable'],
             'status' => ['nullable'],
-            'id_category' => ['required'],
-            'requestor_email' => ['required', 'max:320'],
-            'worker_email' => ['required', 'max:320'],
-            'validator_email' => ['nullable', 'max:320'],
+            'category_id' => ['required'],
+            'client_switch_uuid' => ['required', 'max:320'],
+            'worker_switch_uuid' => ['nullable', 'max:320'],
+            'validator_switch_uuid' => ['nullable', 'max:320'],
         ];
     }
 }

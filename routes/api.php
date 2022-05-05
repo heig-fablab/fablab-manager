@@ -34,10 +34,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 ]);*/
 Route::prefix('/jobs')->controller(JobController::class)->group(function () { 
     Route::get('', 'index');
-    Route::get('/user/{email}', 'user_jobs');
-    Route::get('/requestor/{email}', 'user_as_requestor_jobs');
-    Route::get('/worker/{email}', 'user_as_worker_jobs'); // todo verify role ->middleware()
-    Route::get('/validator/{email}', 'user_as_validator_jobs'); // todo verify role ->middleware()
+    Route::get('/user/{switch_uuid}', 'user_jobs');
+    Route::get('/client/{switch_uuid}', 'user_as_client_jobs');
+    Route::get('/worker/{switch_uuid}', 'user_as_worker_jobs'); // todo verify role ->middleware()
+    Route::get('/validator/{switch_uuid}', 'user_as_validator_jobs'); // todo verify role ->middleware()
     Route::get('/{id}', 'show');
     Route::post('', 'store');
     Route::put('', 'update');

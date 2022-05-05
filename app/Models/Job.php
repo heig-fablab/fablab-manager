@@ -17,7 +17,7 @@ class Job extends Model
         'deadline',
         'rating',
         'status',
-        'id_category',
+        'category_id',
         'client_switch_uuid',
         'worker_switch_uuid',
         'validator_switch_uuid'
@@ -37,7 +37,7 @@ class Job extends Model
         ->get();
     }
 
-    public static function get_requestor_jobs($switch_uuid)
+    public static function get_client_jobs($switch_uuid)
     {
         return Job::get_jobs($switch_uuid, 'client');
     }

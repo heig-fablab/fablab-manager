@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             'switch_uuid' => '444@hes-so.ch',
-            'email' => 'requestor@heig-vd.ch',
+            'email' => 'client@heig-vd.ch',
             'name' => Str::random(10),
             'surname' => Str::random(10),
             'password' => Hash::make('password'),
