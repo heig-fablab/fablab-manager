@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
+            'switch_uuid' => '111@hes-so.ch',
             'email' => 'admin@heig-vd.ch',
             'name' => 'admin',
             'surname' => 'admin',
@@ -25,6 +26,7 @@ class UserSeeder extends Seeder
         ]);
         
         DB::table('users')->insert([
+            'switch_uuid' => '222@hes-so.ch',
             'email' => 'worker@heig-vd.ch',
             'name' => Str::random(10),
             'surname' => Str::random(10),
@@ -32,6 +34,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
+            'switch_uuid' => '333@hes-so.ch',
             'email' => 'validator@heig-vd.ch',
             'name' => Str::random(10),
             'surname' => Str::random(10),
@@ -39,6 +42,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
+            'switch_uuid' => '444@hes-so.ch',
             'email' => 'requestor@heig-vd.ch',
             'name' => Str::random(10),
             'surname' => Str::random(10),

@@ -20,9 +20,9 @@ class DatabaseSeeder extends Seeder
         JobCategorySeeder::class,
         RoleSeeder::class,
         UserSeeder::class,
-        JobCategoryHasDeviceSeeder::class,
-        JobCategoryHasFileTypeSeeder::class,
-        UserHasRoleSeeder::class,
+        DeviceJobCategorySeeder::class,
+        FileTypeJobCategorySeeder::class,
+        RoleUserSeeder::class,
       ]);
 
         // \App\Models\User::factory(10)->create();
