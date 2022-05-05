@@ -26,7 +26,14 @@ class StoreFileRequest extends FormRequest
     {
         // TODO
         return [
-            //
+            'name' => ['required'],
+            'files' => ['required'],
+            /* function ($attribute, $value, $fail) {
+            if ($value === 'foo') {
+                $fail('The '.$attribute.' is invalid.');
+            }
+            },*/ // use closure to test extension types of files
+            'id_job' => ['required'],
         ];
     }
 }

@@ -21,6 +21,9 @@ use App\Http\Controllers\Api\UserController;
 |
 */
 
+// api donne toutes les routes
+// mettre des liens dans l'api
+
 // Default
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
