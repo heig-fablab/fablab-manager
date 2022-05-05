@@ -6,54 +6,51 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFileRequest;
 use App\Http\Resources\FileResource;
 use App\Models\File;
+use App\Models\FileType;
+use App\Models\FileStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
-{
+{   
+    protected $file_storage_service;
+ 
+    public function __construct(FileStorageService $file_storage_service)
+    {
+        $this->file_storage_service = $file_storage_service;
+    }
+
     // API Standard function
-    public function index()
+    /*public function index()
     {
         return FileResource::collection(File::all());
-    }
+    }*/
 
     public function show($id)
     {
-        return new FileResource(File::findOrFail($id));
+        $file = File::findOrFail($id);
+        $file->file = $file_storage_service->getFile($file);
+        return new FileResource($file);
     }
 
     public function store(StoreFileRequest $request)
     {
-        $file = File::create($request->validated());
+        // old code adapted -> doens't work
+        /*$file = $request->file('file');
+        $newFile = new File;
+        $newFile->hash = hash_file('sha256', $file);
+        $newFile->name = $file->getClientOriginalName();
+        $newFile->job_id = $request->job_id;
+        $newFile->directory = 'test';
+        $newFile->save();
+        $file->storeAs('FileStorage', hash_file('sha256', $file));*/
 
-        //Storage::disk('local')->put('example.txt', 'Contents');
+        $validated = $request->validated();
 
-        /*if (! Storage::put('file.jpg', $contents)) {
-            // The file could not be written to disk...
-        }*/
+        $file = $file_storage_service->store_file($request->file, $request->job_id);
 
-        /*$path = $request->file('avatar')->store('avatars');
- 
-        return $path;*/
-
-        //$path = Storage::putFile('avatars', $request->file('avatar'));
-
-        /*$path = $request->file('avatar')->storeAs(
-            'avatars', $request->user()->id
-        );*/
-
-        // Verification
-        /*$file = $request->file('avatar');
-        $name = $file->getClientOriginalName();
-        $extension = $file->getClientOriginalExtension();*/
-
-        /*
-        $file = $request->file('avatar');
-        $name = $file->hashName(); // Generate a unique, random name...
-        $extension = $file->extension(); // Determine the file's extension based on the file's MIME type...*/
-
-        // todo: filestorage management in model -> use in job (delete files for example)
-        // Storage::delete(['file.jpg', 'file2.jpg']);
+        // Event
+        // TODO
 
         return new FileResource($file);
     }
@@ -62,14 +59,27 @@ class FileController extends Controller
     {
         $file = File::findOrFail($request->id);
         $file->update($request->validated());
+        $file_storage_service->update_file($file);
         return new FileResource($file);
     }
 
     public function destroy($id)
     {
-        File::findOrFail($id)->delete();
+        $file = File::findOrFail($id);
+        $file_storage_service->delete_file($file);
+        $file->delete();
+
         return response()->json([
             'message' => "File deleted successfully!"
         ], 200);
+    }
+
+    // Other functions
+    public function job_files(StoreFileRequest $request)
+    {
+        // TODO: perhaps
+        /*foreach($request->files as $file) {
+
+        }*/
     }
 }

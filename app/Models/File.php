@@ -13,7 +13,8 @@ class File extends Model
 
     protected $fillable = [
         'name', 
-        'hash_name',
+        'hash',
+        'directory',
         'file_type_id',
         'job_id'
     ];

@@ -52,11 +52,7 @@ class Job extends Model
         return Job::get_jobs($switch_uuid, 'validator');
     }
 
-<<<<<<< HEAD
     protected static function get_jobs($switch_uuid, $role_user)
-=======
-    protected static function get_jobs($email, $role_user)
->>>>>>> adding some commented code to help
     {
         return Job::where($role_user.'_switch_uuid', $switch_uuid)->get();
         // To see if we need more infos

@@ -48,7 +48,15 @@ Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::delete('/{id}', 'destroy');
 });
 
-Route::apiResource('files', FileController::class);
+//Route::apiResource('files', FileController::class);
+Route::prefix('/files')->controller(FileController::class)->group(function () { 
+    //Route::get('', 'index');
+    Route::get('/{id}', 'show');
+    Route::post('', 'store');
+    //Route::post('/job/{id}', 'job_files');
+    Route::put('', 'update');
+    Route::delete('/{id}', 'destroy');
+});
 
 Route::apiResource('messages', MessageController::class);
 
