@@ -89,42 +89,33 @@ pour le mettre dans "resources/views/app.blade.php".
 composer install
 ````
 
-2. It use Laravel Sail, so go use the following command:
+2. Get the sail environment ready:
+````
+cp .env.example .env
+````
+
+3. It use Laravel Sail, so go use the following command:
 ````
 ./vendor/bin/sail up
 ````
 
-3. You can also create an alias for _sail_ like that:
+4. You can also create an alias for _sail_ like that:
 ````
 alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 ````
-
-4. Copy the .env.example and adapt it to your needs.
 
 5. Generate your key for the first time:
 ````
 ./vendor/bin/sail artisan key:generate
 ````
 
-6. Run the migrations:
+6. Run the migrations and seeds:
 ````
 ./vendor/bin/sail artisan migrate:fresh --seed
-
-./vendor/bin/sail artisan migrate
-````
-
-7. Run the seeds:
-````
-./vendor/bin/sail artisan db:seed
 ````
 
 ### Default port
 default developement server in on port 80
-
-### Migration
-````
-./vendor/bin/sail artisan migrate
-````
 
 ## Tests
 ````
