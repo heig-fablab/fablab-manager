@@ -14,17 +14,18 @@ class File extends Model
     protected $fillable = [
         'name', 
         'hash_name',
-        'id_file_type',
-        'id_job'
+        'file_type_id',
+        'job_id'
     ];
 
+    // Belongs to
     public function file_type()
     {
-        return $this->belongsTo(FileType::class, 'id_file_type');
+        return $this->belongsTo(FileType::class);
     }
 
     public function job()
     {
-        return $this->belongsTo(Job::class, 'id_job');
+        return $this->belongsTo(Job::class);
     }
 }

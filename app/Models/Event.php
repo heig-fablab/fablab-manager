@@ -11,11 +11,12 @@ class Event extends Model
 
     protected $fillable = [
         'data',
-        'id_job'
+        'job_id'
     ];
 
+    // Belongs to
     public function job()
     {
-        return $this->belongsTo(Job::class, 'id_job');
+        return $this->belongsTo(Job::class);
     }
 }

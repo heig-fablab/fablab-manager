@@ -13,10 +13,12 @@ class Role extends Model
         'name'
     ];
 
+    // Options
     public $timestamps = false;
 
+    // Belongs to many
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_has_role', 'id_role', 'id_user');
+        return $this->belongsToMany(User::class);
     }
 }

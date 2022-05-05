@@ -10,19 +10,22 @@ class FileType extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        'mime_type'
     ];
 
+    // Options
     public $timestamps = false;
-    protected $table = 'file_types';
 
+    // Has many
     public function files()
     {
         return $this->hasMany(File::class);
     }
 
+    // Belongs to many
     public function categories()
     {
-        return $this->belongsToMany(JobCategory::class, 'job_category_has_file_type', 'id_file_type', 'id_category');
+        return $this->belongsToMany(JobCategory::class);
     }
 }

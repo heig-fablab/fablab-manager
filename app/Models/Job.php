@@ -18,53 +18,49 @@ class Job extends Model
         'rating',
         'status',
         'id_category',
-        'requestor_email',
-        'worker_email',
-        'validator_email'
+        'client_switch_uuid',
+        'worker_switch_uuid',
+        'validator_switch_uuid'
     ];
 
-    /**
-     * The model's default values for attributes.
-     *
-     * @var array
-     */
+    // Default values
     protected $attributes = [
         'status' => 'new',
     ];
 
     // Service methods
-    public static function get_user_jobs($email)
+    public static function get_user_jobs($switch_uuid)
     {
-        return Job::where('requestor_email', $email)
-        ->orWhere('worker_email', $email)
-        ->orWhere('validator_email', $email)
+        return Job::where('client_switch_uuid', $switch_uuid)
+        ->orWhere('worker_switch_uuid', $switch_uuid)
+        ->orWhere('validator_switch_uuid', $switch_uuid)
         ->get();
     }
 
-    public static function get_requestor_jobs($email)
+    public static function get_requestor_jobs($switch_uuid)
     {
-        return Job::get_jobs($email, 'requestor');
+        return Job::get_jobs($switch_uuid, 'client');
     }
 
-    public static function get_worker_jobs($email)
+    public static function get_worker_jobs($switch_uuid)
     {
-        return Job::get_jobs($email, 'worker');
+        return Job::get_jobs($switch_uuid, 'worker');
     }
 
-    public static function get_validator_jobs($email)
+    public static function get_validator_jobs($switch_uuid)
     {
-        return Job::get_jobs($email, 'validator');
+        return Job::get_jobs($switch_uuid, 'validator');
     }
 
-    private static function get_jobs($email, $role_user)
+    protected static function get_jobs($switch_uuid, $role_user)
     {
-        return Job::where($role_user.'_email', $email)->get();
+        return Job::where($role_user.'_switch_uuid', $switch_uuid)->get();
         // To see if we need more infos
         /*->join('categories', 'jobs.id_category', '=', 'categories.id')
-        ->join('users as validators', 'jobs.requestor_email', '=', 'users.email')
-        ->join('users as workers', 'jobs.worker_email', '=', 'workers.email')
-        ->join('users as validators', 'jobs.validator_email', '=', 'validators.email')
-        ->select('jobs.*', 'categories.id', 'validators.email', 'workers.email', 'validators.email')*/
+        ->join('users as validators', 'jobs.requestor_switch_uuid', '=', 'users.switch_uuid')
+        ->join('users as workers', 'jobs.worker_switch_uuid', '=', 'workers.switch_uuid')
+        ->join('users as validators', 'jobs.validator_switch_uuid', '=', 'validators.switch_uuid')
+        ->select('jobs.*', 'categories.id', 'validators.switch_uuid', 'workers.switch_uuid', 'validators.switch_uuid')*/
     }
 
     // Has Many
@@ -78,29 +74,29 @@ class Job extends Model
         return $this->hasMany(Event::class);
     }
 
+    public function file()
+    {
+        return $this->hasMany(File::class);
+    }
+
     // BelongsTo
     public function requestor()
     {
-        return $this->belongsTo(User::class, 'requestor_email');
+        return $this->belongsTo(User::class, 'client_switch_uuid');
     }
 
     public function worker()
     {
-        return $this->belongsTo(User::class, 'worker_email');
+        return $this->belongsTo(User::class, 'worker_switch_uuid');
     }
 
     public function validator()
     {
-        return $this->belongsTo(User::class, 'validator_email');
+        return $this->belongsTo(User::class, 'validator_switch_uuid');
     }
 
     public function category()
     {
-        return $this->belongsTo(JobCategory::class, 'id_category');
-    }
-
-    public function file()
-    {
-        return $this->belongsTo(File::class, 'id_file');
+        return $this->belongsTo(JobCategory::class);
     }
 }

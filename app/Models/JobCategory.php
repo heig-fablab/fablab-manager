@@ -9,27 +9,30 @@ class JobCategory extends Model
 {
     use HasFactory;
 
+    protected $table = 'job_categories';
+
     protected $fillable = [
         'acronym',
         'name'
     ];
 
+    // Options
     public $timestamps = false;
-    protected $table = 'job_categories';
 
+    // Has many
     public function jobs()
     {
         return $this->hasMany(Job::class);
     }
 
-    // Many to many
+    // Belongs to many
     public function devices()
     {
-        return $this->belongsToMany(Device::class, 'job_category_has_device', 'id_category', 'id_device');
+        return $this->belongsToMany(Device::class);
     }
 
     public function file_types()
     {
-        return $this->belongsToMany(FileType::class, 'job_category_has_file_type', 'id_category', 'id_file_type');
+        return $this->belongsToMany(FileType::class);
     }
 }

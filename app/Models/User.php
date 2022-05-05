@@ -11,44 +11,48 @@ class User extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $primaryKey = 'switch_uuid';
+
     protected $fillable = [
+        'switch_uuid',
         'email', 
         'name', 
         'surname',
         'password'
     ];
 
+    // Options
     public $timestamps = false;
-    protected $primaryKey = 'email';
 
+    // Has many
     public function requestor_jobs()
     {
-        return $this->hasMany(Job::class, 'requestor_email');
+        return $this->hasMany(Job::class, 'client_switch_uuid');
     }
 
     public function worker_jobs()
     {
-        return $this->hasMany(Job::class, 'worker_email');
+        return $this->hasMany(Job::class, 'worker_switch_uuid');
     }
 
     public function validator_jobs()
     {
-        return $this->hasMany(Job::class, 'validator_email');
+        return $this->hasMany(Job::class, 'validator_switch_uuid');
     }
 
     public function sended_messages()
     {
-        return $this->hasMany(Message::class, 'sender_email');
+        return $this->hasMany(Message::class, 'sender_switch_uuid');
     }
 
     public function received_messages()
     {
-        return $this->hasMany(Message::class, 'receiver_email');
+        return $this->hasMany(Message::class, 'receiver_switch_uuid');
     }
 
-    // Many to many
+    // Belongs to many
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'user_has_role', 'id_user', 'id_role');
+        return $this->belongsToMany(Role::class);
     }
 }

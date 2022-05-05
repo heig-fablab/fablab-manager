@@ -15,10 +15,12 @@ class Device extends Model
         'description'
     ];
 
+    // Options
     public $timestamps = false;
 
+    // Belongs to Many
     public function categories()
     {
-        return $this->belongsToMany(JobCategory::class, 'job_category_has_device', 'id_device', 'id_category');
+        return $this->belongsToMany(JobCategory::class);
     }
 }
