@@ -13,23 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('file_type_job_category', function (Blueprint $table) {
             $table->id();
             // Foreign keys
+            $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('file_type_id');
-            $table->unsignedBigInteger('job_id');
-            // Fields
-            $table->string('name');
-            $table->string('hash_name');
-            // Options
-            $table->softDeletes();
-            $table->timestamps();
             // References on foreign keys
+            $table->foreign('category_id')->references('id')->on('job_categories');
             $table->foreign('file_type_id')->references('id')->on('file_types');
-            $table->foreign('job_id')->references('id')->on('jobs');
             // Indexes
+            $table->index('category_id');
             $table->index('file_type_id');
-            $table->index('job_id');
         });
     }
 
@@ -40,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('file_type_job_category');
     }
 };

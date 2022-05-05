@@ -65,7 +65,6 @@ class Job extends Model
         ->join('users as workers', 'jobs.worker_email', '=', 'workers.email')
         ->join('users as validators', 'jobs.validator_email', '=', 'validators.email')
         ->select('jobs.*', 'categories.id', 'validators.email', 'workers.email', 'validators.email')*/
-        
     }
 
     // Has Many

@@ -13,17 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('device_job_category', function (Blueprint $table) {
             $table->id();
             // Foreign keys
-            $table->unsignedBigInteger('job_id');
-            // Fields
-            $table->longText('data');
-            $table->timestamps();
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('device_id');
             // References on foreign keys
-            $table->foreign('job_id')->references('id')->on('jobs');
+            $table->foreign('category_id')->references('id')->on('job_categories');
+            $table->foreign('device_id')->references('id')->on('devices');
             // Indexes
-            $table->index('job_id');
+            $table->index('category_id');
+            $table->index('device_id');
         });
     }
 
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('device_job_category');
     }
 };

@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             // Foreign keys
-            $table->unsignedBigInteger('id_category');
-            $table->string('requestor_email');
-            $table->string('worker_email')->nullable(); // Because can / must be attributed later
-            $table->string('validator_email')->nullable(); // Because can / must be attributed later
+            $table->unsignedBigInteger('category_id');
+            $table->string('client_switch_uuid');
+            $table->string('worker_switch_uuid')->nullable(); // Because can / must be attributed later
+            $table->string('validator_switch_uuid')->nullable(); // Because can / must be attributed later
             // Fields
             $table->string('title');
             $table->longText('description')->nullable();
@@ -29,10 +29,15 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
             // References on foreign keys
-            $table->foreign('id_category')->references('id')->on('job_categories');
-            $table->foreign('requestor_email')->references('email')->on('users');
-            $table->foreign('worker_email')->references('email')->on('users');
-            $table->foreign('validator_email')->references('email')->on('users');
+            $table->foreign('category_id')->references('id')->on('job_categories');
+            $table->foreign('client_switch_uuid')->references('switch_uuid')->on('users');
+            $table->foreign('worker_switch_uuid')->references('switch_uuid')->on('users');
+            $table->foreign('validator_switch_uuid')->references('switch_uuid')->on('users');
+            // Indexes
+            $table->index('category_id');
+            $table->index('client_switch_uuid');
+            $table->index('worker_switch_uuid');
+            $table->index('validator_switch_uuid');
         });
     }
 

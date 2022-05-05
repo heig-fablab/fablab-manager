@@ -13,17 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('role_user', function (Blueprint $table) {
             $table->id();
             // Foreign keys
-            $table->unsignedBigInteger('job_id');
-            // Fields
-            $table->longText('data');
-            $table->timestamps();
+            $table->string('user_switch_uuid');
+            $table->unsignedBigInteger('role_id');
             // References on foreign keys
-            $table->foreign('job_id')->references('id')->on('jobs');
+            $table->foreign('user_switch_uuid')->references('switch_uuid')->on('users');
+            $table->foreign('role_id')->references('id')->on('roles');
             // Indexes
-            $table->index('job_id');
+            $table->index('user_switch_uuid');
+            $table->index('role_id');
         });
     }
 
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('role_user');
     }
 };
