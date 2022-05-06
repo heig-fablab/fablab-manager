@@ -78,7 +78,15 @@ Route::apiResource('file_types', FileTypeController::class); // todo -> verify a
 
 Route::apiResource('job_categories', JobCategoryController::class); // todo -> verify admin via middleware
 
-Route::apiResource('users', UserController::class);
+//Route::apiResource('users', UserController::class);
+//Route::apiResource('devices', DeviceController::class);
+Route::prefix('/users')->controller(UserController::class)->group(function () { 
+    Route::get('', 'index');
+    Route::get('/{switch_uuid}', 'show');
+    Route::post('', 'store'); // TODO -> verify admin via middleware
+    Route::put('', 'update');
+    Route::delete('/{switch_uuid}', 'destroy'); // TODO -> verify admin via middleware
+}); // TODO -> verify admin via middleware
 
 // Old code
 
