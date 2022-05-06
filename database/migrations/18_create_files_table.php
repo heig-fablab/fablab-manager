@@ -20,7 +20,8 @@ return new class extends Migration
             $table->unsignedBigInteger('job_id');
             // Fields
             $table->string('name');
-            $table->string('hash_name');
+            $table->string('hash');
+            $table->string('directory');
             // Options
             $table->softDeletes();
             $table->timestamps();

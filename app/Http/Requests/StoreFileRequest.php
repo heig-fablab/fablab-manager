@@ -26,7 +26,16 @@ class StoreFileRequest extends FormRequest
     {
         // TODO
         return [
-            //
+            'id_job' => ['required'],
+            'file' => ['required'],
+            // TODO: verify mime_type via ->extension()
+            // TODO: verify file_type via ->getClientOriginalExtension
+            /* function ($attribute, $value, $fail) {
+            if ($value === 'foo') {
+                $fail('The '.$attribute.' is invalid.');
+            }
+            },*/ // use closure to test extension types of files
+            //$extension = $file->extension(); // Determine the file's extension based on the file's MIME type...
         ];
     }
 }
