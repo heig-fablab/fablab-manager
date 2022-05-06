@@ -8,6 +8,9 @@ use App\Http\Resources\DeviceResource;
 use App\Models\Device;
 use Illuminate\Http\Request;
 
+use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
+
+#[OpenApi\PathItem]
 class DeviceController extends Controller
 {
     // API Standard function
@@ -34,6 +37,7 @@ class DeviceController extends Controller
      *      )
      *     )
      */
+    #[OpenApi\Operation]
     public function index()
     {
         $devices = Device::all();
@@ -75,6 +79,7 @@ class DeviceController extends Controller
      *      )
      * )
      */
+    #[OpenApi\Operation]
     public function show($id)
     {
         return new DeviceResource(Device::find($id));
@@ -110,6 +115,7 @@ class DeviceController extends Controller
      *      )
      * )
      */
+    #[OpenApi\Operation]
     public function store(StoreDeviceRequest $request)
     {
         $device = Device::create($request->validated());
@@ -159,6 +165,7 @@ class DeviceController extends Controller
      *      )
      * )
      */
+    #[OpenApi\Operation]
     public function update(StoreDeviceRequest $request)
     {
         $device = Device::find($request->id);
@@ -201,6 +208,7 @@ class DeviceController extends Controller
      *      )
      * )
      */
+    #[OpenApi\Operation]
     public function destroy($id)
     {
         Device::find($id)->delete();
