@@ -15,26 +15,27 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            // Foreign keys
-            $table->unsignedBigInteger('category_id');
-            $table->string('client_switch_uuid');
-            $table->string('worker_switch_uuid')->nullable(); // Because can / must be attributed later
-            $table->string('validator_switch_uuid')->nullable(); // Because can / must be attributed later
             // Fields
             $table->string('title');
             $table->longText('description')->nullable();
             $table->date('deadline');
             $table->tinyInteger('rating')->nullable();
             $table->enum('status', ['new', 'validated', 'assigned', 'ongoing', 'on-hold','completed'])->default('new');
+            // Options
             $table->softDeletes();
             $table->timestamps();
-            // References on foreign keys
-            $table->foreign('category_id')->references('id')->on('job_categories');
-            $table->foreign('client_switch_uuid')->references('switch_uuid')->on('users');
-            $table->foreign('worker_switch_uuid')->references('switch_uuid')->on('users');
-            $table->foreign('validator_switch_uuid')->references('switch_uuid')->on('users');
+            // Foreign keys
+            $table->string('client_switch_uuid');
+            $table->string('worker_switch_uuid')->nullable(); // Nullable because can / must be attributed later
+            $table->string('validator_switch_uuid')->nullable(); // Nullable because can / must be attributed later
+
+            $table->foreignId('job_category_id')->constrained();
+
+            $table->foreign('client_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
+            $table->foreign('worker_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
+            $table->foreign('validator_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
             // Indexes
-            $table->index('category_id');
+            $table->index('job_category_id');
             $table->index('client_switch_uuid');
             $table->index('worker_switch_uuid');
             $table->index('validator_switch_uuid');

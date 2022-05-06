@@ -23,6 +23,7 @@ class User extends Model
 
     // Options
     public $timestamps = false;
+    public $incrementing = false;
 
     // Has many
     public function requestor_jobs()
