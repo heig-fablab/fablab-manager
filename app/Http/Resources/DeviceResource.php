@@ -4,6 +4,15 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @OA\Schema(
+ *     title="DeviceResource",
+ *     description="Device resource",
+ *     @OA\Xml(
+ *         name="DeviceResource"
+ *     )
+ * )
+ */
 class DeviceResource extends JsonResource
 {
     /**
