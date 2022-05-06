@@ -15,13 +15,12 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            // Foreign keys
-            $table->unsignedBigInteger('job_id');
             // Fields
             $table->longText('data');
+            // Options
             $table->timestamps();
-            // References on foreign keys
-            $table->foreign('job_id')->references('id')->on('jobs');
+            // Foreign keys
+            $table->foreignId('job_id')->constrained()->onDelete('cascade');
             // Indexes
             $table->index('job_id');
         });

@@ -16,13 +16,10 @@ return new class extends Migration
         Schema::create('device_job_category', function (Blueprint $table) {
             $table->id();
             // Foreign keys
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('device_id');
-            // References on foreign keys
-            $table->foreign('category_id')->references('id')->on('job_categories');
-            $table->foreign('device_id')->references('id')->on('devices');
+            $table->foreignId('job_category_id')->constrained('job_categories')->onDelete('cascade');
+            $table->foreignId('device_id')->constrained()->onDelete('cascade');
             // Indexes
-            $table->index('category_id');
+            $table->index('job_category_id');
             $table->index('device_id');
         });
     }

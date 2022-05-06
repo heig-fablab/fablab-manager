@@ -16,13 +16,10 @@ return new class extends Migration
         Schema::create('file_type_job_category', function (Blueprint $table) {
             $table->id();
             // Foreign keys
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('file_type_id');
-            // References on foreign keys
-            $table->foreign('category_id')->references('id')->on('job_categories');
-            $table->foreign('file_type_id')->references('id')->on('file_types');
+            $table->foreignId('job_category_id')->constrained('job_categories')->onDelete('cascade');
+            $table->foreignId('file_type_id')->constrained()->onDelete('cascade');
             // Indexes
-            $table->index('category_id');
+            $table->index('job_category_id');
             $table->index('file_type_id');
         });
     }

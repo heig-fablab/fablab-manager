@@ -15,9 +15,6 @@ return new class extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
-            // Foreign keys
-            $table->unsignedBigInteger('file_type_id');
-            $table->unsignedBigInteger('job_id');
             // Fields
             $table->string('name');
             $table->string('hash');
@@ -25,9 +22,9 @@ return new class extends Migration
             // Options
             $table->softDeletes();
             $table->timestamps();
-            // References on foreign keys
-            $table->foreign('file_type_id')->references('id')->on('file_types');
-            $table->foreign('job_id')->references('id')->on('jobs');
+            // Foreign keys
+            $table->foreignId('file_type_id')->constrained()->onDelete('cascade');
+            $table->foreignId('job_id')->constrained()->onDelete('cascade');
             // Indexes
             $table->index('file_type_id');
             $table->index('job_id');
