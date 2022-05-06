@@ -26,7 +26,12 @@ class StoreUserRequest extends FormRequest
     {
         // TODO
         return [
-            //
+            'switch_uuid' => ['required'],
+            'email' => ['required'], 
+            'name' => ['required'],
+            'surname' => ['required'],
+            'password' => ['nullable'],
+            'roles' => ['required'],
         ];
     }
 }
