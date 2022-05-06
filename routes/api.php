@@ -58,7 +58,11 @@ Route::prefix('/files')->controller(FileController::class)->group(function () {
     Route::delete('/{id}', 'destroy');
 });
 
-Route::apiResource('messages', MessageController::class);
+Route::prefix('/messages')->controller(MessageController::class)->group(function () { 
+    Route::get('', 'index');
+    Route::get('/{id}', 'show');
+    Route::post('', 'store');
+});
 
 // Futur admin routes
 //Route::apiResource('devices', DeviceController::class);

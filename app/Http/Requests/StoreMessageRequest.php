@@ -26,7 +26,10 @@ class StoreMessageRequest extends FormRequest
     {
         // TODO
         return [
-            //
+            'text' => ['required', 'string', 'max:255'],
+            'job_id' => ['required', 'integer'],
+            'sender_switch_uuid' => ['required', 'string', 'max:320'],
+            'receiver_switch_uuid' => ['required', 'string', 'max:320']
         ];
     }
 }
