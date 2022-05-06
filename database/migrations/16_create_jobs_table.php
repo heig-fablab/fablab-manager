@@ -25,7 +25,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->date('deadline');
             $table->tinyInteger('rating')->nullable();
-            $table->enum('status', ['new', 'assigned', 'ongoing', 'on-hold','completed'])->default('new');
+            $table->enum('status', ['new', 'validated', 'assigned', 'ongoing', 'on-hold','completed'])->default('new');
             $table->softDeletes();
             $table->timestamps();
             // References on foreign keys

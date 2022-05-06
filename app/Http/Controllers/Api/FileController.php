@@ -75,11 +75,11 @@ class FileController extends Controller
     }
 
     // Other functions
-    public function job_files(StoreFileRequest $request)
+    /*public function job_files(StoreFileRequest $request)
     {
         // TODO: perhaps
-        /*foreach($request->files as $file) {
+        foreach($request->files as $file) {
 
-        }*/
-    }
+        }
+    }*/
 }
