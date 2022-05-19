@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreMessageRequest;
+use App\Http\Requests\StoreRequests\StoreMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use Illuminate\Http\Request;
@@ -25,6 +25,7 @@ class MessageController extends Controller
 
     public function store(StoreMessageRequest $request)
     {
+        // TODO: verify if the job exists and is assigned
         $message = Message::create($request->validated());
         return new MessageResource($message);
     }

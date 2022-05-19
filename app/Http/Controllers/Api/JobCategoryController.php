@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreJobCategoryRequest;
+use App\Http\Requests\StoreRequests\StoreJobCategoryRequest;
 use App\Http\Resources\JobCategoryResource;
 use App\Models\JobCategory;
 use Illuminate\Http\Request;

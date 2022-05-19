@@ -36,7 +36,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     'index', 'show'
 ]);*/
 Route::prefix('/jobs')->controller(JobController::class)->group(function () { 
-    Route::get('', 'index');
+    Route::get('', 'index'); // admin
+    Route::get('/unassigned', 'unassigned_jobs');
     Route::get('/user/{switch_uuid}', 'user_jobs');
     Route::get('/client/{switch_uuid}', 'user_as_client_jobs');
     Route::get('/worker/{switch_uuid}', 'user_as_worker_jobs'); // todo verify role ->middleware()
@@ -44,7 +45,10 @@ Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::get('/{id}', 'show');
     Route::post('', 'store');
     Route::put('', 'update');
-    //Route::patch('/{id}', 'update_status');
+    //Route::patch('/{id}/validator/{switch_uuid}', 'assign_validator'); // todo verify role ->middleware()
+    Route::patch('/worker/assign', 'assign_worker'); // todo verify role ->middleware()
+    Route::patch('/status', 'update_status'); // todo verify role ->middleware() // terminate with a control in the controller
+    //Route::patch('/notifications', 'update_notify'); // perhaps not usefull
     Route::delete('/{id}', 'destroy');
 });
 
@@ -84,7 +88,8 @@ Route::prefix('/users')->controller(UserController::class)->group(function () {
     Route::get('', 'index');
     Route::get('/{switch_uuid}', 'show');
     Route::post('', 'store'); // TODO -> verify admin via middleware
-    Route::put('', 'update');
+    Route::put('', 'update'); // TODO -> verify admin via middleware
+    //Route::patch('/{switch_uuid}/notifications', 'update_notify');
     Route::delete('/{switch_uuid}', 'destroy'); // TODO -> verify admin via middleware
 }); // TODO -> verify admin via middleware
 
