@@ -47,7 +47,8 @@ Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::put('', 'update');
     //Route::patch('/{id}/validator/{switch_uuid}', 'assign_validator'); // todo verify role ->middleware()
     Route::patch('/worker/assign', 'assign_worker'); // todo verify role ->middleware()
-    Route::patch('/status', 'update_status'); // todo verify role ->middleware() // terminate with a control in the controller
+    Route::patch('/status', 'update_status'); // todo verify role and user ->middleware()
+    Route::patch('/rating', 'update_rating'); // todo verify user ->middleware()
     //Route::patch('/notifications', 'update_notify'); // perhaps not usefull
     Route::delete('/{id}', 'destroy');
 });

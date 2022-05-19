@@ -4,10 +4,10 @@ namespace App\Http\Requests\UpdateRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateJobStatusRequest extends FormRequest
+class UpdateJobRatingRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
-    
+
     public function authorize()
     {
         // Will be managed in a policy
@@ -18,7 +18,7 @@ class UpdateJobStatusRequest extends FormRequest
     {
         return [
             'id' => ['required', 'integer', 'min:1', 'exists:jobs,id'],
-            'status' => ['required', 'in:ongoing,on-hold,completed'],
+            'rating' => ['required', 'integer', 'min:1', 'max:6'],
         ];
     }
 }

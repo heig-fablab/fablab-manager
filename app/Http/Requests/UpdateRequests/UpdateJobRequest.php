@@ -16,18 +16,13 @@ class UpdateJobRequest extends FormRequest
 
     public function rules()
     {
-        // TODO
         return [
-            'id' => ['required'],
-            'title' => ['required'],
-            'description' => ['nullable'],
-            'deadline' => ['required'],
-            'rating' => ['nullable'],
-            'status' => ['nullable'],
-            'job_category_id' => ['required'],
-            'client_switch_uuid' => ['required', 'max:320'],
-            'worker_switch_uuid' => ['nullable', 'max:320'],
-            'validator_switch_uuid' => ['nullable', 'max:320'],
+            'id' => ['required', 'integer', 'min:1', 'exists:jobs,id'],
+            'title' => ['required', 'string', 'max:100'],
+            'description' => ['nullable', 'string', 'max:500'],
+            'deadline' => ['required', 'date'], // TODO: check date format
+            'job_category_id' => ['required', 'integer', 'min:1', 'exists:job_categories,id'],
+            'client_switch_uuid' => ['required', 'max:320'], // TODO: regex
         ];
     }
 }

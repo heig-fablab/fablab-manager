@@ -7,6 +7,7 @@ use App\Http\Requests\StoreRequests\StoreJobRequest;
 use App\Http\Requests\UpdateRequests\UpdateJobRequest;
 use App\Http\Requests\UpdateRequests\UpdateJobAssignWorkerRequest;
 use App\Http\Requests\UpdateRequests\UpdateJobStatusRequest;
+use App\Http\Requests\UpdateRequests\UpdateJobRatingRequest;
 use App\Http\Resources\JobResource;
 use App\Models\Job;
 use Illuminate\Http\Request;
@@ -47,7 +48,10 @@ class JobController extends Controller
     {
         $req_validated = $request->validated();
 
-        $job = Job::findOrFail($req_validated->id);
+        // TODO: manage files update -> only via files route
+        // here only job info
+
+        $job = Job::findOrFail($request->id);
         $job->update($req_validated);
         return new JobResource($job);
     }
@@ -116,22 +120,42 @@ class JobController extends Controller
     {
         $req_validated = $request->validated();
 
+        /*if ($req_validated->fails()) {
+            return response()->json([
+                'message' => "error"
+            ], 400);
+        }*/
+
+        $job = Job::findOrFail($request->id);
+        $job->update($req_validated);
+
+        // TODO: add event
+
+        return new JobResource($job);
+    }
+
+    public function update_rating(UpdateJobRatingRequest $request)
+    {
+        $req_validated = $request->validated();
+
         $job = Job::findOrFail($request->id);
 
-        // Define rating
-        $updated_rating = $request->rating; 
-        if ($request->status == 'completed' && $updated_rating == null) {
-            $updated_rating = 6;
+        if ($job->status != 'completed') {
+            return response()->json([
+                'message' => "You can't rate of a job that is not completed!"
+            ], 400);
         }
 
         // TODO: do we suppress files and message if completed?
-        
-        // Update status
-        $job->update($req_validated);
 
         // Update rating
-        $job->rating = $updated_rating;
+        $job->update($req_validated);
+
+        // Update status
+        $job->status = 'terminated';
         $job->save();
+
+        // TODO: add event
 
         return new JobResource($job);
     }

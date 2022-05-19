@@ -18,15 +18,13 @@ class StoreJobRequest extends FormRequest
     {
         // TODO
         return [
-            'title' => ['required'],
-            'description' => ['nullable'],
-            'deadline' => ['required'],
-            'rating' => ['nullable'],
-            'status' => ['nullable'],
-            'job_category_id' => ['required'],
+            'title' => ['required', 'string', 'max:100'],
+            'description' => ['nullable', 'string', 'max:500'],
+            'deadline' => ['required', 'date'], // TODO: check date format
+            'job_category_id' => ['required', 'integer', 'exists:job_categories,id'],
             'client_switch_uuid' => ['required', 'max:320'],
-            'worker_switch_uuid' => ['nullable', 'max:320'],
-            'validator_switch_uuid' => ['nullable', 'max:320'],
+            /*'worker_switch_uuid' => ['nullable', 'max:320'],
+            'validator_switch_uuid' => ['nullable', 'max:320'],*/
         ];
     }
 }

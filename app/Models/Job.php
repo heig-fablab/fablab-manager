@@ -40,7 +40,7 @@ class Job extends Model
         return Job::where('client_switch_uuid', $switch_uuid)
         ->orWhere('worker_switch_uuid', $switch_uuid)
         ->orWhere('validator_switch_uuid', $switch_uuid)
-        ->where('status', '!=', 'completed')
+        ->where('status', '!=', 'terminated')
         ->get();
     }
 
@@ -62,7 +62,7 @@ class Job extends Model
     protected static function get_role_jobs($switch_uuid, $role_user)
     {
         return Job::where($role_user.'_switch_uuid', $switch_uuid)
-        ->where('status', '!=', 'completed')
+        ->where('status', '!=', 'terminated')
         ->get();
         // To see if we need more infos
         /*->join('categories', 'jobs.id_category', '=', 'categories.id')

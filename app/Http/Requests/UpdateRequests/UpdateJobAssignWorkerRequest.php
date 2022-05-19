@@ -17,8 +17,8 @@ class UpdateJobAssignWorkerRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => ['required'],
-            'worker_switch_uuid' => ['required', 'max:320'],
+            'id' => ['required', 'integer', 'min:1', 'exists:jobs,id'],
+            'worker_switch_uuid' => ['required', 'max:320'], // TODO: regex
         ];
     }
 }
