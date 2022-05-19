@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreFileTypeRequest;
+use App\Http\Requests\StoreRequests\StoreFileTypeRequest;
 use App\Http\Resources\FileTypeResource;
 use App\Models\FileType;
 use Illuminate\Http\Request;

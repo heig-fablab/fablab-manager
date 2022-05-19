@@ -136,6 +136,10 @@ Not unable yet!
 
 ## Contribute
 
+### Postman
+To help at testing API, an Postman exists:
+[fablab-manager-postman](https://go.postman.co/workspace/fablab-manager~549aafa9-4f89-47c7-838a-ef74a6d1f398/collection/15807442-1ea77052-bd3c-4f9b-b806-25e11d878c0e?action=share&creator=15807442)
+
 ## Authors
 
 * Chevallier Yves

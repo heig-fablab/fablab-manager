@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreDeviceRequest;
+use App\Http\Requests\StoreRequests\StoreDeviceRequest;
 use App\Http\Resources\DeviceResource;
 use App\Models\Device;
 use Illuminate\Http\Request;

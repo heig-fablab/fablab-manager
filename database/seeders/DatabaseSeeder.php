@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
         DeviceJobCategorySeeder::class,
         FileTypeJobCategorySeeder::class,
         RoleUserSeeder::class,
+        JobSeeder::class,
+        MessageSeeder::class,
       ]);
 
         // \App\Models\User::factory(10)->create();

@@ -17,7 +17,7 @@ class Job extends Model
         'deadline',
         'rating',
         'status',
-        'category_id',
+        'job_category_id',
         'client_switch_uuid',
         'worker_switch_uuid',
         'validator_switch_uuid'
@@ -29,32 +29,41 @@ class Job extends Model
     ];
 
     // Service methods
+    public static function get_unassigned_jobs()
+    {
+        return Job::where('worker_switch_uuid', null)
+        ->get();
+    }
+
     public static function get_user_jobs($switch_uuid)
     {
         return Job::where('client_switch_uuid', $switch_uuid)
         ->orWhere('worker_switch_uuid', $switch_uuid)
         ->orWhere('validator_switch_uuid', $switch_uuid)
+        ->where('status', '!=', 'terminated')
         ->get();
     }
 
     public static function get_client_jobs($switch_uuid)
     {
-        return Job::get_jobs($switch_uuid, 'client');
+        return Job::get_role_jobs($switch_uuid, 'client');
     }
 
     public static function get_worker_jobs($switch_uuid)
     {
-        return Job::get_jobs($switch_uuid, 'worker');
+        return Job::get_role_jobs($switch_uuid, 'worker');
     }
 
     public static function get_validator_jobs($switch_uuid)
     {
-        return Job::get_jobs($switch_uuid, 'validator');
+        return Job::get_role_jobs($switch_uuid, 'validator');
     }
 
-    protected static function get_jobs($switch_uuid, $role_user)
+    protected static function get_role_jobs($switch_uuid, $role_user)
     {
-        return Job::where($role_user.'_switch_uuid', $switch_uuid)->get();
+        return Job::where($role_user.'_switch_uuid', $switch_uuid)
+        ->where('status', '!=', 'terminated')
+        ->get();
         // To see if we need more infos
         /*->join('categories', 'jobs.id_category', '=', 'categories.id')
         ->join('users as validators', 'jobs.requestor_switch_uuid', '=', 'users.switch_uuid')
@@ -74,7 +83,7 @@ class Job extends Model
         return $this->hasMany(Event::class);
     }
 
-    public function file()
+    public function files()
     {
         return $this->hasMany(File::class);
     }
