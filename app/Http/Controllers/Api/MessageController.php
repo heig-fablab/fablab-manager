@@ -18,7 +18,7 @@ class MessageController extends Controller
 
     public function show($id)
     {
-        // TODO validate id
+        // TODO: validate $id input
         $message = Message::findOrFail($id);
         return new MessageResource($message);
     }
