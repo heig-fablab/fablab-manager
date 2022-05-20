@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\StoreRequests;
+namespace App\Http\Requests\UpdateRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreDeviceRequest extends FormRequest
+class UpdateDeviceRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
-
+    
     public function authorize()
     {
         // Will be managed in a policy
@@ -17,6 +17,7 @@ class StoreDeviceRequest extends FormRequest
     public function rules()
     {
         return [
+            'id' => ['required', 'integer', 'min:1', 'exists:devices,id'],
             'name' => ['required', 'string', 'max:255'],
             'image_path'  => ['required'],
             'description' => ['required', 'string', 'max:500'],

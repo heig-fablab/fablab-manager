@@ -4,85 +4,46 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequests\StoreFileTypeRequest;
+use App\Http\Requests\UpdateRequests\UpdateFileTypeRequest;
 use App\Http\Resources\FileTypeResource;
 use App\Models\FileType;
 use Illuminate\Http\Request;
 
 class FileTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // API Standard function
     public function index()
     {
-        //
+        $file_types = FileType::all();
+        return FileTypeResource::collection($file_types);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show($id)
     {
-        //
+        // TODO: validate $id input
+        return new FileTypeResource(FileType::findOrFail($id));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreFileTypeRequest $request)
     {
-        //
+        $file_type = FileType::create($request->validated());
+        return new FileTypeResource($file_type);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\FileType  $fileType
-     * @return \Illuminate\Http\Response
-     */
-    public function show(FileType $fileType)
+    public function update(UpdateFileTypeRequest $request)
     {
-        //
+        $req_validated = $request->validated();
+        $file_type = FileType::findOrFail($request->id);
+        $file_type->update($req_validated);
+        return new FileTypeResource($file_type);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\FileType  $fileType
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(FileType $fileType)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\FileType  $fileType
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, FileType $fileType)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\FileType  $fileType
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(FileType $fileType)
-    {
-        //
+        // TODO: validate $id input
+        FileType::findOrFail($id)->delete();
+        return response()->json([
+            'message' => "FileType deleted successfully!"
+        ], 200);
     }
 }
