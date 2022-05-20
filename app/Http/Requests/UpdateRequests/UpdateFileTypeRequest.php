@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\StoreRequests;
+namespace App\Http\Requests\UpdateRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreFileTypeRequest extends FormRequest
+class UpdateFileTypeRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
 
@@ -17,6 +17,7 @@ class StoreFileTypeRequest extends FormRequest
     public function rules()
     {
         return [
+            'id' => ['required', 'integer', 'min:1', 'exists:file_types,id'],
             'name' => ['required', 'max:255'],
             'mime_type' => ['required', 'max:255'],
         ];

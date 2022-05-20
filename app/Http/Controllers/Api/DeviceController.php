@@ -19,7 +19,8 @@ class DeviceController extends Controller
 
     public function show($id)
     {
-        return new DeviceResource(Device::find($id));
+        // TODO: validate $id input
+        return new DeviceResource(Device::findOrFail($id));
     }
 
     public function store(StoreDeviceRequest $request)
@@ -37,6 +38,7 @@ class DeviceController extends Controller
 
     public function destroy($id)
     {
+        // TODO: validate $id input
         Device::find($id)->delete();
         return response()->json([
             'message' => "Device deleted successfully!"

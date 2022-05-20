@@ -79,7 +79,14 @@ Route::prefix('/devices')->controller(DeviceController::class)->group(function (
     Route::delete('/{id}', 'destroy');
 }); // TODO -> verify admin via middleware
 
-Route::apiResource('file_types', FileTypeController::class); // todo -> verify admin via middleware
+//Route::apiResource('file_types', FileTypeController::class); // todo -> verify admin via middleware
+Route::prefix('/file_types')->controller(FileTypeController::class)->group(function () { 
+    Route::get('', 'index');
+    Route::get('/{id}', 'show');
+    Route::post('', 'store');
+    Route::put('', 'update');
+    Route::delete('/{id}', 'destroy');
+}); // TODO -> verify admin via middleware
 
 Route::apiResource('job_categories', JobCategoryController::class); // todo -> verify admin via middleware
 
