@@ -22,6 +22,7 @@ class UpdateDeviceRequest extends FormRequest
             'image_path'  => ['required'],
             'description' => ['required', 'string', 'max:500'],
             'job_categories' => ['required', 'array'],
+            'job_categories.*' => ['required', 'integer', 'min:1', 'exists:job_categories,id'],
         ];
     }
 }

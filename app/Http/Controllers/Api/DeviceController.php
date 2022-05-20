@@ -33,10 +33,11 @@ class DeviceController extends Controller
 
     public function update(UpdateDeviceRequest $request)
     {
-        $device = Device::find($request->id);
+        $req_validated = $request->validated();
+        $device = Device::findOrFail($request->id);
         $device->categories()->detach();
         $device->categories()->attach($request->job_categories);
-        $device->update($request->validated());
+        $device->update($req_validated);
         return new DeviceResource($device);
     }
 
