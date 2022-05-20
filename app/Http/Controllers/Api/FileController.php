@@ -3,83 +3,67 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRequests\StoreFileRequest;
 use App\Http\Resources\FileResource;
 use App\Models\File;
-use App\Models\FileType;
-use App\Models\FileStorageService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {   
-    protected $file_storage_service;
- 
-    public function __construct(FileStorageService $file_storage_service)
-    {
-        $this->file_storage_service = $file_storage_service;
-    }
-
-    // API Standard function
-    /*public function index()
-    {
-        return FileResource::collection(File::all());
-    }*/
-
     public function show($id)
     {
+        // TODO: validate $id input
+
         $file = File::findOrFail($id);
-        $file->file = $file_storage_service->getFile($file);
+        $file->file = File::get_file($file);
         return new FileResource($file);
     }
 
-    public function store(StoreFileRequest $request)
+    // Request values:
+    // $job_id -> id of the job linked to the file
+    // $file -> file to add
+    public function store(Request $request)
     {
-        // old code adapted -> doens't work
-        /*$file = $request->file('file');
-        $newFile = new File;
-        $newFile->hash = hash_file('sha256', $file);
-        $newFile->name = $file->getClientOriginalName();
-        $newFile->job_id = $request->job_id;
-        $newFile->directory = 'test';
-        $newFile->save();
-        $file->storeAs('FileStorage', hash_file('sha256', $file));*/
+        // TODO: validation in model and not store request cause doen'st work
 
-        $validated = $request->validated();
+        $file = File::store_file($request->file, $request->job_id);
+        $file->save();
 
-        $file = $file_storage_service->store_file($request->file, $request->job_id);
-
-        // Event
-        // TODO
+        // TODO: Event
 
         return new FileResource($file);
     }
 
-    public function update(StoreFileRequest $request)
+    // Request values:
+    // $id -> id of the file to be updated
+    // $job_id -> id of the job linked to the file
+    // $file -> file to be updated
+    public function update(Request $request)
     {
+        // TODO: validation in model and not store request cause doen'st work
+
         $file = File::findOrFail($request->id);
-        $file->update($request->validated());
-        $file_storage_service->update_file($file);
+        $file = File::update_file($file, $request->file, $request->job_id);
+        $file->save();
+
         return new FileResource($file);
     }
 
     public function destroy($id)
     {
+        // TODO: validate $id input
+
         $file = File::findOrFail($id);
-        $file_storage_service->delete_file($file);
+
+        // Verify if only db file using this physic file
+        $same_files = File::where('hash', $file->hash)->get();
+        if ($same_files->count() == 1) {
+            File::delete_file($file);
+        }
+
         $file->delete();
 
         return response()->json([
             'message' => "File deleted successfully!"
         ], 200);
     }
-
-    // Other functions
-    /*public function job_files(StoreFileRequest $request)
-    {
-        // TODO: perhaps
-        foreach($request->files as $file) {
-
-        }
-    }*/
 }

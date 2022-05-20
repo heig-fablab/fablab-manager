@@ -35,6 +35,10 @@ class JobController extends Controller
         // TODO: add event
 
         // TODO: add files
+        /*foreach($request_files as $file) {
+            File::store_file($file, $request->job_id);
+            // TODO: add event
+        }*/
 
         $job = Job::create($request->validated());
 
