@@ -14,10 +14,13 @@ class FileController extends Controller
         // TODO: validate $id input
 
         $file = File::findOrFail($id);
-        //$file->file = $file_storage_service->getFile($file);
+        $file->file = File::get_file($file);
         return new FileResource($file);
     }
 
+    // Request values:
+    // $job_id -> id of the job linked to the file
+    // $file -> file to add
     public function store(Request $request)
     {
         // TODO: validation in model and not store request cause doen'st work
@@ -30,14 +33,19 @@ class FileController extends Controller
         return new FileResource($file);
     }
 
-    public function update(StoreFileRequest $request)
+    // Request values:
+    // $id -> id of the file to be updated
+    // $job_id -> id of the job linked to the file
+    // $file -> file to be updated
+    public function update(Request $request)
     {
-        // TODO
-        
-        //$file = File::findOrFail($request->id);
-        //$file->update($request->validated());
-        //$file_storage_service->update_file($file);
-        //return new FileResource($file);
+        // TODO: validation in model and not store request cause doen'st work
+
+        $file = File::findOrFail($request->id);
+        $file = File::update_file($file, $request->file, $request->job_id);
+        $file->save();
+
+        return new FileResource($file);
     }
 
     public function destroy($id)

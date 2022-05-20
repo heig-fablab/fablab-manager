@@ -60,20 +60,20 @@ class File extends Model
         //$extension = $file->extension(); // Determine the file's extension based on the file's MIME type...
     }
 
-    public static function getFile(File $file)
+    public static function get_file(File $file)
     {
-        return Storage::download(file_storage_path().$file->directory.$file->hash, $file->name);
+        return Storage::download(File::file_storage_path().$file->directory.'/'.$file->hash, $file->name);
     }
 
-    public static function store_file($request_file, $job_id) {
+    public static function store_file($req_file, $job_id) {
         // File infos
-        $hash = hash_file(File::hash_algo(), $request_file);
+        $hash = hash_file(File::hash_algo(), $req_file);
         $dir = substr($hash, 0, 2);
-        $file_type = FileType::where('name', '=', $request_file->getClientOriginalExtension())->firstOrFail();
+        $file_type = FileType::where('name', '=', $req_file->getClientOriginalExtension())->firstOrFail();
 
         // Create file for DB
         $file = File::create([
-            'name' => $request_file->getClientOriginalName(),
+            'name' => $req_file->getClientOriginalName(),
             'hash' => $hash,
             'directory' => $dir,
             'file_type_id' => $file_type->id,
@@ -83,13 +83,34 @@ class File extends Model
         // Add to filestorage
         // Create a directory with 2 first letter of hashed_name
         // It's a Laravel trick to not be stopped after x files in directory
-        $request_file->storeAs(File::file_storage_path().$dir, $hash);
+        $req_file->storeAs(File::file_storage_path().$dir, $hash);
 
         return $file;
     }
 
-    public static function update_file(File $file) {
-        // TODO
+    public static function update_file(File $file, $req_file, $req_job_id) {
+        $hash = hash_file(File::hash_algo(), $req_file);
+        $dir = substr($hash, 0, 2);
+
+        if ($hash != $file->hash || $dir != $file->directory) {
+            // Delete old file
+            File::delete_file($file);
+
+            // Create new file
+            $req_file->storeAs(File::file_storage_path().$dir, $hash);
+
+            // Update file infos linked to physic file content for BD
+            $file_type = FileType::where('name', '=', $req_file->getClientOriginalExtension())->firstOrFail();
+            $file->hash = $hash;
+            $file->directory = $dir;
+            $file->file_type_id = $file_type->id;
+        }
+
+        // Update file infos for BD
+        $file->name = $req_file->getClientOriginalName();
+        $file->job_id = $req_job_id;
+
+        return $file;
     }
 
     public static function delete_file(File $file) {
@@ -100,12 +121,4 @@ class File extends Model
             Storage::deleteDirectory(File::file_storage_path().$file->directory);
         }
     }
-
-    /*public function store_files($request_files, $job_id)
-    {
-        // TODO: perhaps
-        foreach($request_files as $file) {
-
-        }
-    }*/
 }
