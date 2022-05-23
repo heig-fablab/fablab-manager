@@ -21,6 +21,7 @@ class UserController extends Controller
 
     public function show($switch_uuid)
     {
+        // TODO: verify $switch_uuid input
         $user = User::findOrFail($switch_uuid);
         $user->roles = $user->roles;
         return new UserResource($user);
@@ -81,6 +82,7 @@ class UserController extends Controller
 
     public function destroy($switch_uuid)
     {
+        // TODO: verify $switch_uuid input
         User::findOrFail($switch_uuid)->delete();
         return response()->json([
             'message' => "Device deleted successfully!"

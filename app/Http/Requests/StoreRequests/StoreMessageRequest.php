@@ -16,7 +16,6 @@ class StoreMessageRequest extends FormRequest
 
     public function rules()
     {
-        // TODO
         return [
             'text' => ['required', 'string', 'max:255'],
             'job_id' => ['required', 'integer'],

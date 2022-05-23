@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\StoreRequests;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreJobCategoryRequest extends FormRequest
+class UpdateJobCategoryRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
 
@@ -17,6 +17,7 @@ class StoreJobCategoryRequest extends FormRequest
     public function rules()
     {
         return [
+            'id' => ['required', 'integer', 'min:1', 'exists:job_categories,id'],
             'acronym' => ['required', 'string', 'max:10'],
             'name' => ['required', 'string', 'max:50'],
             'devices' => ['required', 'array'],
