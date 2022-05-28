@@ -9,6 +9,10 @@ use App\Http\Resources\JobCategoryResource;
 use App\Models\JobCategory;
 use Illuminate\Http\Request;
 
+// TODO: implement background email job with Events: https://laravel.com/docs/9.x/events
+
+// TODO: add notifications and websockets with: https://beyondco.de/docs/laravel-websockets/getting-started/introduction
+
 class JobCategoryController extends Controller
 {
     // API Standard function
