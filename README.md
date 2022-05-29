@@ -114,6 +114,11 @@ alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 ./vendor/bin/sail artisan migrate:fresh --seed
 ````
 
+7. Start websockets:
+````
+./vendor/bin/sail artisan websockets:serve
+````
+
 ### Default port
 default developement server in on port 80
 
