@@ -27,4 +27,8 @@ Broadcast::channel('message.{switch_uuid}', function ($user, $switch_uuid) {
 Broadcast::channel('job.{switch_uuid}', function ($user, $switch_uuid) {
     return $user->switch_uuid === $switch_uuid;
 });
+
+Broadcast::channel('job.workers.{switch_uuid}', function ($user, $switch_uuid) {
+    return $user->switch_uuid === $switch_uuid;
+});
   

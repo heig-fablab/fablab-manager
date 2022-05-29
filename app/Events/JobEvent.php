@@ -12,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 
 use App\Models\Job;
 
+// Actually NOT used
 class JobEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;

@@ -32,8 +32,6 @@ class JobController extends Controller
 
     public function store(StoreJobRequest $request)
     {
-        // TODO: add event
-
         // TODO: add files
         /*foreach($request_files as $file) {
             File::store_file($file, $request->job_id);
@@ -42,9 +40,15 @@ class JobController extends Controller
 
         $job = Job::create($request->validated());
 
+        // TODO: add event
         // OLD code
         //Notify all the technicians that a new job is available. Then don't need the timeline and files
         //broadcast(new JobPusherEvent($newJob, 0))->toOthers();
+
+        // toOthers() send to all subscribers without selected
+        // TODO: create a channel for technician
+
+        // TODO: perhaps not doing a chan but construct a chan per worker
 
         return new JobResource($job);
     }

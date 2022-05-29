@@ -29,6 +29,9 @@ class FileController extends Controller
         $file->save();
 
         // TODO: Event
+        // OLD code
+        //$interlocutor = $request->user()->is_technician ? $job->client_id : $job->technician_id;
+        //broadcast(new JobPusherEvent($job, $interlocutor))->toOthers();
 
         return new FileResource($file);
     }
@@ -44,6 +47,11 @@ class FileController extends Controller
         $file = File::findOrFail($request->id);
         $file = File::update_file($file, $request->file, $request->job_id);
         $file->save();
+
+        // TODO: Event
+        // OLD code
+        //$interlocutor = $request->user()->is_technician ? $job->client_id : $job->technician_id;
+        //broadcast(new JobPusherEvent($job, $interlocutor))->toOthers();
 
         return new FileResource($file);
     }
