@@ -10,6 +10,10 @@ use App\Http\Requests\UpdateRequests\UpdateJobStatusRequest;
 use App\Http\Requests\UpdateRequests\UpdateJobRatingRequest;
 use App\Http\Resources\JobResource;
 use App\Models\Job;
+use App\Events\JobAssignedEvent;
+use App\Events\JobCreatedEvent;
+use App\Events\JobStatusUpdatedEvent;
+use App\Events\JobTerminatedEvent;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
@@ -40,7 +44,9 @@ class JobController extends Controller
 
         $job = Job::create($request->validated());
 
-        // TODO: add event
+        // Notifications
+        broadcast(new JobCreatedEvent($job))->toOthers();
+
         // OLD code
         //Notify all the technicians that a new job is available. Then don't need the timeline and files
         //broadcast(new JobPusherEvent($newJob, 0))->toOthers();
@@ -49,6 +55,9 @@ class JobController extends Controller
         // TODO: create a channel for technician
 
         // TODO: perhaps not doing a chan but construct a chan per worker
+
+        // Emails
+
 
         return new JobResource($job);
     }
@@ -122,10 +131,14 @@ class JobController extends Controller
         $job->status = 'assigned';
         $job->save();
 
-        // TODO: add event and notifications
+        // Notifications
+        broadcast(new JobAssignedEvent($job))->toOthers();
+
         // OLD code
         //All technicians are notified that the job has been assigned
         //broadcast(new JobPusherEvent($job, 0))->toOthers();
+
+        // Emails
 
         return new JobResource($job);
     }
@@ -143,9 +156,13 @@ class JobController extends Controller
         $job = Job::findOrFail($request->id);
         $job->update($req_validated);
 
-        // TODO: add event and notifications
+        // Notifications
+        broadcast(new JobStatusUpdatedEvent($job));//->toOthers();
+
         // OLD code
         //broadcast(new JobPusherEvent($job, $job->client_id))->toOthers();
+
+        // Emails
 
         return new JobResource($job);
     }
@@ -171,9 +188,13 @@ class JobController extends Controller
         $job->status = 'terminated';
         $job->save();
 
-        // TODO: add event and notifications
+        // Notifications
+        broadcast(new JobTerminatedEvent($job));//->toOthers();
+
         // OLD code
         //broadcast(new JobPusherEvent($job, $job->technician_id))->toOthers();
+
+        // Emails
 
         return new JobResource($job);
     }

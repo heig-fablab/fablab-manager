@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequests\StoreMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
+use App\Events\MessageCreatedEvent;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
@@ -28,8 +29,12 @@ class MessageController extends Controller
         // TODO: verify if the job exists and is assigned
         $message = Message::create($request->validated());
 
+        // Notifications
+        broadcast(new MessageCreatedEvent($message));//->toOthers();
         // OLD code
         //broadcast(new MessagePusherEvent($newMessage))->toOthers();
+
+        // Emails
 
         return new MessageResource($message);
     }
