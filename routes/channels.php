@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Broadcast;
 
+use App\Models\Job;
+use App\Models\Message;
+
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
@@ -13,15 +16,19 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
-
-/*Broadcast::channel('message.channel.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
-  
-Broadcast::channel('job.channel.{id}', function ($user, $id) {
+/*Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });*/
+
+Broadcast::channel('message.{switch_uuid}', function ($user, $switch_uuid) {
+    return $user->switch_uuid === $switch_uuid;
+});
+  
+Broadcast::channel('job.{switch_uuid}', function ($user, $switch_uuid) {
+    return $user->switch_uuid === $switch_uuid;
+});
+
+Broadcast::channel('job.workers.{switch_uuid}', function ($user, $switch_uuid) {
+    return $user->switch_uuid === $switch_uuid;
+});
   

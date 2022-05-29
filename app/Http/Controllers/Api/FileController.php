@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FileResource;
 use App\Models\File;
+use App\Events\JobFileUpdatedEvent;
 use Illuminate\Http\Request;
 
 class FileController extends Controller
@@ -28,7 +29,14 @@ class FileController extends Controller
         $file = File::store_file($request->file, $request->job_id);
         $file->save();
 
-        // TODO: Event
+        // Notifications
+        broadcast(new JobFileUpdatedEvent($file->job));//->toOthers();
+
+        // OLD code
+        //$interlocutor = $request->user()->is_technician ? $job->client_id : $job->technician_id;
+        //broadcast(new JobPusherEvent($job, $interlocutor))->toOthers();
+
+        // Emails
 
         return new FileResource($file);
     }
@@ -44,6 +52,15 @@ class FileController extends Controller
         $file = File::findOrFail($request->id);
         $file = File::update_file($file, $request->file, $request->job_id);
         $file->save();
+
+        // Notifications
+        broadcast(new JobFileUpdatedEvent($file->job));//->toOthers();
+
+        // OLD code
+        //$interlocutor = $request->user()->is_technician ? $job->client_id : $job->technician_id;
+        //broadcast(new JobPusherEvent($job, $interlocutor))->toOthers();
+
+        // Emails
 
         return new FileResource($file);
     }
