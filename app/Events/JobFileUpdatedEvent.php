@@ -11,13 +11,13 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Job;
 
-class JobFileAddedEvent implements ShouldBroadcastNow
+class JobFileUpdatedEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $job;
 
-    public function __construct()
+    public function __construct($job)
     {
         $this->$job = $job;
     }

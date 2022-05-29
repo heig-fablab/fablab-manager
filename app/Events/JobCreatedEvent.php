@@ -17,7 +17,7 @@ class JobCreatedEvent implements ShouldBroadcastNow
 
     public $job;
 
-    public function __construct()
+    public function __construct($job)
     {
         $this->job = $job;
     }

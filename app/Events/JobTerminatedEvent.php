@@ -17,7 +17,7 @@ class JobTerminatedEvent implements ShouldBroadcastNow
 
     public $job;
 
-    public function __construct()
+    public function __construct($job)
     {
         $this->job = $job;
     }
