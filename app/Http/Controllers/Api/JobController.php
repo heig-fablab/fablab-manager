@@ -42,6 +42,7 @@ class JobController extends Controller
 
         $job = Job::create($request->validated());
 
+        // OLD code
         //Notify all the technicians that a new job is available. Then don't need the timeline and files
         //broadcast(new JobPusherEvent($newJob, 0))->toOthers();
 
@@ -117,6 +118,11 @@ class JobController extends Controller
         $job->status = 'assigned';
         $job->save();
 
+        // TODO: add event and notifications
+        // OLD code
+        //All technicians are notified that the job has been assigned
+        //broadcast(new JobPusherEvent($job, 0))->toOthers();
+
         return new JobResource($job);
     }
 
@@ -133,7 +139,9 @@ class JobController extends Controller
         $job = Job::findOrFail($request->id);
         $job->update($req_validated);
 
-        // TODO: add event
+        // TODO: add event and notifications
+        // OLD code
+        //broadcast(new JobPusherEvent($job, $job->client_id))->toOthers();
 
         return new JobResource($job);
     }
@@ -159,7 +167,9 @@ class JobController extends Controller
         $job->status = 'terminated';
         $job->save();
 
-        // TODO: add event
+        // TODO: add event and notifications
+        // OLD code
+        //broadcast(new JobPusherEvent($job, $job->technician_id))->toOthers();
 
         return new JobResource($job);
     }

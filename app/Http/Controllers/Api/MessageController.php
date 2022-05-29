@@ -27,6 +27,10 @@ class MessageController extends Controller
     {
         // TODO: verify if the job exists and is assigned
         $message = Message::create($request->validated());
+
+        // OLD code
+        //broadcast(new MessagePusherEvent($newMessage))->toOthers();
+
         return new MessageResource($message);
     }
 }
