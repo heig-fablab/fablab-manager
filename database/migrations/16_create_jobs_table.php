@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->date('deadline');
             $table->tinyInteger('rating')->nullable();
-            $table->enum('status', ['new', 'validated', 'assigned', 'ongoing', 'on-hold','completed','terminated'])->default('new');
+            $table->enum('status', ['new', 'validated', 'assigned', 'ongoing', 'on-hold','completed','closed'])->default('new');
             // Options
             $table->softDeletes();
             $table->timestamps();

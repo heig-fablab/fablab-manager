@@ -19,7 +19,7 @@ class JobFileUpdatedEvent implements ShouldBroadcast
 
     public function __construct(Job $job)
     {
-        $this->$job = $job;
+        $this->job = $job;
     }
 
     public function broadcastOn() : Channel

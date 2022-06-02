@@ -164,6 +164,13 @@ class JobController extends Controller
         }*/
 
         $job = Job::findOrFail($request->id);
+
+        if ($request->worker_switch_uuid != $job->worker_switch_uuid) {
+            return response()->json([
+                'message' => "You can't update a job that is not assigned to you!"
+            ], 400);
+        }
+
         $job->update($req_validated);
 
         // Notifications
@@ -195,7 +202,7 @@ class JobController extends Controller
         $job->update($req_validated);
 
         // Update status
-        $job->status = 'terminated';
+        $job->status = 'closed';
         $job->save();
 
         // Notifications

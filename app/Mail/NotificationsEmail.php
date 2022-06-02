@@ -45,10 +45,10 @@ class NotificationsEmail extends Mailable
 
         $this->jobs = Job::where($user_type.'_id', $this->userID)->where('notify_'.$user_type, true)->get();
         foreach($this->jobs as $job){
-        $job->new_status_event = TimelineEvent::where('job_id', $job->id)->where('type', 'status')->where('notify_'.$user_type, true)->orderBy('created_at', 'desc')->first();
-        $job->new_files_count = TimelineEvent::where('job_id', $job->id)->where('type', 'file')->where('notify_'.$user_type, true)->count();
-        $job->new_messages_count = Message::where('job_id', $job->id)->where('recipient_id', $this->userID)->where('notify', true)->count();
-        $job->interlocutor = $user->is_technician ? User::find($job->client_id) : User::find($job->technician_id);
+            $job->new_status_event = TimelineEvent::where('job_id', $job->id)->where('type', 'status')->where('notify_'.$user_type, true)->orderBy('created_at', 'desc')->first();
+            $job->new_files_count = TimelineEvent::where('job_id', $job->id)->where('type', 'file')->where('notify_'.$user_type, true)->count();
+            $job->new_messages_count = Message::where('job_id', $job->id)->where('recipient_id', $this->userID)->where('notify', true)->count();
+            $job->interlocutor = $user->is_technician ? User::find($job->client_id) : User::find($job->technician_id);
         }
 
         return $this->view('mails/email');
