@@ -11,19 +11,19 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Job;
 
-class JobTerminatedEvent implements ShouldBroadcastNow
+class JobTerminatedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $job;
+    public Job $job;
 
-    public function __construct($job)
+    public function __construct(Job $job)
     {
         $this->job = $job;
     }
 
-    public function broadcastOn()
+    public function broadcastOn() : Channel
     {
-        return new Channel('job.'.$this->job->worker_switch_uuid);
+        return new PrivateChannel('job.'.$this->job->worker_switch_uuid);
     }
 }

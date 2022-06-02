@@ -45,7 +45,8 @@ class JobController extends Controller
         $job = Job::create($request->validated());
 
         // Notifications
-        broadcast(new JobCreatedEvent($job))->toOthers();
+        broadcast(new JobCreatedEvent($job));
+        //broadcast(new JobCreatedEvent($job))->toOthers();
 
         // OLD code
         //Notify all the technicians that a new job is available. Then don't need the timeline and files
@@ -69,6 +70,11 @@ class JobController extends Controller
         // TODO: manage files update -> only via files route
         // here only job info
 
+        // Notifications
+        // TODO
+        //broadcast(new JobCreatedEvent($job));
+        //broadcast(new JobCreatedEvent($job))->toOthers();
+
         $job = Job::findOrFail($request->id);
         $job->update($req_validated);
         return new JobResource($job);
@@ -77,6 +83,8 @@ class JobController extends Controller
     public function destroy($id)
     {
         // TODO: verify $id input
+
+        // TODO: only admin or creator?
 
         Job::findOrFail($id)->delete();
         return response()->json([
@@ -94,6 +102,8 @@ class JobController extends Controller
     public function user_jobs($switch_uuid)
     {
         // TODO: verify $switch_uuid input
+        // TODO: check how validate with request GET params
+        // https://laravel.com/docs/9.x/routing#required-parameters
 
         return JobResource::collection(Job::get_user_jobs($switch_uuid));
     }

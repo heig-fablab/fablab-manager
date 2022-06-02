@@ -24,6 +24,9 @@ use App\Http\Controllers\Api\UserController;
 // api donne toutes les routes
 // mettre des liens dans l'api
 
+// TODO: verify route inputs with:
+// https://laravel.com/docs/9.x/routing#required-parameters
+
 // Default
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
