@@ -8,13 +8,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-
 use Illuminate\Support\Facades\Mail;
-use App\Mail\NotifyEmail;
+use App\Mail\NotificationsEmail;
 use App\Models\Job;
 use App\Models\User;
 use App\Models\Message;
-use App\Models\TimelineEvent;
+use App\Models\Event;
 
 class NotificationsEmailJob implements ShouldQueue
 {
@@ -24,20 +23,13 @@ class NotificationsEmailJob implements ShouldQueue
 
     public $backoff = 3;
 
-    // OLD code
-    public $userID;
-    public $uniqueId;
+    public int $unique_id;
+    public string $user_switch_uuid;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    //OLD code
-    public function __construct($id)
+    public function __construct($id, $user_switch_uuid)
     {
-        $this->userID = $id;
-        $this->uniqueId = $id;
+        $this->unique_id = $id;
+        $this->user_switch_uuid = $user_switch_uuid;
     }
 
     // TODO: function like this:
@@ -47,35 +39,43 @@ class NotificationsEmailJob implements ShouldQueue
         //NotifyEmailJob::dispatch($id)->delay(now()->addSeconds(30));
     }*/
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
-        // User is notified when he hasn't view his notifications since 10min
+        $user = User::find($this->user_switch_uuid);
 
-        //OLD code
-        $user = User::find($this->userID); // get user
-        $user_type = $user->is_technician ? 'technician' : 'client'; // gest user type
-        $jobs = Job::where($user_type.'_id', $this->userID)
-          ->where('notify_'.$user_type, true); // get all jobs with user that need to be email_notified
+        // Get all events to notify (unread) with job and user and that are not outdated, that need to be email_notified
+        $events = Event::where('user_switch_uuid', $user->switch_uuid)
+          ->where('user_switch_uuid', $this->user_switch_uuid)
+          //->where($this->job_id, $event->job_id)
+          ->where('to_notify', true)
+          ->where('created_at', '>', $user->last_email_sent);
 
-        // TODO: get all unread events with job and user and that are not outdated, that need to be email_notified
+        // TODO: prepare events types and send mail with data
+        if ($events->count() > 0) {
+          // TODO: can we consider all events as seen if we send the email?
+          // if yes update events
 
-        // where(this->user_switch_uuid, $event->user_switch_uuid)
-        // where(this->job_id, $event->job_id)
-        // where(this->notified, false)
-        // where(this->created_at > $event->user->last_email_sent);
+          $user->last_email_sent = now();
+          $user->save();
 
-        // if empty, return
-        // else prepare events types and send mail with data
+          Mail::to($user->email)->send(new NotificationsEmail($this->userID));
+        }
+
+        // else 
 
         // events_for_user->where('type', 'file')
         // ->count()
 
         // TODO: if notified -> delete or soft delete
+
+
+        // User is notified when he hasn't view his notifications since 10min
+
+        //OLD code
+        /*$user = User::find($this->userID); // get user
+        $user_type = $user->is_technician ? 'technician' : 'client'; // gest user type
+        $jobs = Job::where($user_type.'_id', $this->userID)
+          ->where('notify_'.$user_type, true); // get all jobs with user that need to be email_notified
     
         if($jobs->count() > 0)
         {
@@ -109,6 +109,6 @@ class NotificationsEmailJob implements ShouldQueue
           {
             Mail::to($user->email)->send(new NotifyEmail($this->userID));
           }
-        }
+        }*/
     }
 }

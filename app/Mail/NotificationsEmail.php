@@ -21,9 +21,13 @@ class NotificationsEmail extends Mailable
     // TODO: Adapt
     // https://laravel.com/docs/9.x/mail
 
+    public $events;
+    public $jobs;
+    public $user_switch_uuid;
+
     // OLD code
     // Can be used in blade template
-    public $jobs;
+    /*public $jobs;
     public $userID;
     public $jobTypeTextFormatter = array("cutting"=>"de découpage laser", "milling"=>"de fraisage CNC", "3Dprinting"=>"d'impression 3D", "engraving"=>"de gravure laser");
     public $jobStatusFormatter = array(
@@ -31,14 +35,17 @@ class NotificationsEmail extends Mailable
       "assigned"=>array("name"=>"ASSIGNÉ", "color"=>"#B3E5FC"),
       "ongoing"=>array("name"=>"EN COURS", "color"=>"#03A9F4"),
       "on-hold"=>array("name"=>"EN PAUSE", "color"=>"#F44336"),
-      "completed"=>array("name"=>"TERMINÉ", "color"=>"#4CAF50"));
+      "completed"=>array("name"=>"TERMINÉ", "color"=>"#4CAF50"));*/
 
     // TODO: recieve values already calculated in job
-    // OLD code
-    public function __construct($id)
+    public function __construct(string $user_switch_uuid, array $events)
     {
-        $this->userID = $id;
-        $this->subject("Notifications pour vos travaux");
+        // OLD code
+        //$this->userID = $id;
+        //$this->subject("Notifications pour vos travaux");
+
+        $this->events = $events;
+        $this->user_switch_uuid = $user_switch_uuid;
     }
 
     public function build()
@@ -46,6 +53,9 @@ class NotificationsEmail extends Mailable
         /*return $this->from('fablab@heig-vd.ch', 'Fablab Manager')
                     ->subject('Notifications')
                     ->view('emails.notifications');*/
+
+        // TODO: user array_filter($array1, "odd")
+        //https://www.php.net/manual/fr/function.array-filter.php
 
         // OLD code
         $user = User::find($this->userID);
