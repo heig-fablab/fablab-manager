@@ -10,7 +10,9 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'data',
+        'type',
+        'notified',
+        'user_switch_uuid',
         'job_id'
     ];
 
@@ -18,5 +20,10 @@ class Event extends Model
     public function job()
     {
         return $this->belongsTo(Job::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_switch_uuid');
     }
 }

@@ -38,6 +38,13 @@ class FileController extends Controller
 
         // Emails
 
+        //OLD code
+        /*$job->notify_technician = true;
+        $job->notify_client = true;
+        $job->save();
+        $interlocutor = $request->user()->is_technician ? $job->client_id : $job->technician_id;
+        NotifyEmailController::dispatchMailJob($interlocutor);*/
+
         return new FileResource($file);
     }
 
@@ -61,6 +68,13 @@ class FileController extends Controller
         //broadcast(new JobPusherEvent($job, $interlocutor))->toOthers();
 
         // Emails
+
+        //OLD code
+        /*$job->notify_technician = true;
+        $job->notify_client = true;
+        $job->save();
+        $interlocutor = $request->user()->is_technician ? $job->client_id : $job->technician_id;
+        NotifyEmailController::dispatchMailJob($interlocutor);*/
 
         return new FileResource($file);
     }

@@ -53,12 +53,6 @@ class JobController extends Controller
         //broadcast(new JobPusherEvent($newJob, 0))->toOthers();
 
         // toOthers() send to all subscribers without selected
-        // TODO: create a channel for technician
-
-        // TODO: perhaps not doing a chan but construct a chan per worker
-
-        // Emails
-
 
         return new JobResource($job);
     }
@@ -148,7 +142,18 @@ class JobController extends Controller
         //All technicians are notified that the job has been assigned
         //broadcast(new JobPusherEvent($job, 0))->toOthers();
 
+
+        // Events
+        
+
         // Emails
+        // todo: email to client
+
+
+
+        // OLD code:
+        //$job = Job::find($job->id);
+        //NotifyEmailController::dispatchMailJob($job->client_id);
 
         return new JobResource($job);
     }
@@ -180,6 +185,14 @@ class JobController extends Controller
         //broadcast(new JobPusherEvent($job, $job->client_id))->toOthers();
 
         // Emails
+
+        // OLD code
+        /*$job->status = $request->status;
+        $job->notify_technician = false;
+        $job->notify_client = true;
+        $job->save();
+        $job = Job::find($job->id);
+        NotifyEmailController::dispatchMailJob($job->client_id);*/
 
         return new JobResource($job);
     }
@@ -215,4 +228,6 @@ class JobController extends Controller
 
         return new JobResource($job);
     }
+
+    // TODO: route update notifications
 }

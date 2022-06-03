@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('surname');
             $table->string('password')->nullable();
+            $table->timestamp('last_email_sent')->useCurrent()->nullable();
             // Options
             $table->softDeletes();
         });

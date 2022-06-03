@@ -18,7 +18,8 @@ class User extends Model
         'email', 
         'name', 
         'surname',
-        'password'
+        'password',
+        'last_email_sent'
     ];
 
     // Options
