@@ -34,6 +34,14 @@ class MessageController extends Controller
         // OLD code
         //broadcast(new MessagePusherEvent($newMessage))->toOthers();
 
+        // Create and save Event (notify receiver)
+        $event = Event::create([
+            'type' => 'message',
+            'to_notify' => true,
+            'user_switch_uuid' => $message->receiver_switch_uuid,
+            'job_id' => $message->job_id
+        ]);
+
         // Emails
 
         return new MessageResource($message);

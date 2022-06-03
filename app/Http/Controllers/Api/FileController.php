@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FileResource;
 use App\Models\File;
+use App\Models\Event;
 use App\Events\JobFileUpdatedEvent;
 use Illuminate\Http\Request;
 
@@ -36,6 +37,14 @@ class FileController extends Controller
         //$interlocutor = $request->user()->is_technician ? $job->client_id : $job->technician_id;
         //broadcast(new JobPusherEvent($job, $interlocutor))->toOthers();
 
+        // Create and save Event (notify worker)
+        $event = Event::create([
+            'type' => 'file',
+            'to_notify' => true,
+            'user_switch_uuid' => Job::findOrFail($request->job_id)->worker_switch_uuid,
+            'job_id' => $request->job_id
+        ]);
+
         // Emails
 
         //OLD code
@@ -66,6 +75,15 @@ class FileController extends Controller
         // OLD code
         //$interlocutor = $request->user()->is_technician ? $job->client_id : $job->technician_id;
         //broadcast(new JobPusherEvent($job, $interlocutor))->toOthers();
+
+        // Create and save Event (notify worker)
+        $event = Event::create([
+            'type' => 'file',
+            'to_notify' => true,
+            'user_switch_uuid' => Job::findOrFail($request->job_id)->worker_switch_uuid,
+            'job_id' => $request->job_id
+        ]);
+
 
         // Emails
 

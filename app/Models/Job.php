@@ -23,6 +23,8 @@ class Job extends Model
         'validator_switch_uuid'
     ];
 
+    // TODO: create a string array for enum status
+
     // Default values
     protected $attributes = [
         'status' => 'new',

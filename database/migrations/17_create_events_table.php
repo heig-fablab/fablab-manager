@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             // Fields
             $table->enum('type', ['status', 'file']);
-            $table->boolean('notified')->default(true);
+            $table->boolean('to_notify')->default(true);
+            $table->string('data')->nullable(); // to store status type
             // Options
             $table->timestamps();
             // Foreign keys

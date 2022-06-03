@@ -11,10 +11,12 @@ class Event extends Model
 
     protected $fillable = [
         'type',
-        'notified',
+        'to_notify',
         'user_switch_uuid',
         'job_id'
     ];
+
+    // TODO: create a string array for enum type
 
     // Belongs to
     public function job()

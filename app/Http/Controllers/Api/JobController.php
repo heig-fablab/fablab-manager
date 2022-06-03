@@ -42,6 +42,8 @@ class JobController extends Controller
             // TODO: add event
         }*/
 
+        // TODO: for each file -> new event
+
         $job = Job::create($request->validated());
 
         // Notifications
@@ -53,6 +55,15 @@ class JobController extends Controller
         //broadcast(new JobPusherEvent($newJob, 0))->toOthers();
 
         // toOthers() send to all subscribers without selected
+
+        // Create and save Event (notify worker)
+        $event = Event::create([
+            'type' => 'status',
+            'to_notify' => true,
+            'data' => 'new',
+            'user_switch_uuid' => $job->worker_switch_uuid,
+            'job_id' => $job->id
+        ]);
 
         return new JobResource($job);
     }
@@ -123,12 +134,21 @@ class JobController extends Controller
         return JobResource::collection(Job::get_validator_jobs($switch_uuid));
     }
 
+    // TODO: perhaps route for assign multiple jobs
+
     public function assign_worker(UpdateJobAssignWorkerRequest $request)
     {
         $req_validated = $request->validated();
 
-        // Update worker
         $job = Job::findOrFail($request->id);
+
+        // Verify if job is unassigned
+        if ($job->worker_switch_uuid != null) {
+            return response()->json([
+                'message' => "Job is already assigned to a worker!"
+            ], 400);
+        }
+
         $job->update($req_validated);
 
         // Update status
@@ -142,14 +162,17 @@ class JobController extends Controller
         //All technicians are notified that the job has been assigned
         //broadcast(new JobPusherEvent($job, 0))->toOthers();
 
-
-        // Events
-        
+        // Create and save Event (notify client)
+        $event = Event::create([
+            'type' => 'status',
+            'to_notify' => true,
+            'data' => 'assigned',
+            'user_switch_uuid' => $job->client_switch_uuid,
+            'job_id' => $job->id
+        ]);
 
         // Emails
         // todo: email to client
-
-
 
         // OLD code:
         //$job = Job::find($job->id);
@@ -183,6 +206,15 @@ class JobController extends Controller
 
         // OLD code
         //broadcast(new JobPusherEvent($job, $job->client_id))->toOthers();
+
+        // Create and save Event (notify client)
+        $event = Event::create([
+            'type' => 'status',
+            'to_notify' => true,
+            'data' => $job->status,
+            'user_switch_uuid' => $job->client_switch_uuid,
+            'job_id' => $job->id
+        ]);
 
         // Emails
 
@@ -223,6 +255,15 @@ class JobController extends Controller
 
         // OLD code
         //broadcast(new JobPusherEvent($job, $job->technician_id))->toOthers();
+
+        // Create and save Event (notify worker)
+        $event = Event::create([
+            'type' => 'status',
+            'to_notify' => true,
+            'data' => 'closed',
+            'user_switch_uuid' => $job->worker_switch_uuid,
+            'job_id' => $job->id
+        ]);
 
         // Emails
 
