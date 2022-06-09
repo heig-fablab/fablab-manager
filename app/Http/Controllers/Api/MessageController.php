@@ -33,7 +33,7 @@ class MessageController extends Controller
         broadcast(new MessageCreatedEvent($message)); //->toOthers();
 
         // Create and save Event (notify receiver)
-        $event = Event::create([
+        Event::create([
             'type' => 'message',
             'to_notify' => true,
             'user_switch_uuid' => $message->receiver_switch_uuid,

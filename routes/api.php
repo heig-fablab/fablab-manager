@@ -21,24 +21,20 @@ use App\Http\Controllers\Api\UserController;
 |
 */
 
-// api donne toutes les routes
-// mettre des liens dans l'api
+// Default
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});*/
+
 
 // TODO: verify route inputs with:
 // https://laravel.com/docs/9.x/routing#required-parameters
 
-// Default
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-// Futur all users root
+// Futur all users routes
 
 //Route::apiResource('jobs', JobController::class);
-/*Route::resource('photos', PhotoController::class)->only([
-    'index', 'show'
-]);*/
-Route::prefix('/jobs')->controller(JobController::class)->group(function () { 
+
+Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::get('', 'index'); // admin
     Route::get('/unassigned', 'unassigned_jobs');
     Route::get('/user/{switch_uuid}', 'user_jobs');
@@ -57,7 +53,7 @@ Route::prefix('/jobs')->controller(JobController::class)->group(function () {
 });
 
 //Route::apiResource('files', FileController::class);
-Route::prefix('/files')->controller(FileController::class)->group(function () { 
+Route::prefix('/files')->controller(FileController::class)->group(function () {
     //Route::get('', 'index');
     Route::get('/{id}', 'show');
     Route::post('', 'store');
@@ -66,7 +62,7 @@ Route::prefix('/files')->controller(FileController::class)->group(function () {
     Route::delete('/{id}', 'destroy');
 });
 
-Route::prefix('/messages')->controller(MessageController::class)->group(function () { 
+Route::prefix('/messages')->controller(MessageController::class)->group(function () {
     Route::get('', 'index');
     Route::get('/{id}', 'show');
     Route::post('', 'store');
@@ -74,7 +70,7 @@ Route::prefix('/messages')->controller(MessageController::class)->group(function
 
 // Futur admin routes
 //Route::apiResource('devices', DeviceController::class);
-Route::prefix('/devices')->controller(DeviceController::class)->group(function () { 
+Route::prefix('/devices')->controller(DeviceController::class)->group(function () {
     Route::get('', 'index');
     Route::get('/{id}', 'show');
     Route::post('', 'store');
@@ -83,7 +79,7 @@ Route::prefix('/devices')->controller(DeviceController::class)->group(function (
 }); // TODO -> verify admin via middleware
 
 //Route::apiResource('file_types', FileTypeController::class); // todo -> verify admin via middleware
-Route::prefix('/file_types')->controller(FileTypeController::class)->group(function () { 
+Route::prefix('/file_types')->controller(FileTypeController::class)->group(function () {
     Route::get('', 'index');
     Route::get('/{id}', 'show');
     Route::post('', 'store');
@@ -95,7 +91,7 @@ Route::apiResource('job_categories', JobCategoryController::class); // todo -> v
 
 //Route::apiResource('users', UserController::class);
 //Route::apiResource('devices', DeviceController::class);
-Route::prefix('/users')->controller(UserController::class)->group(function () { 
+Route::prefix('/users')->controller(UserController::class)->group(function () {
     Route::get('', 'index');
     Route::get('/{switch_uuid}', 'show');
     Route::post('', 'store'); // TODO -> verify admin via middleware

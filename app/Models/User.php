@@ -12,11 +12,12 @@ class User extends Model
     use SoftDeletes;
 
     protected $primaryKey = 'switch_uuid';
+    protected $keyType = 'string';
 
     protected $fillable = [
         'switch_uuid',
-        'email', 
-        'name', 
+        'email',
+        'name',
         'surname',
         'password',
         'last_email_sent'
