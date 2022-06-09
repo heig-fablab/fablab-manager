@@ -172,7 +172,7 @@ class JobController extends Controller
         ]);
 
         // Emails
-        // todo: email to client
+        Event::create_mail_job($job->client_switch_uuid);
 
         // OLD code:
         //$job = Job::find($job->id);
@@ -217,6 +217,7 @@ class JobController extends Controller
         ]);
 
         // Emails
+        Event::create_mail_job($job->client_switch_uuid);
 
         // OLD code
         /*$job->status = $request->status;
@@ -266,6 +267,7 @@ class JobController extends Controller
         ]);
 
         // Emails
+        Event::create_mail_job($job->worker_switch_uuid);
 
         return new JobResource($job);
     }

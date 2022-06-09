@@ -38,14 +38,16 @@ class FileController extends Controller
         //broadcast(new JobPusherEvent($job, $interlocutor))->toOthers();
 
         // Create and save Event (notify worker)
+        $user_to_notify_switch_uuid = Job::findOrFail($request->job_id)->worker_switch_uuid;
         $event = Event::create([
             'type' => 'file',
             'to_notify' => true,
-            'user_switch_uuid' => Job::findOrFail($request->job_id)->worker_switch_uuid,
+            'user_switch_uuid' => $user_to_notify_switch_uuid,
             'job_id' => $request->job_id
         ]);
 
         // Emails
+        Event::create_mail_job($user_to_notify_switch_uuid);
 
         //OLD code
         /*$job->notify_technician = true;
@@ -77,15 +79,17 @@ class FileController extends Controller
         //broadcast(new JobPusherEvent($job, $interlocutor))->toOthers();
 
         // Create and save Event (notify worker)
+        $user_to_notify_switch_uuid = Job::findOrFail($request->job_id)->worker_switch_uuid;
         $event = Event::create([
             'type' => 'file',
             'to_notify' => true,
-            'user_switch_uuid' => Job::findOrFail($request->job_id)->worker_switch_uuid,
+            'user_switch_uuid' => $user_to_notify_switch_uuid,
             'job_id' => $request->job_id
         ]);
 
 
         // Emails
+        Event::create_mail_job($user_to_notify_switch_uuid);
 
         //OLD code
         /*$job->notify_technician = true;

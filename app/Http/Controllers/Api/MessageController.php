@@ -43,6 +43,7 @@ class MessageController extends Controller
         ]);
 
         // Emails
+        Event::create_mail_job($message->receiver_switch_uuid);
 
         return new MessageResource($message);
     }
