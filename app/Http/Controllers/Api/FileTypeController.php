@@ -7,7 +7,6 @@ use App\Http\Requests\StoreRequests\StoreFileTypeRequest;
 use App\Http\Requests\UpdateRequests\UpdateFileTypeRequest;
 use App\Http\Resources\FileTypeResource;
 use App\Models\FileType;
-use Illuminate\Http\Request;
 
 class FileTypeController extends Controller
 {

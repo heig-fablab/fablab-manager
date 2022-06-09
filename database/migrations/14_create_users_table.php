@@ -20,6 +20,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('surname');
             $table->string('password')->nullable();
+            $table->boolean('require_status_email')->default(true);
+            $table->boolean('require_files_email')->default(true);
+            $table->boolean('require_messages_email')->default(true);
+            $table->timestamp('last_email_sent')->useCurrent()->nullable();
             // Options
             $table->softDeletes();
         });

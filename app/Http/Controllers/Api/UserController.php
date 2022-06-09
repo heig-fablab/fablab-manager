@@ -31,6 +31,7 @@ class UserController extends Controller
     {
         $user = User::create($request->validated());
         // TODO: some problem to solve
+        // TODO: perhaps use query request
         // https://www.codimth.com/blog/web/laravel/how-use-many-many-eloquent-relationship-laravel
         //$user->roles()->attach($request->roles);
 

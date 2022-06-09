@@ -16,13 +16,18 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             // Fields
-            $table->longText('data');
+            $table->enum('type', ['status', 'file', 'message']);
+            $table->boolean('to_notify')->default(true);
+            $table->string('data')->nullable(); // to store status type
             // Options
             $table->timestamps();
             // Foreign keys
+            $table->string('user_switch_uuid');
+            $table->foreign('user_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
             $table->foreignId('job_id')->constrained()->onDelete('cascade');
             // Indexes
             $table->index('job_id');
+            $table->index('user_switch_uuid');
         });
     }
 

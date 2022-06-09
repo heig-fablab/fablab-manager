@@ -10,11 +10,15 @@ use App\Http\Requests\UpdateRequests\UpdateJobStatusRequest;
 use App\Http\Requests\UpdateRequests\UpdateJobRatingRequest;
 use App\Http\Resources\JobResource;
 use App\Models\Job;
+use App\Models\Event;
 use App\Events\JobAssignedEvent;
 use App\Events\JobCreatedEvent;
 use App\Events\JobStatusUpdatedEvent;
 use App\Events\JobTerminatedEvent;
-use Illuminate\Http\Request;
+
+// TODO: add notifications and websockets with: https://beyondco.de/docs/laravel-websockets/getting-started/introduction
+// php artisan websockets:serve --host=127.0.0.1 -> to communicate only on localhost that is possible, wait and see if it works
+// php artisan websockets:serve --port=3030 -> TODO: define an port for websockets 80 or 443 -> perhaps 8000
 
 class JobController extends Controller
 {
@@ -42,22 +46,21 @@ class JobController extends Controller
             // TODO: add event
         }*/
 
+        // TODO: for each file -> new event
+
         $job = Job::create($request->validated());
 
         // Notifications
-        broadcast(new JobCreatedEvent($job))->toOthers();
+        broadcast(new JobCreatedEvent($job));
 
-        // OLD code
-        //Notify all the technicians that a new job is available. Then don't need the timeline and files
-        //broadcast(new JobPusherEvent($newJob, 0))->toOthers();
-
-        // toOthers() send to all subscribers without selected
-        // TODO: create a channel for technician
-
-        // TODO: perhaps not doing a chan but construct a chan per worker
-
-        // Emails
-
+        // Create and save Event (notify worker)
+        Event::create([
+            'type' => Event::$TYPE_STATUS,
+            'to_notify' => true,
+            'data' => 'new',
+            'user_switch_uuid' => $job->worker_switch_uuid,
+            'job_id' => $job->id
+        ]);
 
         return new JobResource($job);
     }
@@ -69,6 +72,11 @@ class JobController extends Controller
         // TODO: manage files update -> only via files route
         // here only job info
 
+        // Notifications
+        // TODO
+        //broadcast(new JobCreatedEvent($job));
+        //broadcast(new JobCreatedEvent($job))->toOthers();
+
         $job = Job::findOrFail($request->id);
         $job->update($req_validated);
         return new JobResource($job);
@@ -77,6 +85,8 @@ class JobController extends Controller
     public function destroy($id)
     {
         // TODO: verify $id input
+
+        // TODO: only admin or creator?
 
         Job::findOrFail($id)->delete();
         return response()->json([
@@ -94,6 +104,8 @@ class JobController extends Controller
     public function user_jobs($switch_uuid)
     {
         // TODO: verify $switch_uuid input
+        // TODO: check how validate with request GET params
+        // https://laravel.com/docs/9.x/routing#required-parameters
 
         return JobResource::collection(Job::get_user_jobs($switch_uuid));
     }
@@ -104,7 +116,7 @@ class JobController extends Controller
 
         return JobResource::collection(Job::get_client_jobs($switch_uuid));
     }
-    
+
     public function user_as_worker_jobs($switch_uuid)
     {
         // TODO: verify $switch_uuid input
@@ -119,12 +131,21 @@ class JobController extends Controller
         return JobResource::collection(Job::get_validator_jobs($switch_uuid));
     }
 
+    // TODO: perhaps route for assign multiple jobs
+
     public function assign_worker(UpdateJobAssignWorkerRequest $request)
     {
         $req_validated = $request->validated();
 
-        // Update worker
         $job = Job::findOrFail($request->id);
+
+        // Verify if job is unassigned
+        if ($job->worker_switch_uuid != null) {
+            return response()->json([
+                'message' => "Job is already assigned to a worker!"
+            ], 400);
+        }
+
         $job->update($req_validated);
 
         // Update status
@@ -134,11 +155,17 @@ class JobController extends Controller
         // Notifications
         broadcast(new JobAssignedEvent($job))->toOthers();
 
-        // OLD code
-        //All technicians are notified that the job has been assigned
-        //broadcast(new JobPusherEvent($job, 0))->toOthers();
+        // Create and save Event (notify client)
+        $event = Event::create([
+            'type' => 'status',
+            'to_notify' => true,
+            'data' => 'assigned',
+            'user_switch_uuid' => $job->client_switch_uuid,
+            'job_id' => $job->id
+        ]);
 
         // Emails
+        Event::create_mail_job($job->client_switch_uuid);
 
         return new JobResource($job);
     }
@@ -154,15 +181,29 @@ class JobController extends Controller
         }*/
 
         $job = Job::findOrFail($request->id);
+
+        if ($request->worker_switch_uuid != $job->worker_switch_uuid) {
+            return response()->json([
+                'message' => "You can't update a job that is not assigned to you!"
+            ], 400);
+        }
+
         $job->update($req_validated);
 
         // Notifications
-        broadcast(new JobStatusUpdatedEvent($job));//->toOthers();
+        broadcast(new JobStatusUpdatedEvent($job)); //->toOthers();
 
-        // OLD code
-        //broadcast(new JobPusherEvent($job, $job->client_id))->toOthers();
+        // Create and save Event (notify client)
+        $event = Event::create([
+            'type' => 'status',
+            'to_notify' => true,
+            'data' => $job->status,
+            'user_switch_uuid' => $job->client_switch_uuid,
+            'job_id' => $job->id
+        ]);
 
         // Emails
+        Event::create_mail_job($job->client_switch_uuid);
 
         return new JobResource($job);
     }
@@ -185,17 +226,26 @@ class JobController extends Controller
         $job->update($req_validated);
 
         // Update status
-        $job->status = 'terminated';
+        $job->status = 'closed';
         $job->save();
 
         // Notifications
-        broadcast(new JobTerminatedEvent($job));//->toOthers();
+        broadcast(new JobTerminatedEvent($job)); //->toOthers();
 
-        // OLD code
-        //broadcast(new JobPusherEvent($job, $job->technician_id))->toOthers();
+        // Create and save Event (notify worker)
+        $event = Event::create([
+            'type' => 'status',
+            'to_notify' => true,
+            'data' => 'closed',
+            'user_switch_uuid' => $job->worker_switch_uuid,
+            'job_id' => $job->id
+        ]);
 
         // Emails
+        Event::create_mail_job($job->worker_switch_uuid);
 
         return new JobResource($job);
     }
+
+    // TODO: route update notifications
 }
