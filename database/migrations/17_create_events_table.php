@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             // Fields
-            $table->enum('type', ['status', 'file']);
+            $table->enum('type', ['status', 'file', 'message']);
             $table->boolean('to_notify')->default(true);
             $table->string('data')->nullable(); // to store status type
             // Options

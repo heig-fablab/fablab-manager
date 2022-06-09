@@ -23,7 +23,14 @@ class Job extends Model
         'validator_switch_uuid'
     ];
 
-    // TODO: create a string array for enum status
+    // Status
+    public static $STATUS_NEW = 'new';
+    public static $STATUS_VALIDATED = 'validated';
+    public static $STATUS_ASSIGNED = 'assigned';
+    public static $STATUS_ON_GOING = 'ongoing';
+    public static $STATUS_ON_HOLD = 'on-hold';
+    public static $STATUS_COMPLETED = 'completed';
+    public static $STATUS_CLOSED = 'closed';
 
     // Default values
     protected $attributes = [

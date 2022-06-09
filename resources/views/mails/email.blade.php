@@ -371,8 +371,8 @@
                                 <p
                                   style="font-size: 14px; line-height: 140%; text-align: left;
                                  width: fit-content; border: 3px solid {{$jobStatusFormatter[$job->new_status_event->data]['color']}};
-                                background: {{$jobStatusFormatter[$job->new_status_event->data]['color']}}; border-radius: 3px;">
-                                  {{ $jobStatusFormatter[$job->new_status_event->data]['name'] }}</p>
+                                background: {{$job_status_formatter[$job->new_status_event->data]['color']}}; border-radius: 3px;">
+                                  {{ $job_status_formatter[$job->new_status_event->data]['name'] }}</p>
                               </div>
                             </td>
                           </tr>

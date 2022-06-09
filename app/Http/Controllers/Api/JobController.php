@@ -58,7 +58,7 @@ class JobController extends Controller
 
         // Create and save Event (notify worker)
         $event = Event::create([
-            'type' => 'status',
+            'type' => Event::$TYPE_STATUS,
             'to_notify' => true,
             'data' => 'new',
             'user_switch_uuid' => $job->worker_switch_uuid,
