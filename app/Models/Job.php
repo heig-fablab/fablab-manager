@@ -41,16 +41,16 @@ class Job extends Model
     public static function get_unassigned_jobs()
     {
         return Job::where('worker_switch_uuid', null)
-        ->get();
+            ->get();
     }
 
     public static function get_user_jobs($switch_uuid)
     {
         return Job::where('client_switch_uuid', $switch_uuid)
-        ->orWhere('worker_switch_uuid', $switch_uuid)
-        ->orWhere('validator_switch_uuid', $switch_uuid)
-        ->where('status', '!=', 'terminated')
-        ->get();
+            ->orWhere('worker_switch_uuid', $switch_uuid)
+            ->orWhere('validator_switch_uuid', $switch_uuid)
+            ->where('status', '!=', 'terminated')
+            ->get();
     }
 
     public static function get_client_jobs($switch_uuid)
@@ -70,9 +70,9 @@ class Job extends Model
 
     protected static function get_role_jobs($switch_uuid, $role_user)
     {
-        return Job::where($role_user.'_switch_uuid', $switch_uuid)
-        ->where('status', '!=', 'terminated')
-        ->get();
+        return Job::where($role_user . '_switch_uuid', $switch_uuid)
+            ->where('status', '!=', 'closed')
+            ->get();
         // To see if we need more infos
         /*->join('categories', 'jobs.id_category', '=', 'categories.id')
         ->join('users as validators', 'jobs.requestor_switch_uuid', '=', 'users.switch_uuid')
@@ -113,7 +113,7 @@ class Job extends Model
         return $this->belongsTo(User::class, 'validator_switch_uuid');
     }
 
-    public function category()
+    public function job_category()
     {
         return $this->belongsTo(JobCategory::class);
     }

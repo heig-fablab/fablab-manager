@@ -82,6 +82,12 @@ Ces trois éléments du dossier "dist" doivent ensuite être déposés dans le d
 "public" du backend. Il faut aussi impérativement copier le contenu de "index.html"
 pour le mettre dans "resources/views/app.blade.php".
 
+### IDE
+If you use visual studio, don't forget to install the extension for:
+* Vue.js
+* Laravel
+* PHP
+
 ## Use
 
 1. Start by running this command to install dependencies:
@@ -136,6 +142,10 @@ Not unable yet!
 ````
 ./vendor/bin/sail artisan test --coverage
 ````
+
+### Mail testing
+As we develop with Laravel Sail, the libraire [MailHog](https://github.com/mailhog/MailHog) is available, watch the test mail send at this address: \
+http://localhost:8025/
 
 ## Support
 

@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequests\StoreMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
+use App\Models\Event;
 use App\Events\MessageCreatedEvent;
-use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
@@ -30,9 +30,7 @@ class MessageController extends Controller
         $message = Message::create($request->validated());
 
         // Notifications
-        broadcast(new MessageCreatedEvent($message));//->toOthers();
-        // OLD code
-        //broadcast(new MessagePusherEvent($newMessage))->toOthers();
+        broadcast(new MessageCreatedEvent($message)); //->toOthers();
 
         // Create and save Event (notify receiver)
         $event = Event::create([

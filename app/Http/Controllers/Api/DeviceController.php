@@ -7,7 +7,6 @@ use App\Http\Requests\StoreRequests\StoreDeviceRequest;
 use App\Http\Requests\UpdateRequests\UpdateDeviceRequest;
 use App\Http\Resources\DeviceResource;
 use App\Models\Device;
-use Illuminate\Http\Request;
 
 class DeviceController extends Controller
 {

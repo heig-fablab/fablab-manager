@@ -10,11 +10,15 @@ use App\Http\Requests\UpdateRequests\UpdateJobStatusRequest;
 use App\Http\Requests\UpdateRequests\UpdateJobRatingRequest;
 use App\Http\Resources\JobResource;
 use App\Models\Job;
+use App\Models\Event;
 use App\Events\JobAssignedEvent;
 use App\Events\JobCreatedEvent;
 use App\Events\JobStatusUpdatedEvent;
 use App\Events\JobTerminatedEvent;
-use Illuminate\Http\Request;
+
+// TODO: add notifications and websockets with: https://beyondco.de/docs/laravel-websockets/getting-started/introduction
+// php artisan websockets:serve --host=127.0.0.1 -> to communicate only on localhost that is possible, wait and see if it works
+// php artisan websockets:serve --port=3030 -> TODO: define an port for websockets 80 or 443 -> perhaps 8000
 
 class JobController extends Controller
 {
@@ -48,16 +52,9 @@ class JobController extends Controller
 
         // Notifications
         broadcast(new JobCreatedEvent($job));
-        //broadcast(new JobCreatedEvent($job))->toOthers();
-
-        // OLD code
-        //Notify all the technicians that a new job is available. Then don't need the timeline and files
-        //broadcast(new JobPusherEvent($newJob, 0))->toOthers();
-
-        // toOthers() send to all subscribers without selected
 
         // Create and save Event (notify worker)
-        $event = Event::create([
+        Event::create([
             'type' => Event::$TYPE_STATUS,
             'to_notify' => true,
             'data' => 'new',
@@ -119,7 +116,7 @@ class JobController extends Controller
 
         return JobResource::collection(Job::get_client_jobs($switch_uuid));
     }
-    
+
     public function user_as_worker_jobs($switch_uuid)
     {
         // TODO: verify $switch_uuid input
@@ -158,10 +155,6 @@ class JobController extends Controller
         // Notifications
         broadcast(new JobAssignedEvent($job))->toOthers();
 
-        // OLD code
-        //All technicians are notified that the job has been assigned
-        //broadcast(new JobPusherEvent($job, 0))->toOthers();
-
         // Create and save Event (notify client)
         $event = Event::create([
             'type' => 'status',
@@ -173,10 +166,6 @@ class JobController extends Controller
 
         // Emails
         Event::create_mail_job($job->client_switch_uuid);
-
-        // OLD code:
-        //$job = Job::find($job->id);
-        //NotifyEmailController::dispatchMailJob($job->client_id);
 
         return new JobResource($job);
     }
@@ -202,10 +191,7 @@ class JobController extends Controller
         $job->update($req_validated);
 
         // Notifications
-        broadcast(new JobStatusUpdatedEvent($job));//->toOthers();
-
-        // OLD code
-        //broadcast(new JobPusherEvent($job, $job->client_id))->toOthers();
+        broadcast(new JobStatusUpdatedEvent($job)); //->toOthers();
 
         // Create and save Event (notify client)
         $event = Event::create([
@@ -218,14 +204,6 @@ class JobController extends Controller
 
         // Emails
         Event::create_mail_job($job->client_switch_uuid);
-
-        // OLD code
-        /*$job->status = $request->status;
-        $job->notify_technician = false;
-        $job->notify_client = true;
-        $job->save();
-        $job = Job::find($job->id);
-        NotifyEmailController::dispatchMailJob($job->client_id);*/
 
         return new JobResource($job);
     }
@@ -252,10 +230,7 @@ class JobController extends Controller
         $job->save();
 
         // Notifications
-        broadcast(new JobTerminatedEvent($job));//->toOthers();
-
-        // OLD code
-        //broadcast(new JobPusherEvent($job, $job->technician_id))->toOthers();
+        broadcast(new JobTerminatedEvent($job)); //->toOthers();
 
         // Create and save Event (notify worker)
         $event = Event::create([

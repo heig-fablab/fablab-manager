@@ -13,6 +13,7 @@ class Event extends Model
     protected $fillable = [
         'type',
         'to_notify',
+        'data',
         'user_switch_uuid',
         'job_id'
     ];
@@ -22,10 +23,9 @@ class Event extends Model
     public static string $TYPE_FILE = 'file';
     public static string $TYPE_STATUS = 'status';
 
-    private static int $id_counter = 0;
-
     public static function create_mail_job(string $user_switch_uuid)
     {
+        static $id_counter = 0;
         //NotificationsEmailJob::dispatch($id_counter, $user_switch_uuid)->delay(now()->addMinutes(10));
         NotificationsEmailJob::dispatch($id_counter, $user_switch_uuid)->delay(now()->addSeconds(20));
         $id_counter += 1;
