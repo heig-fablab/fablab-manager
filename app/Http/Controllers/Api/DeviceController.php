@@ -17,7 +17,7 @@ class DeviceController extends Controller
         return DeviceResource::collection($devices);
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         // TODO: validate $id input
         return new DeviceResource(Device::findOrFail($id));
@@ -40,7 +40,7 @@ class DeviceController extends Controller
         return new DeviceResource($device);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         // TODO: validate $id input
         Device::find($id)->delete();

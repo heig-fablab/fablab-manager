@@ -17,7 +17,7 @@ class MessageController extends Controller
         return MessageResource::collection(Message::all());
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         // TODO: validate $id input
         $message = Message::findOrFail($id);

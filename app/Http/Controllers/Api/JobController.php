@@ -30,7 +30,7 @@ class JobController extends Controller
         return JobResource::collection(Job::all());
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         // TODO: verify $id input
 
@@ -84,7 +84,7 @@ class JobController extends Controller
         return new JobResource($job);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         // TODO: verify $id input
 
@@ -103,7 +103,7 @@ class JobController extends Controller
         return JobResource::collection(Job::get_unassigned_jobs());
     }
 
-    public function user_jobs($switch_uuid)
+    public function user_jobs(string $switch_uuid)
     {
         // TODO: verify $switch_uuid input
         // TODO: check how validate with request GET params
@@ -112,21 +112,21 @@ class JobController extends Controller
         return JobResource::collection(Job::get_user_jobs($switch_uuid));
     }
 
-    public function user_as_client_jobs($switch_uuid)
+    public function user_as_client_jobs(string $switch_uuid)
     {
         // TODO: verify $switch_uuid input
 
         return JobResource::collection(Job::get_client_jobs($switch_uuid));
     }
 
-    public function user_as_worker_jobs($switch_uuid)
+    public function user_as_worker_jobs(string $switch_uuid)
     {
         // TODO: verify $switch_uuid input
 
         return JobResource::collection(Job::get_worker_jobs($switch_uuid));
     }
 
-    public function user_as_validator_jobs($switch_uuid)
+    public function user_as_validator_jobs(string $switch_uuid)
     {
         // TODO: verify $switch_uuid input
 

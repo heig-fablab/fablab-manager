@@ -17,7 +17,7 @@ class FileTypeController extends Controller
         return FileTypeResource::collection($file_types);
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         // TODO: validate $id input
         return new FileTypeResource(FileType::findOrFail($id));
@@ -37,7 +37,7 @@ class FileTypeController extends Controller
         return new FileTypeResource($file_type);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         // TODO: validate $id input
         FileType::findOrFail($id)->delete();

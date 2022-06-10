@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
-    public function show($id)
+    public function show(int $id)
     {
         // TODO: validate $id input
 
@@ -79,7 +79,7 @@ class FileController extends Controller
         return new FileResource($file);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         // TODO: validate $id input
 
