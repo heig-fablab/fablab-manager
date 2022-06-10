@@ -18,6 +18,7 @@ return new class extends Migration
             // Fields
             $table->longText('text');
             // Options
+            $table->softDeletes();
             $table->timestamps();
             // Foreign keys
             $table->string('sender_switch_uuid');

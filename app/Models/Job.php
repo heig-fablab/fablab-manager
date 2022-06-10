@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Enum\JobStatusEnum;
 
 class Job extends Model
 {
@@ -35,7 +34,7 @@ class Job extends Model
 
     // Default values
     protected $attributes = [
-        'status' => 'new',
+        'status' => Job::S_NEW,
     ];
 
     // Service methods
@@ -50,7 +49,7 @@ class Job extends Model
         return Job::where('client_switch_uuid', $switch_uuid)
             ->orWhere('worker_switch_uuid', $switch_uuid)
             ->orWhere('validator_switch_uuid', $switch_uuid)
-            ->where('status', '!=', JobStatusEnum::CLOSED)
+            ->where('status', '!=', Job::S_CLOSED)
             ->get();
     }
 
@@ -72,7 +71,7 @@ class Job extends Model
     protected static function get_role_jobs($switch_uuid, $role_user)
     {
         return Job::where($role_user . '_switch_uuid', $switch_uuid)
-            ->where('status', '!=', JobStatusEnum::CLOSED)
+            ->where('status', '!=', Job::S_CLOSED)
             ->get();
         // To see if we need more infos
         /*->join('categories', 'jobs.id_category', '=', 'categories.id')
