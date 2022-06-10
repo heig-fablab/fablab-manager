@@ -54,13 +54,15 @@ class JobController extends Controller
         broadcast(new JobCreatedEvent($job));
 
         // Create and save Event (notify worker)
-        Event::create([
-            'type' => Event::$TYPE_STATUS,
-            'to_notify' => true,
-            'data' => 'new',
-            'user_switch_uuid' => $job->worker_switch_uuid,
-            'job_id' => $job->id
-        ]);
+        if ($job->worker_switch_uuid != null) {
+            Event::create([
+                'type' => Event::T_STATUS,
+                'to_notify' => true,
+                'data' => Job::S_NEW,
+                'user_switch_uuid' => $job->worker_switch_uuid,
+                'job_id' => $job->id
+            ]);
+        }
 
         return new JobResource($job);
     }
@@ -149,7 +151,7 @@ class JobController extends Controller
         $job->update($req_validated);
 
         // Update status
-        $job->status = 'assigned';
+        $job->status = Job::S_ASSIGNED;
         $job->save();
 
         // Notifications
@@ -157,9 +159,9 @@ class JobController extends Controller
 
         // Create and save Event (notify client)
         $event = Event::create([
-            'type' => 'status',
+            'type' => Event::T_STATUS,
             'to_notify' => true,
-            'data' => 'assigned',
+            'data' => Job::S_ASSIGNED,
             'user_switch_uuid' => $job->client_switch_uuid,
             'job_id' => $job->id
         ]);
@@ -195,7 +197,7 @@ class JobController extends Controller
 
         // Create and save Event (notify client)
         $event = Event::create([
-            'type' => 'status',
+            'type' => Event::T_STATUS,
             'to_notify' => true,
             'data' => $job->status,
             'user_switch_uuid' => $job->client_switch_uuid,
@@ -214,7 +216,7 @@ class JobController extends Controller
 
         $job = Job::findOrFail($request->id);
 
-        if ($job->status != 'completed') {
+        if ($job->status != Job::S_COMPLETED) {
             return response()->json([
                 'message' => "You can't rate of a job that is not completed!"
             ], 400);
@@ -226,7 +228,7 @@ class JobController extends Controller
         $job->update($req_validated);
 
         // Update status
-        $job->status = 'closed';
+        $job->status = Job::S_CLOSED;
         $job->save();
 
         // Notifications
@@ -234,9 +236,9 @@ class JobController extends Controller
 
         // Create and save Event (notify worker)
         $event = Event::create([
-            'type' => 'status',
+            'type' => Event::T_STATUS,
             'to_notify' => true,
-            'data' => 'closed',
+            'data' => Job::S_CLOSED,
             'user_switch_uuid' => $job->worker_switch_uuid,
             'job_id' => $job->id
         ]);

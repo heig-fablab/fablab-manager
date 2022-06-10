@@ -18,11 +18,12 @@ class Event extends Model
         'job_id'
     ];
 
-    // Types of event
-    public static string $TYPE_MESSAGE = 'message';
-    public static string $TYPE_FILE = 'file';
-    public static string $TYPE_STATUS = 'status';
+    // Types of event values
+    public const T_MESSAGE = 'message';
+    public const T_FILE = 'file';
+    public const T_STATUS = 'status';
 
+    // Mail Service
     public static function create_mail_job(string $user_switch_uuid)
     {
         static $id_counter = 0;

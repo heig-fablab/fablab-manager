@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Enum\JobStatusEnum;
 
 class Job extends Model
 {
@@ -23,14 +24,14 @@ class Job extends Model
         'validator_switch_uuid'
     ];
 
-    // Status
-    public static $STATUS_NEW = 'new';
-    public static $STATUS_VALIDATED = 'validated';
-    public static $STATUS_ASSIGNED = 'assigned';
-    public static $STATUS_ON_GOING = 'ongoing';
-    public static $STATUS_ON_HOLD = 'on-hold';
-    public static $STATUS_COMPLETED = 'completed';
-    public static $STATUS_CLOSED = 'closed';
+    // Job Status values
+    public const S_NEW = 'new';
+    public const S_VALIDATED = 'validated';
+    public const S_ASSIGNED = 'assigned';
+    public const S_ONGOING = 'ongoing';
+    public const S_ON_HOLD = 'on-hold';
+    public const S_COMPLETED = 'completed';
+    public const S_CLOSED = 'closed';
 
     // Default values
     protected $attributes = [
@@ -49,7 +50,7 @@ class Job extends Model
         return Job::where('client_switch_uuid', $switch_uuid)
             ->orWhere('worker_switch_uuid', $switch_uuid)
             ->orWhere('validator_switch_uuid', $switch_uuid)
-            ->where('status', '!=', 'terminated')
+            ->where('status', '!=', JobStatusEnum::CLOSED)
             ->get();
     }
 
@@ -71,7 +72,7 @@ class Job extends Model
     protected static function get_role_jobs($switch_uuid, $role_user)
     {
         return Job::where($role_user . '_switch_uuid', $switch_uuid)
-            ->where('status', '!=', 'closed')
+            ->where('status', '!=', JobStatusEnum::CLOSED)
             ->get();
         // To see if we need more infos
         /*->join('categories', 'jobs.id_category', '=', 'categories.id')
