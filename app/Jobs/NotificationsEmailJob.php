@@ -22,7 +22,7 @@ class NotificationsEmailJob implements ShouldQueue, ShouldBeUnique
     public int $unique_id;
     public string $user_switch_uuid;
 
-    public function __construct($id, $user_switch_uuid)
+    public function __construct(int $id, string $user_switch_uuid)
     {
         $this->unique_id = $id;
         $this->user_switch_uuid = $user_switch_uuid;

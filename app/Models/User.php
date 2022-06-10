@@ -11,6 +11,7 @@ class User extends Model
     use HasFactory;
     use SoftDeletes;
 
+    // Primary key options
     protected $primaryKey = 'switch_uuid';
     protected $keyType = 'string';
 

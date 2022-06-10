@@ -67,7 +67,7 @@ class File extends Model
         return Storage::download(File::file_storage_path() . $file->directory . '/' . $file->hash, $file->name);
     }
 
-    public static function store_file($req_file, $job_id)
+    public static function store_file($req_file, int $job_id)
     {
         // File infos
         $hash = hash_file(File::hash_algo(), $req_file);
@@ -91,7 +91,7 @@ class File extends Model
         return $file;
     }
 
-    public static function update_file(File $file, $req_file, $req_job_id)
+    public static function update_file(File $file, $req_file, int $req_job_id)
     {
         $hash = hash_file(File::hash_algo(), $req_file);
         $dir = substr($hash, 0, 2);
