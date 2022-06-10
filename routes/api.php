@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\DeviceController;
 use App\Http\Controllers\Api\FileController;
@@ -48,7 +47,7 @@ Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::patch('/worker/assign', 'assign_worker'); // todo verify role ->middleware()
     Route::patch('/status', 'update_status'); // todo verify role and user ->middleware()
     Route::patch('/rating', 'update_rating'); // todo verify user ->middleware()
-    //Route::patch('/notifications', 'update_notify'); // perhaps not usefull
+    Route::patch('/notifications/{id}', 'update_notifications');
     Route::delete('/{id}', 'destroy');
 });
 

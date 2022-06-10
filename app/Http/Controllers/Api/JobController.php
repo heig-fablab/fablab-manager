@@ -250,32 +250,18 @@ class JobController extends Controller
     }
 
     // Called when a user has checked the job and needs to remove the notify flag
-    // Input : {id: job's id}
-    //public function updateNotify(Request $request)
-    public function updateNotify(int $job_id)
+    // We assume that when a user has seen a job, he has seen all messages, new files and new status
+    public function update_notifications(int $id)
     {
+        $job = Job::findOrFail($id);
 
-
-        // OLD code:
-        /*$job = Job::find($request->id);
-        $request->user()->is_technician ? $job->notify_technician = false : $job->notify_client = false;
-        $job->save();
-        $job = Job::find($job->id);
-
-        //All of the timeline events are updated
-        $timelineEvents = Event::where('job_id', $job->id)->get();
-        foreach ($timelineEvents as $event) {
-            $request->user()->is_technician ? $event->notify_technician = false : $event->notify_client = false;
+        //All of the events are updated
+        $events = Event::where('job_id', $job->id)->get();
+        foreach ($events as $event) {
+            $event->to_notify = false;
             $event->save();
         }
 
-        //All of the messages are updated
-        $messages = Message::where('job_id', $job->id)->where('recipient_id', $request->user()->id)->get();
-        foreach ($messages as $message) {
-            $message->notify = false;
-            $message->save();
-        }*/
-
-        //return $job;
+        return $job;
     }
 }
