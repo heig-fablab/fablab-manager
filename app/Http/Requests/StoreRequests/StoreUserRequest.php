@@ -18,12 +18,12 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'switch_uuid' => ['required'],
-            'email' => ['required'], 
+            'email' => ['required'],
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['required', 'string', 'max:255'],
             'password' => ['nullable'],
             'roles' => ['required', 'array'],
-            'roles.*' => ['required', 'integer', 'min:1', 'exists:roles,id'],
+            'roles.*' => ['required', 'string', 'exists:roles,name'],
         ];
     }
 }

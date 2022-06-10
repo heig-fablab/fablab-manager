@@ -13,7 +13,7 @@ class File extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 
+        'name',
         'hash',
         'directory',
         'file_type_id',
@@ -31,12 +31,14 @@ class File extends Model
         return $this->belongsTo(Job::class);
     }
 
-    // FileStorageService
-    private static function file_storage_path() {
+    // File Storage Service
+    private static function file_storage_path()
+    {
         return 'FileStorage/';
     }
 
-    private static function hash_algo() {
+    private static function hash_algo()
+    {
         return 'sha256';
     }
 
@@ -62,10 +64,11 @@ class File extends Model
 
     public static function get_file(File $file)
     {
-        return Storage::download(File::file_storage_path().$file->directory.'/'.$file->hash, $file->name);
+        return Storage::download(File::file_storage_path() . $file->directory . '/' . $file->hash, $file->name);
     }
 
-    public static function store_file($req_file, $job_id) {
+    public static function store_file($req_file, int $job_id)
+    {
         // File infos
         $hash = hash_file(File::hash_algo(), $req_file);
         $dir = substr($hash, 0, 2);
@@ -83,12 +86,13 @@ class File extends Model
         // Add to filestorage
         // Create a directory with 2 first letter of hashed_name
         // It's a Laravel trick to not be stopped after x files in directory
-        $req_file->storeAs(File::file_storage_path().$dir, $hash);
+        $req_file->storeAs(File::file_storage_path() . $dir, $hash);
 
         return $file;
     }
 
-    public static function update_file(File $file, $req_file, $req_job_id) {
+    public static function update_file(File $file, $req_file, int $req_job_id)
+    {
         $hash = hash_file(File::hash_algo(), $req_file);
         $dir = substr($hash, 0, 2);
 
@@ -97,7 +101,7 @@ class File extends Model
             File::delete_file($file);
 
             // Create new file
-            $req_file->storeAs(File::file_storage_path().$dir, $hash);
+            $req_file->storeAs(File::file_storage_path() . $dir, $hash);
 
             // Update file infos linked to physic file content for BD
             $file_type = FileType::where('name', '=', $req_file->getClientOriginalExtension())->firstOrFail();
@@ -113,12 +117,13 @@ class File extends Model
         return $file;
     }
 
-    public static function delete_file(File $file) {
-        Storage::delete(File::file_storage_path().$file->directory.'/'.$file->hash);
+    public static function delete_file(File $file)
+    {
+        Storage::delete(File::file_storage_path() . $file->directory . '/' . $file->hash);
 
         // Delete only empty folder
-        if (Storage::exists(File::file_storage_path().$file->directory)) {
-            Storage::deleteDirectory(File::file_storage_path().$file->directory);
+        if (Storage::exists(File::file_storage_path() . $file->directory)) {
+            Storage::deleteDirectory(File::file_storage_path() . $file->directory);
         }
     }
 }

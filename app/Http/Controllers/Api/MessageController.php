@@ -17,7 +17,7 @@ class MessageController extends Controller
         return MessageResource::collection(Message::all());
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         // TODO: validate $id input
         $message = Message::findOrFail($id);
@@ -33,8 +33,8 @@ class MessageController extends Controller
         broadcast(new MessageCreatedEvent($message)); //->toOthers();
 
         // Create and save Event (notify receiver)
-        $event = Event::create([
-            'type' => 'message',
+        Event::create([
+            'type' => Event::T_MESSAGE,
             'to_notify' => true,
             'user_switch_uuid' => $message->receiver_switch_uuid,
             'job_id' => $message->job_id

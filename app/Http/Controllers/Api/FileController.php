@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
-    public function show($id)
+    public function show(int $id)
     {
         // TODO: validate $id input
 
@@ -37,7 +37,7 @@ class FileController extends Controller
         // Create and save Event (notify worker)
         $user_to_notify_switch_uuid = Job::findOrFail($request->job_id)->worker_switch_uuid;
         Event::create([
-            'type' => 'file',
+            'type' => Event::T_FILE,
             'to_notify' => true,
             'user_switch_uuid' => $user_to_notify_switch_uuid,
             'job_id' => $request->job_id
@@ -67,7 +67,7 @@ class FileController extends Controller
         // Create and save Event (notify worker)
         $user_to_notify_switch_uuid = Job::findOrFail($request->job_id)->worker_switch_uuid;
         Event::create([
-            'type' => 'file',
+            'type' => Event::T_FILE,
             'to_notify' => true,
             'user_switch_uuid' => $user_to_notify_switch_uuid,
             'job_id' => $request->job_id
@@ -79,7 +79,7 @@ class FileController extends Controller
         return new FileResource($file);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         // TODO: validate $id input
 

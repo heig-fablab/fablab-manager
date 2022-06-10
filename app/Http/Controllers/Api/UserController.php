@@ -7,8 +7,6 @@ use App\Http\Requests\StoreRequests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\Role;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -30,53 +28,31 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $user = User::create($request->validated());
-        // TODO: some problem to solve
-        // TODO: perhaps use query request
-        // https://www.codimth.com/blog/web/laravel/how-use-many-many-eloquent-relationship-laravel
-        //$user->roles()->attach($request->roles);
 
-        // Example: $quiz->questions()->attach($question->id);
-        //$user->roles()->attach(1);
+        // Add client role by default
+        $user->roles()->attach(Role::where('name', 'client')->first()->id);
 
-
-        // It doesn't work for sure cause there is a prob with my PK
-        // Error message:
-        //Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`fablab_manager`.`role_user`, CONSTRAINT `role_user_user_switch_uuid_foreign` FOREIGN KEY (`user_switch_uuid`) REFERENCES `users` (`switch_uuid`)) (SQL: insert into `role_user` (`user_switch_uuid`, `role_id`) values (0, 4)) in file /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 742
-
-        /*foreach ($request->roles as $role_id) {
-            DB::table('role_user')->insert([
-                'role_id' => $role_id,
-                'user_switch_uuid' => $user->switch_uuid,
-            ]);
-        }*/
-
-        /*foreach ($request->roles as $role_id) {
-            //$role = Role::where('name', $role_name)->first();
-            $user->roles()->attach($role_id);
-            //$user->roles()->attach($role);
-        }*/
+        // Add other roles
+        foreach ($request->roles as $role_name) {
+            $user->roles()->attach(Role::where('name', $role_name)->first()->id);
+        }
 
         return new UserResource($user);
     }
 
     public function update(StoreUserRequest $request)
     {
-        $user = User::find($request->switch_uuid);
-        $user->update($request->validated());
-        //$user->roles()->attach($roles);
+        $req_validated = $request->validated();
+        $user = User::findOrFail($request->switch_uuid);
 
-        // TODO: some problem to solve
-        foreach ($request->roles_to_add as $role_name) {
-            $role = Role::where('name', $role_name)->first();
-            $user->roles()->attach($role->id);
+        // Update all roles
+        $user->roles()->detach();
+        $user->roles()->attach(Role::where('name', 'client')->first()->id);
+        foreach ($request->roles as $role_name) {
+            $user->roles()->attach(Role::where('name', $role_name)->first()->id);
         }
 
-        foreach ($request->roles_to_remove as $role_name) {
-            $role = Role::where('name', $role_name)->first();
-            $user->roles()->detach($role->id);
-        }
-
-        //$user->notify_email_updated_at = now();
+        $user->update($req_validated);
 
         return new UserResource($user);
     }

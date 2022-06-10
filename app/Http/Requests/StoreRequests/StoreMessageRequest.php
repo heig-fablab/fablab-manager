@@ -19,8 +19,8 @@ class StoreMessageRequest extends FormRequest
         return [
             'text' => ['required', 'string', 'max:255'],
             'job_id' => ['required', 'integer'],
-            'sender_switch_uuid' => ['required', 'string', 'max:320'],
-            'receiver_switch_uuid' => ['required', 'string', 'max:320']
+            'sender_switch_uuid' => ['required', 'string', 'max:320', 'exists:users,switch_uuid'],
+            'receiver_switch_uuid' => ['required', 'string', 'max:320', 'exists:users,switch_uuid']
         ];
     }
 }

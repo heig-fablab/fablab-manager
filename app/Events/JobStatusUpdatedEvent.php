@@ -4,7 +4,6 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -22,8 +21,8 @@ class JobStatusUpdatedEvent implements ShouldBroadcast
         $this->job = $job;
     }
 
-    public function broadcastOn() : Channel
+    public function broadcastOn(): Channel
     {
-        return new PrivateChannel('job.'.$this->job->client_switch_uuid);
+        return new PrivateChannel('job.' . $this->job->client_switch_uuid);
     }
 }
