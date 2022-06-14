@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FileResource;
+use App\Http\Requests\StoreRequests\StoreFileRequest;
+use App\Http\Requests\UpdateRequests\UpdateFileRequest;
 use App\Models\File;
-use App\Models\Event;
-use App\Models\Job;
 use App\Events\JobFileUpdatedEvent;
-use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
@@ -21,60 +20,28 @@ class FileController extends Controller
         return new FileResource($file);
     }
 
-    // Request values:
-    // $job_id -> id of the job linked to the file
-    // $file -> file to add
-    public function store(Request $request)
+    public function store(StoreFileRequest $request)
     {
-        // TODO: validation in model and not store request cause doesn't work
+        $request->validated();
 
-        $file = File::store_file($request->file, $request->job_id);
-        $file->save();
+        $file = File::store_file($request->file('file'), $request->job_id);
 
         // Notifications
         broadcast(new JobFileUpdatedEvent($file->job)); //->toOthers();
-
-        // Create and save Event (notify worker)
-        $user_to_notify_switch_uuid = Job::findOrFail($request->job_id)->worker_switch_uuid;
-        Event::create([
-            'type' => Event::T_FILE,
-            'to_notify' => true,
-            'user_switch_uuid' => $user_to_notify_switch_uuid,
-            'job_id' => $request->job_id
-        ]);
-
-        // Emails
-        Event::create_mail_job($user_to_notify_switch_uuid);
 
         return new FileResource($file);
     }
 
-    // Request values:
-    // $id -> id of the file to be updated
-    // $job_id -> id of the job linked to the file
-    // $file -> file to be updated
-    public function update(Request $request)
+    public function update(UpdateFileRequest $request)
     {
-        // TODO: validation in model and not store request cause doen'st work
+        $request->validated();
 
         $file = File::findOrFail($request->id);
-        $file = File::update_file($file, $request->file, $request->job_id);
+        $file = File::update_file($file, $request->file('file'), $request->job_id);
         $file->save();
 
         // Notifications
         broadcast(new JobFileUpdatedEvent($file->job)); //->toOthers();
-
-        // Create and save Event (notify worker)
-        $user_to_notify_switch_uuid = Job::findOrFail($request->job_id)->worker_switch_uuid;
-        Event::create([
-            'type' => Event::T_FILE,
-            'to_notify' => true,
-            'user_switch_uuid' => $user_to_notify_switch_uuid,
-            'job_id' => $request->job_id
-        ]);
-
-        // Emails
-        Event::create_mail_job($user_to_notify_switch_uuid);
 
         return new FileResource($file);
     }

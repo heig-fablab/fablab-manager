@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateRequests\UpdateJobStatusRequest;
 use App\Http\Requests\UpdateRequests\UpdateJobRatingRequest;
 use App\Http\Resources\JobResource;
 use App\Models\Job;
+use App\Models\File;
 use App\Models\Event;
 use App\Events\JobAssignedEvent;
 use App\Events\JobCreatedEvent;
@@ -22,8 +23,6 @@ use App\Events\JobTerminatedEvent;
 
 class JobController extends Controller
 {
-    // TODO: perhaps dependance injection -> https://laravel.com/docs/9.x/controllers#dependency-injection-and-controllers
-
     // API Standard function
     public function index()
     {
@@ -40,15 +39,12 @@ class JobController extends Controller
 
     public function store(StoreJobRequest $request)
     {
-        // TODO: add files
-        /*foreach($request_files as $file) {
-            File::store_file($file, $request->job_id);
-            // TODO: add event
-        }*/
-
-        // TODO: for each file -> new event
-
         $job = Job::create($request->validated());
+
+        // Add files to job
+        foreach ($request->file('files') as $req_file) {
+            File::store_file($req_file, $job->id);
+        }
 
         // Notifications
         broadcast(new JobCreatedEvent($job));
@@ -67,15 +63,14 @@ class JobController extends Controller
         return new JobResource($job);
     }
 
+    // Manage files update only via files route
+    // Here only job info are updated
     public function update(UpdateJobRequest $request)
     {
         $req_validated = $request->validated();
 
-        // TODO: manage files update -> only via files route
-        // here only job info
-
         // Notifications
-        // TODO
+        // TODO: ?
         //broadcast(new JobCreatedEvent($job));
         //broadcast(new JobCreatedEvent($job))->toOthers();
 
@@ -175,12 +170,6 @@ class JobController extends Controller
     public function update_status(UpdateJobStatusRequest $request)
     {
         $req_validated = $request->validated();
-
-        /*if ($req_validated->fails()) {
-            return response()->json([
-                'message' => "error"
-            ], 400);
-        }*/
 
         $job = Job::findOrFail($request->id);
 

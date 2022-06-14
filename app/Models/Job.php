@@ -73,12 +73,6 @@ class Job extends Model
         return Job::where($role_user . '_switch_uuid', $switch_uuid)
             ->where('status', '!=', Job::S_CLOSED)
             ->get();
-        // To see if we need more infos
-        /*->join('categories', 'jobs.id_category', '=', 'categories.id')
-        ->join('users as validators', 'jobs.requestor_switch_uuid', '=', 'users.switch_uuid')
-        ->join('users as workers', 'jobs.worker_switch_uuid', '=', 'workers.switch_uuid')
-        ->join('users as validators', 'jobs.validator_switch_uuid', '=', 'validators.switch_uuid')
-        ->select('jobs.*', 'categories.id', 'validators.switch_uuid', 'workers.switch_uuid', 'validators.switch_uuid')*/
     }
 
     // Has Many
