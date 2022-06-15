@@ -14,7 +14,7 @@ class DeviceResource extends JsonResource
             'name' => $this->name,
             'image_path' => $this->image_path,
             'description' => $this->description,
-            'job_categories' => JobCategoryResource::collection($this->categories),
+            'job_categories' => $this->categories->pluck('name', 'id'),
         ];
     }
 }

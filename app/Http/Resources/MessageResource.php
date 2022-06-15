@@ -8,6 +8,12 @@ class MessageResource extends JsonResource
 {
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'text' => $this->text,
+            'sender_switch_uuid' => $this->sender_switch_uuid,
+            'receiver_switch_uuid' => $this->receiver_switch_uuid,
+            'job' => $this->job->pluck('title', 'id'),
+        ];
     }
 }
