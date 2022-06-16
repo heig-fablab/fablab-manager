@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -15,20 +16,21 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            // Foreign keys
-            $table->unsignedBigInteger('id_job');
-            $table->string('sender_switch_uuid');
-            $table->string('receiver_switch_uuid');
             // Fields
             $table->longText('text');
             // Options
+            $table->softDeletes();
             $table->timestamps();
-            // References on foreign keys
-            $table->foreign('id_job')->references('id')->on('jobs');
-            $table->foreign('sender_switch_uuid')->references('switch_uuid')->on('users');
-            $table->foreign('receiver_switch_uuid')->references('switch_uuid')->on('users');
+            // Foreign keys
+            $table->string('sender_switch_uuid');
+            $table->string('receiver_switch_uuid');
+
+            $table->foreignId('job_id')->constrained()->onDelete('cascade');
+
+            $table->foreign('sender_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
+            $table->foreign('receiver_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
             // Indexes
-            $table->index('id_job');
+            $table->index('job_id');
             $table->index('sender_switch_uuid');
             $table->index('receiver_switch_uuid');
         });
@@ -41,6 +43,8 @@ return new class extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('messages');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 };

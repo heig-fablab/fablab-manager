@@ -3,86 +3,46 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreMessageRequest;
+use App\Http\Requests\StoreRequests\StoreMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
-use Illuminate\Http\Request;
+use App\Models\Event;
+use App\Events\MessageCreatedEvent;
 
 class MessageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // API Standard function
     public function index()
     {
-        //
+        return MessageResource::collection(Message::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show(int $id)
     {
-        //
+        // TODO: validate $id input
+        $message = Message::findOrFail($id);
+        return new MessageResource($message);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreMessageRequest $request)
     {
-        //
-    }
+        // TODO: verify if the job exists and is assigned
+        $message = Message::create($request->validated());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Message $message)
-    {
-        //
-    }
+        // Notifications
+        broadcast(new MessageCreatedEvent($message)); //->toOthers();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Message $message)
-    {
-        //
-    }
+        // Create and save Event (notify receiver)
+        Event::create([
+            'type' => Event::T_MESSAGE,
+            'to_notify' => true,
+            'user_switch_uuid' => $message->receiver_switch_uuid,
+            'job_id' => $message->job_id
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Message $message)
-    {
-        //
-    }
+        // Emails
+        Event::create_mail_job($message->receiver_switch_uuid);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Message $message)
-    {
-        //
+        return new MessageResource($message);
     }
 }

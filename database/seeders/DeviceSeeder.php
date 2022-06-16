@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use App\Models\Device;
 
 class DeviceSeeder extends Seeder
 {
@@ -34,7 +32,7 @@ class DeviceSeeder extends Seeder
             'image_path' => Str::random(10),
             'description' => 'Gravez vos pièces avec ce laser à fibre sur un surface comprise jusqu\'à 19 x 19 cm, d\'une hauteur ne dépassant pas 17 cm. Les gravures font faisables sur des pièces en métal et en plastique.',
         ]);
-        
+
         DB::table('devices')->insert([
             'name' => 'Trotec Speedy 360',
             'image_path' => Str::random(10),

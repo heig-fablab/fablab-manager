@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -17,10 +18,8 @@ return new class extends Migration
             $table->id();
             // Foreign keys
             $table->string('user_switch_uuid');
-            $table->unsignedBigInteger('role_id');
-            // References on foreign keys
-            $table->foreign('user_switch_uuid')->references('switch_uuid')->on('users');
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('user_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
+            $table->foreignId('role_id')->constrained()->onDelete('cascade');
             // Indexes
             $table->index('user_switch_uuid');
             $table->index('role_id');
@@ -34,6 +33,8 @@ return new class extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('role_user');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 };

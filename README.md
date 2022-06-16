@@ -82,6 +82,12 @@ Ces trois éléments du dossier "dist" doivent ensuite être déposés dans le d
 "public" du backend. Il faut aussi impérativement copier le contenu de "index.html"
 pour le mettre dans "resources/views/app.blade.php".
 
+### IDE
+If you use visual studio, don't forget to install the extension for:
+* Vue.js
+* Laravel
+* PHP
+
 ## Use
 
 1. Start by running this command to install dependencies:
@@ -89,42 +95,38 @@ pour le mettre dans "resources/views/app.blade.php".
 composer install
 ````
 
-2. It use Laravel Sail, so go use the following command:
+2. Get the sail environment ready:
+````
+cp .env.example .env
+````
+
+3. It use Laravel Sail, so go use the following command:
 ````
 ./vendor/bin/sail up
 ````
 
-3. You can also create an alias for _sail_ like that:
+4. You can also create an alias for _sail_ like that:
 ````
 alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 ````
-
-4. Copy the .env.example and adapt it to your needs.
 
 5. Generate your key for the first time:
 ````
 ./vendor/bin/sail artisan key:generate
 ````
 
-6. Run the migrations:
+6. Run the migrations and seeds:
 ````
 ./vendor/bin/sail artisan migrate:fresh --seed
-
-./vendor/bin/sail artisan migrate
 ````
 
-7. Run the seeds:
+7. Start websockets:
 ````
-./vendor/bin/sail artisan db:seed
+./vendor/bin/sail artisan websockets:serve
 ````
 
 ### Default port
 default developement server in on port 80
-
-### Migration
-````
-./vendor/bin/sail artisan migrate
-````
 
 ## Tests
 ````
@@ -141,9 +143,17 @@ Not unable yet!
 ./vendor/bin/sail artisan test --coverage
 ````
 
+### Mail testing
+As we develop with Laravel Sail, the libraire [MailHog](https://github.com/mailhog/MailHog) is available, watch the test mail send at this address: \
+http://localhost:8025/
+
 ## Support
 
 ## Contribute
+
+### Postman
+To help at testing API, an Postman exists:
+[fablab-manager-postman](https://go.postman.co/workspace/fablab-manager~549aafa9-4f89-47c7-838a-ef74a6d1f398/collection/15807442-1ea77052-bd3c-4f9b-b806-25e11d878c0e?action=share&creator=15807442)
 
 ## Authors
 

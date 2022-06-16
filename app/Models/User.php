@@ -11,18 +11,22 @@ class User extends Model
     use HasFactory;
     use SoftDeletes;
 
+    // Primary key options
     protected $primaryKey = 'switch_uuid';
+    protected $keyType = 'string';
 
     protected $fillable = [
         'switch_uuid',
-        'email', 
-        'name', 
+        'email',
+        'name',
         'surname',
-        'password'
+        'password',
+        'last_email_sent'
     ];
 
     // Options
     public $timestamps = false;
+    public $incrementing = false;
 
     // Has many
     public function requestor_jobs()

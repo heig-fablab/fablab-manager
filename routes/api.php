@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\DeviceController;
 use App\Http\Controllers\Api\FileController;
@@ -22,18 +21,21 @@ use App\Http\Controllers\Api\UserController;
 */
 
 // Default
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
 
-// Futur all users root
+
+// TODO: verify route inputs with:
+// https://laravel.com/docs/9.x/routing#required-parameters
+
+// Futur all users routes
 
 //Route::apiResource('jobs', JobController::class);
-/*Route::resource('photos', PhotoController::class)->only([
-    'index', 'show'
-]);*/
-Route::prefix('/jobs')->controller(JobController::class)->group(function () { 
-    Route::get('', 'index');
+
+Route::prefix('/jobs')->controller(JobController::class)->group(function () {
+    Route::get('', 'index'); // admin
+    Route::get('/unassigned', 'unassigned_jobs');
     Route::get('/user/{switch_uuid}', 'user_jobs');
     Route::get('/client/{switch_uuid}', 'user_as_client_jobs');
     Route::get('/worker/{switch_uuid}', 'user_as_worker_jobs'); // todo verify role ->middleware()
@@ -41,17 +43,33 @@ Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::get('/{id}', 'show');
     Route::post('', 'store');
     Route::put('', 'update');
-    //Route::patch('/{id}', 'update_status');
+    //Route::patch('/{id}/validator/{switch_uuid}', 'assign_validator'); // todo verify role ->middleware()
+    Route::patch('/worker/assign', 'assign_worker'); // todo verify role ->middleware()
+    Route::patch('/status', 'update_status'); // todo verify role and user ->middleware()
+    Route::patch('/rating', 'update_rating'); // todo verify user ->middleware()
+    Route::patch('/notifications/{id}', 'update_notifications');
     Route::delete('/{id}', 'destroy');
 });
 
-Route::apiResource('files', FileController::class);
+//Route::apiResource('files', FileController::class);
+Route::prefix('/files')->controller(FileController::class)->group(function () {
+    //Route::get('', 'index');
+    Route::get('/{id}', 'show');
+    Route::post('', 'store');
+    //Route::post('/job/{id}', 'job_files');
+    Route::put('', 'update');
+    Route::delete('/{id}', 'destroy');
+});
 
-Route::apiResource('messages', MessageController::class);
+Route::prefix('/messages')->controller(MessageController::class)->group(function () {
+    Route::get('', 'index');
+    Route::get('/{id}', 'show');
+    Route::post('', 'store');
+});
 
 // Futur admin routes
 //Route::apiResource('devices', DeviceController::class);
-Route::prefix('/devices')->controller(DeviceController::class)->group(function () { 
+Route::prefix('/devices')->controller(DeviceController::class)->group(function () {
     Route::get('', 'index');
     Route::get('/{id}', 'show');
     Route::post('', 'store');
@@ -59,11 +77,27 @@ Route::prefix('/devices')->controller(DeviceController::class)->group(function (
     Route::delete('/{id}', 'destroy');
 }); // TODO -> verify admin via middleware
 
-Route::apiResource('file_types', FileTypeController::class); // todo -> verify admin via middleware
+//Route::apiResource('file_types', FileTypeController::class); // todo -> verify admin via middleware
+Route::prefix('/file_types')->controller(FileTypeController::class)->group(function () {
+    Route::get('', 'index');
+    Route::get('/{id}', 'show');
+    Route::post('', 'store');
+    Route::put('', 'update');
+    Route::delete('/{id}', 'destroy');
+}); // TODO -> verify admin via middleware
 
 Route::apiResource('job_categories', JobCategoryController::class); // todo -> verify admin via middleware
 
-Route::apiResource('users', UserController::class);
+//Route::apiResource('users', UserController::class);
+//Route::apiResource('devices', DeviceController::class);
+Route::prefix('/users')->controller(UserController::class)->group(function () {
+    Route::get('', 'index');
+    Route::get('/{switch_uuid}', 'show');
+    Route::post('', 'store'); // TODO -> verify admin via middleware
+    Route::put('', 'update'); // TODO -> verify admin via middleware
+    //Route::patch('/{switch_uuid}/notifications', 'update_notify');
+    Route::delete('/{switch_uuid}', 'destroy'); // TODO -> verify admin via middleware
+}); // TODO -> verify admin via middleware
 
 // Old code
 

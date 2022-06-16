@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -24,10 +23,10 @@ class UserSeeder extends Seeder
             'surname' => 'admin',
             'password' => Hash::make('password'),
         ]);
-        
+
         DB::table('users')->insert([
             'switch_uuid' => '222@hes-so.ch',
-            'email' => 'worker@heig-vd.ch',
+            'email' => 'alec.berney@heig-vd.ch', //'worker@heig-vd.ch'
             'name' => Str::random(10),
             'surname' => Str::random(10),
             'password' => Hash::make('password'),
@@ -43,7 +42,7 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             'switch_uuid' => '444@hes-so.ch',
-            'email' => 'client@heig-vd.ch',
+            'email' => 'beral@sevjnet.ch', //'client@heig-vd.ch'
             'name' => Str::random(10),
             'surname' => Str::random(10),
             'password' => Hash::make('password'),
