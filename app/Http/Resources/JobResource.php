@@ -3,8 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\FileResource;
-use App\Http\Resources\MessageResource;
+//use App\Http\Resources\MessageResource;
 
 class JobResource extends JsonResource
 {
@@ -18,6 +17,7 @@ class JobResource extends JsonResource
             'description' => $this->description,
             'deadline' => $this->deadline,
             'rating' => $this->rating,
+            'working_hours' => $this->working_hours,
             'status' => $this->status,
             'job_category_id' => $this->job_category_id,
             'client_switch_uuid' => $this->client_switch_uuid,

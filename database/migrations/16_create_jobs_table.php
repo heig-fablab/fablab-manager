@@ -16,9 +16,10 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->date('deadline');
             $table->tinyInteger('rating')->nullable();
-            $table->float('working_hour', 3, 1, true)->nullable(); // unsigned
+            $table->float('working_hours', 3, 1, true)->nullable(); // unsigned
             $table->enum('status', ['new', 'validated', 'assigned', 'ongoing', 'on-hold', 'completed', 'closed'])->default('new');
             // Options
+            $table->softDeletes();
             $table->timestamps();
             // Foreign keys
             $table->string('client_switch_uuid');
