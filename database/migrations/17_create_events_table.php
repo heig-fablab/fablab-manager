@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
@@ -22,6 +17,7 @@ return new class extends Migration
             $table->string('data')->nullable(); // to store status type
             // Options
             $table->timestamps();
+            $table->softDeletes();
             // Foreign keys
             $table->string('user_switch_uuid');
             $table->foreign('user_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
@@ -32,11 +28,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
