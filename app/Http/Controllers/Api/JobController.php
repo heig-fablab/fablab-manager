@@ -42,8 +42,11 @@ class JobController extends Controller
         $job = Job::create($request->validated());
 
         // Add files to job
-        foreach ($request->file('files') as $req_file) {
-            File::store_file($req_file, $job->id);
+        if ($request->has('files')) {
+            $files = $request->file('files');
+            foreach ($files as $req_file) {
+                File::store_file($req_file, $job->id);
+            }
         }
 
         // Notifications

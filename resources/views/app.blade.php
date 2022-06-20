@@ -1,4 +1,15 @@
-<!DOCTYPE html><html lang="en" class="html"><head><meta type="user" value="{{\Auth::user()}}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,shrink-to-fit=no"><link rel="stylesheet" href="/assets/fonts/simple-line-icons/css/simple-line-icons.css"><link rel="stylesheet" href="/assets/fonts/iconsmind-s/css/iconsminds.css"><title>FabLab HEIG</title><style>.loading {
+<!DOCTYPE html>
+<html lang="en" class="html">
+
+<head>
+  <meta type="user" value="{{\Auth::user()}}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,shrink-to-fit=no">
+  <link rel="stylesheet" href="/assets/fonts/simple-line-icons/css/simple-line-icons.css">
+  <link rel="stylesheet" href="/assets/fonts/iconsmind-s/css/iconsminds.css">
+  <title>FabLab HEIG</title>
+  <style>
+    .loading {
       display: inline-block;
       width: 30px;
       height: 30px;
@@ -32,4 +43,22 @@
       to {
         -webkit-transform: rotate(360deg);
       }
-    }</style><link href="/assets/css/chunk-vendors.596cd6ff.css" rel="preload" as="style"><link href="/assets/css/index.81b1c7c6.css" rel="preload" as="style"><link href="/assets/js/chunk-vendors.5d0c25e8.js" rel="preload" as="script"><link href="/assets/js/index.ee19f151.js" rel="preload" as="script"><link href="/assets/css/chunk-vendors.596cd6ff.css" rel="stylesheet"><link href="/assets/css/index.81b1c7c6.css" rel="stylesheet"></head><body class="body"><noscript>You need to enable JavaScript to run this app.</noscript><div id="app"><div class="loading"></div></div><script src="/assets/js/chunk-vendors.5d0c25e8.js"></script><script src="/assets/js/index.ee19f151.js"></script></body></html>
+    }
+  </style>
+  <link href="/assets/css/chunk-vendors.be89ea94.css" rel="preload" as="style">
+  <link href="/assets/css/index.2e871afe.css" rel="preload" as="style">
+  <link href="/assets/js/chunk-vendors.51e053e8.js" rel="preload" as="script">
+  <link href="/assets/js/index.cc1ce582.js" rel="preload" as="script">
+  <link href="/assets/css/chunk-vendors.be89ea94.css" rel="stylesheet">
+  <link href="/assets/css/index.2e871afe.css" rel="stylesheet">
+</head>
+
+<body class="body"><noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="app">
+    <div class="loading"></div>
+  </div>
+  <script src="/assets/js/chunk-vendors.51e053e8.js"></script>
+  <script src="/assets/js/index.cc1ce582.js"></script>
+</body>
+
+</html>

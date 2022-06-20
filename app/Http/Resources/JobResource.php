@@ -26,8 +26,8 @@ class JobResource extends JsonResource
             'files' => $this->files->pluck('name', 'id'),
             //'messages' => MessageResource::collection($this->messages),
             'messages' => $this->messages->pluck('id'),
-            //'created_at' => $this->created_at,
-            //'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

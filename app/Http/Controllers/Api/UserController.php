@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Support\Facades\Log;
+//use Illuminate\Http\Request;
+//use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequests\StoreUserRequest;
 use App\Http\Requests\UpdateRequests\UpdateUserEmailNotificationsRequest;
@@ -69,6 +71,11 @@ class UserController extends Controller
     }
 
     // Others functions
+    /*public function logout(Request $request) //Called when the user wants to disconnect
+    {
+        return redirect("shibboleth-logout");
+    } //return : route to shibboleth logout handler*/
+
     public function update_email_notifications(UpdateUserEmailNotificationsRequest $request)
     {
         $req_validated = $request->validated();
