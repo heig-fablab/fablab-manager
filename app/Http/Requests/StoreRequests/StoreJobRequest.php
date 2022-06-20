@@ -23,6 +23,7 @@ class StoreJobRequest extends FormRequest
             'deadline' => ['required', 'date'], // TODO: check date format
             'job_category_id' => ['required', 'integer', 'exists:job_categories,id'],
             'client_switch_uuid' => ['required', 'max:320'],
+            'files' => ['nullable'],
             /*'worker_switch_uuid' => ['nullable', 'max:320'],
             'validator_switch_uuid' => ['nullable', 'max:320'],*/
         ];

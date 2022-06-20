@@ -32,7 +32,6 @@ use App\Http\Controllers\Api\UserController;
 // Futur all users routes
 
 //Route::apiResource('jobs', JobController::class);
-
 Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::get('', 'index'); // admin
     Route::get('/unassigned', 'unassigned_jobs');
@@ -47,7 +46,7 @@ Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::patch('/worker/assign', 'assign_worker'); // todo verify role ->middleware()
     Route::patch('/status', 'update_status'); // todo verify role and user ->middleware()
     Route::patch('/rating', 'update_rating'); // todo verify user ->middleware()
-    Route::patch('/notifications/{id}', 'update_notifications');
+    Route::patch('{id}/notifications', 'update_notifications');
     Route::delete('/{id}', 'destroy');
 });
 
@@ -95,7 +94,7 @@ Route::prefix('/users')->controller(UserController::class)->group(function () {
     Route::get('/{switch_uuid}', 'show');
     Route::post('', 'store'); // TODO -> verify admin via middleware
     Route::put('', 'update'); // TODO -> verify admin via middleware
-    //Route::patch('/{switch_uuid}/notifications', 'update_notify');
+    Route::patch('/notifications', 'update_email_notifications'); // TODO -> verify if connected
     Route::delete('/{switch_uuid}', 'destroy'); // TODO -> verify admin via middleware
 }); // TODO -> verify admin via middleware
 

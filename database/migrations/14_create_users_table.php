@@ -26,6 +26,7 @@ return new class extends Migration
             $table->boolean('require_messages_email')->default(true);
             $table->timestamp('last_email_sent')->useCurrent()->nullable();
             // Options
+            $table->rememberToken();
             $table->softDeletes();
         });
     }
