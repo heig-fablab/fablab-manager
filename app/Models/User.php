@@ -21,6 +21,9 @@ class User extends Model
         'name',
         'surname',
         'password',
+        'require_status_email',
+        'require_files_email',
+        'require_messages_email',
         'last_email_sent'
     ];
 

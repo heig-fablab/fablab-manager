@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequests\StoreUserRequest;
+use App\Http\Requests\UpdateRequests\UpdateUserEmailNotificationsRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\Role;
@@ -64,5 +66,20 @@ class UserController extends Controller
         return response()->json([
             'message' => "Device deleted successfully!"
         ], 200);
+    }
+
+    // Others functions
+    public function update_email_notifications(UpdateUserEmailNotificationsRequest $request)
+    {
+        $req_validated = $request->validated();
+        $user = User::findOrFail($request->switch_uuid);
+        $user->update($req_validated);
+
+        Log::debug('user updated');
+        Log::debug('require_status_email:' . $user->require_status_email);
+        Log::debug('require_files_email: ' . $user->require_files_email);
+        Log::debug('require_messages_email: ' . $user->require_messages_email);
+
+        return new UserResource($user);
     }
 }
