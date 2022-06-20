@@ -25,11 +25,9 @@ use App\Http\Controllers\Api\UserController;
     return $request->user();
 });*/
 
-
-// TODO: verify route inputs with:
-// https://laravel.com/docs/9.x/routing#required-parameters
-
 // Futur all users routes
+
+// All {id} and {switch_uuid} parameters are required and validated in RouteServiceProvider file
 
 //Route::apiResource('jobs', JobController::class);
 Route::prefix('/jobs')->controller(JobController::class)->group(function () {
@@ -98,34 +96,8 @@ Route::prefix('/users')->controller(UserController::class)->group(function () {
     Route::delete('/{switch_uuid}', 'destroy'); // TODO -> verify admin via middleware
 }); // TODO -> verify admin via middleware
 
-// Old code
-
 /*Route::prefix('/user')->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
-});
-  
-Route::group(['middleware' => ['auth']], function () {
-
-    Route::prefix('/user')->group(function () {
-        Route::get('/retrieve', function() { return Auth::user(); });
-        Route::post('/update-settings', [UserController::class, 'updateSettings']);
-    });
-
-    Route::get('/jobs/{id}', [JobController::class, 'index']);
-    Route::prefix('/job')->group(function () { 
-        Route::post('/store', [JobController::class, 'store']);
-        Route::post('/update-status', [JobController::class, 'updateStatus']);
-        Route::post('/update-notify', [JobController::class, 'updateNotify']);
-        Route::post('/assign', [JobController::class, 'assign']);
-        Route::post('/terminate', [JobController::class, 'terminate']);
-    });
-
-    Route::prefix('/message')->group(function () { 
-        Route::post('/store', [MessageController::class, 'store']);
-    });
-
-    Route::prefix('/file')->group(function () { 
-        Route::post('/store', [FileController::class, 'store']);
-        Route::get('/download/{id}', [FileController::class, 'download']);
-    });
 });*/
+
+//Route::group(['middleware' => ['auth']], function () {

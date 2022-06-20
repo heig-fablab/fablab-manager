@@ -38,6 +38,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::pattern('id', '[0-9]+');
+        Route::pattern('switch_uuid', '[0-9a-zA-Z]{3,}@(hes-so|heig-vd).ch'); // TODO: modify to be right format
     }
 
     /**
