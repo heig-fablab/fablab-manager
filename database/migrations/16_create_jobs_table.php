@@ -12,19 +12,19 @@ return new class extends Migration
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             // Fields
-            $table->string('title');
-            $table->longText('description')->nullable();
+            $table->string('title', 50);
+            $table->text('description')->nullable();
             $table->date('deadline');
-            $table->tinyInteger('rating')->nullable();
+            $table->unsignedTinyInteger('rating')->nullable();
             $table->float('working_hours', 3, 1, true)->nullable(); // unsigned
             $table->enum('status', ['new', 'validated', 'assigned', 'ongoing', 'on-hold', 'completed', 'closed'])->default('new');
             // Options
             $table->softDeletes();
             $table->timestamps();
             // Foreign keys
-            $table->string('client_switch_uuid');
-            $table->string('worker_switch_uuid')->nullable(); // Nullable because can / must be attributed later
-            $table->string('validator_switch_uuid')->nullable(); // Nullable because can / must be attributed later
+            $table->string('client_switch_uuid', 254);
+            $table->string('worker_switch_uuid', 254)->nullable(); // Nullable because can / must be attributed later
+            $table->string('validator_switch_uuid', 254)->nullable(); // Nullable because can / must be attributed later
 
             $table->foreignId('job_category_id')->constrained();
 

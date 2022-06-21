@@ -17,8 +17,8 @@ return new class extends Migration
         Schema::create('job_categories', function (Blueprint $table) {
             $table->id();
             // Fields
-            $table->string('acronym');
-            $table->string('name');
+            $table->string('acronym', 3);
+            $table->string('name', 50);
         });
     }
 
