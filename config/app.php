@@ -193,6 +193,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Regex' => App\Constants\Regex::class,
+        //'Enum' => App\Constants\Enum::class,
     ])->toArray(),
 
 ];

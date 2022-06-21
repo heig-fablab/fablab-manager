@@ -51,16 +51,21 @@ class File extends Model
         }
     }
 
-    public static function validate_file(Request $request)
+    public static function is_validate_file($file, int $job_category_id, int $job_id)
     {
-        // TODO
+        if ($file->getClientOriginalExtension() == $file->extension()) {
+            return false;
+        }
 
+        if ($job_category_id == -1) {
+            $job_category_id = Job::findOrFail($job_id)->job_category_id;
+        }
 
-        /*$request->validate([
-            'file' => 'required|file|max:2048',
-            'job_id' => 'required|integer',
-        ]);*/
-
+        return in_array(
+            $file->extension(),
+            FileType::where('job_category_id', $job_category_id)
+                ->pluck('mime_type')
+        );
         // TODO: verify mime_type via ->extension()
         // TODO: verify file_type via ->getClientOriginalExtension
         /* function ($attribute, $value, $fail) {

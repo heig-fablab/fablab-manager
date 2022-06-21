@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class UpdateJobRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
-    
+
     public function authorize()
     {
         // Will be managed in a policy
