@@ -29,6 +29,13 @@ class User extends Authenticatable
         'last_email_sent'
     ];
 
+    // Default values
+    protected $attributes = [
+        'require_status_email' => true,
+        'require_files_email' => true,
+        'require_messages_email' => true
+    ];
+
     protected $hidden = [
         'password',
         'remember_token',
