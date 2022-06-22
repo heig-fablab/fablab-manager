@@ -8,6 +8,7 @@ use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use App\Models\Event;
 use App\Events\MessageCreatedEvent;
+use App\Constants\EventTypes;
 
 class MessageController extends Controller
 {
@@ -34,7 +35,7 @@ class MessageController extends Controller
 
         // Create and save Event (notify receiver)
         Event::create([
-            'type' => Event::T_MESSAGE,
+            'type' => EventTypes::MESSAGE,
             'to_notify' => true,
             'user_switch_uuid' => $message->receiver_switch_uuid,
             'job_id' => $message->job_id

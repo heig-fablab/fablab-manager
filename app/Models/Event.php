@@ -20,11 +20,6 @@ class Event extends Model
         'job_id'
     ];
 
-    // Types of event values
-    public const T_MESSAGE = 'message';
-    public const T_FILE = 'file';
-    public const T_STATUS = 'status';
-
     // Mail Service
     public static function create_mail_job(string $user_switch_uuid)
     {

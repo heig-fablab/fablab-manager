@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use App\Constants\EventTypes;
 
 class File extends Model
 {
@@ -40,7 +41,7 @@ class File extends Model
         $user_to_notify_switch_uuid = Job::findOrFail($job_id)->worker_switch_uuid;
         if ($user_to_notify_switch_uuid != null) {
             Event::create([
-                'type' => Event::T_FILE,
+                'type' => EventTypes::FILE,
                 'to_notify' => true,
                 'user_switch_uuid' => $user_to_notify_switch_uuid,
                 'job_id' => $job_id
