@@ -195,6 +195,7 @@ return [
         'Regex' => App\Constants\Regex::class,
         'JobStatus' => App\Constants\JobStatus::class,
         'EventTypes' => App\Constants\EventTypes::class,
+        'Roles' => App\Constants\Roles::class,
     ])->toArray(),
 
 ];

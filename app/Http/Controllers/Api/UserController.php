@@ -32,6 +32,8 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
+        //$this->authorize('create', User::class);
+
         $user = User::create($request->validated());
 
         // Add client role by default

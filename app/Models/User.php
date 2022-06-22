@@ -77,4 +77,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
+
+    // User Service
+    public function has_given_role(string $role)
+    {
+        return $this->roles->pluck('name')->contains($role);
+    }
 }

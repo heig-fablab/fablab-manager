@@ -29,6 +29,9 @@ use App\Http\Controllers\Api\UserController;
 
 // TODO: Do we transform all update routes with id given in path?
 
+// TODO: verify acces with middleware
+// https://laravel.com/docs/9.x/authorization#via-middleware
+
 // Futur all users routes
 Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::get('', 'index'); // admin
@@ -64,13 +67,15 @@ Route::prefix('/messages')->controller(MessageController::class)->group(function
 });
 
 // Futur admin routes
-Route::prefix('/devices')->controller(DeviceController::class)->group(function () {
-    Route::get('', 'index');
-    Route::get('/{id}', 'show');
-    Route::post('', 'store');
-    Route::put('', 'update');
-    Route::delete('/{id}', 'destroy');
-}); // TODO -> verify admin via middleware
+Route::prefix('/devices')->controller(DeviceController::class)
+    //->group(['middleware' => ['can:before,App\Models\Device']], function () {
+    ->group(function () {
+        Route::get('', 'index');
+        Route::get('/{id}', 'show');
+        Route::post('', 'store');
+        Route::put('', 'update');
+        Route::delete('/{id}', 'destroy');
+    });
 
 Route::prefix('/file_types')->controller(FileTypeController::class)->group(function () {
     Route::get('', 'index');
