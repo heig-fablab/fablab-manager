@@ -20,10 +20,10 @@ class StoreJobRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:50', 'regex:' . Regex::TITLE],
-            'description' => ['sometimes', 'nullable', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION],
+            'description' => ['sometimes', 'filled', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION],
             'deadline' => ['required', 'date', 'date_format:"Y-m-d"', 'after:yesterday'],
             'job_category_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:job_categories,id'],
-            'files' => ['sometimes', 'nullable', 'max:10', function () {
+            'files' => ['sometimes', 'filled', 'max:10', function () {
                 foreach ($this->file('files') as $file) {
                     if (!File::is_valid_file($file, $this->job_category_id, -1)) {
                         return false;

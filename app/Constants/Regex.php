@@ -8,10 +8,9 @@ final class Regex
 {
     public const DESCRIPTION = '/^.*$/'; // TODO
     public const TITLE = '/^.*$/'; // TODO
-    public const SWITCH_UUID = '/^.*$/'; // TODO
+    public const SWITCH_UUID = '/^.*$/'; // TODO //[0-9a-zA-Z]{3,}@(hes-so|heig-vd).ch
     public const NAME = '/^.*$/'; // TODO
     public const ROLE_NAME = '/^[a-z]{3,12}$/';
-
 
     // TODO: perhaps creates a rule
     private const PASSWORD_UPPER_CASE = '/[A-Z]/';

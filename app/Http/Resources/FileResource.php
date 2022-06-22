@@ -13,8 +13,8 @@ class FileResource extends JsonResource
             'name' => $this->name,
             //'hash' => $this->hash,
             //'directory' => $this->directory,
-            'file_type' => $this->file_type,
-            'job' => $this->job,
+            'file_type' => $this->file_type->name,
+            'job' => $this->job->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

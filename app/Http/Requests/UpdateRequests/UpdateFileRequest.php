@@ -3,6 +3,7 @@
 namespace App\Http\Requests\UpdateRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\File;
 
 class UpdateFileRequest extends FormRequest
 {
@@ -16,9 +17,12 @@ class UpdateFileRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => ['required', 'integer', 'min:0', 'exists:files,id'],
-            'file' => ['required', 'file'],
-            'job_id' => ['required', 'integer', 'min:0', 'exists:jobs,id'],
+            'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:files,id'],
+            // 100Mo max
+            'file' => ['required', 'file', 'max:100000000', function () {
+                return File::is_valid_file($this->file('file'), -1, $this->job_id);
+            }],
+            'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
         ];
     }
 }

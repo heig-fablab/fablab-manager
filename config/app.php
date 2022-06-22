@@ -193,8 +193,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'Regex' => App\Constants\Regex::class,
-        'JobStatus' => App\Constants\JobStatusEnum::class,
-        'EventTypes' => App\Constants\EventTypesEnum::class,
+        'JobStatus' => App\Constants\JobStatus::class,
+        'EventTypes' => App\Constants\EventTypes::class,
     ])->toArray(),
 
 ];

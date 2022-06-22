@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Constants\EventTypes;
+//use App\Constants\JobStatus;
+
 
 class File extends Model
 {
@@ -39,6 +41,7 @@ class File extends Model
     {
         // Create and save Event (notify worker)
         $user_to_notify_switch_uuid = Job::findOrFail($job_id)->worker_switch_uuid;
+
         if ($user_to_notify_switch_uuid != null) {
             Event::create([
                 'type' => EventTypes::FILE,
