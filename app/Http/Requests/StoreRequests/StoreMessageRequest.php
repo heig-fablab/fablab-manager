@@ -3,6 +3,7 @@
 namespace App\Http\Requests\StoreRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Constants\Regex;
 
 class StoreMessageRequest extends FormRequest
 {
@@ -17,10 +18,10 @@ class StoreMessageRequest extends FormRequest
     public function rules()
     {
         return [
-            'text' => ['required', 'string', 'max:255'],
-            'job_id' => ['required', 'integer'],
-            'sender_switch_uuid' => ['required', 'string', 'max:320', 'exists:users,switch_uuid'],
-            'receiver_switch_uuid' => ['required', 'string', 'max:320', 'exists:users,switch_uuid']
+            'text' => ['required', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION],
+            'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
+            'sender_switch_uuid' => ['required', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'exists:users,switch_uuid'],
+            'receiver_switch_uuid' => ['required', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'exists:users,switch_uuid']
         ];
     }
 }

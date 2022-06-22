@@ -16,10 +16,13 @@ use App\Events\JobAssignedEvent;
 use App\Events\JobCreatedEvent;
 use App\Events\JobStatusUpdatedEvent;
 use App\Events\JobTerminatedEvent;
+use App\Constants\EventTypes;
+use App\Constants\JobStatus;
 
-// TODO: add notifications and websockets with: https://beyondco.de/docs/laravel-websockets/getting-started/introduction
-// php artisan websockets:serve --host=127.0.0.1 -> to communicate only on localhost that is possible, wait and see if it works
-// php artisan websockets:serve --port=3030 -> TODO: define an port for websockets 80 or 443 -> perhaps 8000
+// php artisan websockets:serve --host=127.0.0.1
+// -> to communicate only on localhost that is possible, wait and see if it works
+// php artisan websockets:serve --port=3030 
+// -> TODO: define an port for websockets 80 or 443 -> perhaps 8000
 
 class JobController extends Controller
 {
@@ -31,8 +34,6 @@ class JobController extends Controller
 
     public function show(int $id)
     {
-        // TODO: verify $id input
-
         $job = Job::findOrFail($id);
         return new JobResource($job);
     }
@@ -55,9 +56,9 @@ class JobController extends Controller
         // Create and save Event (notify worker)
         if ($job->worker_switch_uuid != null) {
             Event::create([
-                'type' => Event::T_STATUS,
+                'type' => EventTypes::STATUS,
                 'to_notify' => true,
-                'data' => Job::S_NEW,
+                'data' => JobStatus::NEW,
                 'user_switch_uuid' => $job->worker_switch_uuid,
                 'job_id' => $job->id
             ]);
@@ -84,10 +85,6 @@ class JobController extends Controller
 
     public function destroy(int $id)
     {
-        // TODO: verify $id input
-
-        // TODO: only admin or creator?
-
         Job::findOrFail($id)->delete();
         return response()->json([
             'message' => "Job deleted successfully!"
@@ -97,41 +94,28 @@ class JobController extends Controller
     // Others function
     public function unassigned_jobs()
     {
-        //TODO: The timeline, files and messages must be attached to each job as additional properties
         return JobResource::collection(Job::get_unassigned_jobs());
     }
 
     public function user_jobs(string $switch_uuid)
     {
-        // TODO: verify $switch_uuid input
-        // TODO: check how validate with request GET params
-        // https://laravel.com/docs/9.x/routing#required-parameters
-
         return JobResource::collection(Job::get_user_jobs($switch_uuid));
     }
 
     public function user_as_client_jobs(string $switch_uuid)
     {
-        // TODO: verify $switch_uuid input
-
         return JobResource::collection(Job::get_client_jobs($switch_uuid));
     }
 
     public function user_as_worker_jobs(string $switch_uuid)
     {
-        // TODO: verify $switch_uuid input
-
         return JobResource::collection(Job::get_worker_jobs($switch_uuid));
     }
 
     public function user_as_validator_jobs(string $switch_uuid)
     {
-        // TODO: verify $switch_uuid input
-
         return JobResource::collection(Job::get_validator_jobs($switch_uuid));
     }
-
-    // TODO: perhaps route for assign multiple jobs
 
     public function assign_worker(UpdateJobAssignWorkerRequest $request)
     {
@@ -149,7 +133,7 @@ class JobController extends Controller
         $job->update($req_validated);
 
         // Update status
-        $job->status = Job::S_ASSIGNED;
+        $job->status = JobStatus::ASSIGNED;
         $job->save();
 
         // Notifications
@@ -157,9 +141,9 @@ class JobController extends Controller
 
         // Create and save Event (notify client)
         $event = Event::create([
-            'type' => Event::T_STATUS,
+            'type' => EventTypes::STATUS,
             'to_notify' => true,
-            'data' => Job::S_ASSIGNED,
+            'data' => JobStatus::ASSIGNED,
             'user_switch_uuid' => $job->client_switch_uuid,
             'job_id' => $job->id
         ]);
@@ -182,13 +166,6 @@ class JobController extends Controller
             ], 400);
         }
 
-        // TODO: perhaps in form validation https://laravel.com/docs/9.x/validation#rule-required-if
-        if ($request->status == Job::S_COMPLETED && $request->working_hours == null) {
-            return response()->json([
-                'message' => "You can't complete a job without annoncing how many working hours you did!"
-            ], 400);
-        }
-
         $job->update($req_validated);
 
         // Notifications
@@ -196,7 +173,7 @@ class JobController extends Controller
 
         // Create and save Event (notify client)
         Event::create([
-            'type' => Event::T_STATUS,
+            'type' => EventTypes::STATUS,
             'to_notify' => true,
             'data' => $job->status,
             'user_switch_uuid' => $job->client_switch_uuid,
@@ -215,7 +192,7 @@ class JobController extends Controller
 
         $job = Job::findOrFail($request->id);
 
-        if ($job->status != Job::S_COMPLETED) {
+        if ($job->status != JobStatus::COMPLETED) {
             return response()->json([
                 'message' => "You can't rate of a job that is not completed!"
             ], 400);
@@ -227,7 +204,7 @@ class JobController extends Controller
         $job->update($req_validated);
 
         // Update status
-        $job->status = Job::S_CLOSED;
+        $job->status = JobStatus::CLOSED;
         $job->save();
 
         // Notifications
@@ -235,9 +212,9 @@ class JobController extends Controller
 
         // Create and save Event (notify worker)
         $event = Event::create([
-            'type' => Event::T_STATUS,
+            'type' => EventTypes::STATUS,
             'to_notify' => true,
-            'data' => Job::S_CLOSED,
+            'data' => JobStatus::CLOSED,
             'user_switch_uuid' => $job->worker_switch_uuid,
             'job_id' => $job->id
         ]);
@@ -254,7 +231,7 @@ class JobController extends Controller
     {
         $job = Job::findOrFail($id);
 
-        //All of the events are updated
+        // All events of job given are updated
         $events = Event::where('job_id', $job->id)->get();
         foreach ($events as $event) {
             $event->to_notify = false;

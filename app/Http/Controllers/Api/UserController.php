@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 //use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequests\StoreUserRequest;
+use App\Http\Requests\UpdateRequests\UpdateUserRequest;
 use App\Http\Requests\UpdateRequests\UpdateUserEmailNotificationsRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -37,17 +38,27 @@ class UserController extends Controller
         $user->roles()->attach(Role::where('name', 'client')->first()->id);
 
         // Add other roles
-        foreach ($request->roles as $role_name) {
+        // For the moment not active, to see which right we gives to this route
+        // Perhaps only update or a specific route will accept roles to be sure that admin can access
+        /*foreach ($request->roles as $role_name) {
             $user->roles()->attach(Role::where('name', $role_name)->first()->id);
-        }
+        }*/
 
         return new UserResource($user);
     }
 
-    public function update(StoreUserRequest $request)
+    public function update(UpdateUserRequest $request)
     {
         $req_validated = $request->validated();
         $user = User::findOrFail($request->switch_uuid);
+
+        $user_email_exists = User::where('email', $request->email)->first();
+
+        if ($user_email_exists != null && $user_email_exists != $user) {
+            return response()->json([
+                'message' => "New email is already used by an other user!"
+            ], 400);
+        }
 
         // Update all roles
         $user->roles()->detach();

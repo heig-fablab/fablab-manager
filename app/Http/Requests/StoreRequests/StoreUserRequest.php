@@ -3,6 +3,7 @@
 namespace App\Http\Requests\StoreRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Constants\Regex;
 
 class StoreUserRequest extends FormRequest
 {
@@ -17,13 +18,19 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'switch_uuid' => ['required'],
-            'email' => ['required'],
-            'name' => ['required', 'string', 'max:255'],
-            'surname' => ['required', 'string', 'max:255'],
-            'password' => ['nullable'],
-            'roles' => ['required', 'array'],
-            'roles.*' => ['required', 'string', 'exists:roles,name'],
+            'switch_uuid' => ['required', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'unique:users,switch_uuid'],
+            'email' => ['required', 'email', 'max:254', 'unique:users,email'],
+            'name' => ['required', 'string', 'max:50', 'regex:' . Regex::NAME],
+            'surname' => ['required', 'string', 'max:50', 'regex:' . Regex::NAME],
+            'password' => ['sometimes', 'filled', 'string', 'min:8', 'max:64', function () {
+                return Regex::is_valid_password($this->password);
+            }],
+            'require_status_email' => ['sometimes', 'filled', 'boolean'],
+            'require_files_email' => ['sometimes', 'filled', 'boolean'],
+            'require_messages_email' => ['sometimes', 'filled', 'boolean'],
+            //'roles' => ['required', 'array'],
+            //'roles.*' => ['required', 'string', 'regex:' . Regex::ROLE_NAME, 'exists:roles,name'],
+            //'roles.*.name' => ['distinct:ignore_case'],
         ];
     }
 }

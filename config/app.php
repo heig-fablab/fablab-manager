@@ -192,7 +192,9 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Regex' => App\Constants\Regex::class,
+        'JobStatus' => App\Constants\JobStatus::class,
+        'EventTypes' => App\Constants\EventTypes::class,
     ])->toArray(),
 
 ];

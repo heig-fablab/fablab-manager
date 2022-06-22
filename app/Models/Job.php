@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use App\Constants\JobStatus;
 
 class Job extends Model
 {
@@ -24,18 +25,9 @@ class Job extends Model
         'validator_switch_uuid'
     ];
 
-    // Job Status values
-    public const S_NEW = 'new';
-    public const S_VALIDATED = 'validated';
-    public const S_ASSIGNED = 'assigned';
-    public const S_ONGOING = 'ongoing';
-    public const S_ON_HOLD = 'on-hold';
-    public const S_COMPLETED = 'completed';
-    public const S_CLOSED = 'closed';
-
     // Default values
     protected $attributes = [
-        'status' => Job::S_NEW,
+        'status' => JobStatus::NEW,
     ];
 
     // Service methods
@@ -50,7 +42,7 @@ class Job extends Model
         return Job::where('client_switch_uuid', $switch_uuid)
             ->orWhere('worker_switch_uuid', $switch_uuid)
             ->orWhere('validator_switch_uuid', $switch_uuid)
-            ->where('status', '!=', Job::S_CLOSED)
+            ->where('status', '!=', JobStatus::CLOSED)
             ->get();
     }
 
@@ -72,7 +64,7 @@ class Job extends Model
     protected static function get_role_jobs($switch_uuid, $role_user)
     {
         return Job::where($role_user . '_switch_uuid', $switch_uuid)
-            ->where('status', '!=', Job::S_CLOSED)
+            ->where('status', '!=', JobStatus::CLOSED)
             ->get();
     }
 

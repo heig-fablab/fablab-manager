@@ -7,6 +7,7 @@ use App\Http\Requests\StoreRequests\StoreDeviceRequest;
 use App\Http\Requests\UpdateRequests\UpdateDeviceRequest;
 use App\Http\Resources\DeviceResource;
 use App\Models\Device;
+use App\Models\JobCategory;
 
 class DeviceController extends Controller
 {
@@ -19,14 +20,17 @@ class DeviceController extends Controller
 
     public function show(int $id)
     {
-        // TODO: validate $id input
         return new DeviceResource(Device::findOrFail($id));
     }
 
     public function store(StoreDeviceRequest $request)
     {
         $device = Device::create($request->validated());
-        $device->categories()->attach($request->job_categories);
+
+        foreach ($request->job_categories as $job_category_acronym) {
+            $device->categories()->attach(JobCategory::where('acronym', $job_category_acronym)->first()->id);
+        }
+
         return new DeviceResource($device);
     }
 
@@ -34,15 +38,18 @@ class DeviceController extends Controller
     {
         $req_validated = $request->validated();
         $device = Device::findOrFail($request->id);
+
         $device->categories()->detach();
-        $device->categories()->attach($request->job_categories);
+        foreach ($request->job_categories as $job_category_acronym) {
+            $device->categories()->attach(JobCategory::where('acronym', $job_category_acronym)->first()->id);
+        }
+
         $device->update($req_validated);
         return new DeviceResource($device);
     }
 
     public function destroy(int $id)
     {
-        // TODO: validate $id input
         Device::find($id)->delete();
         return response()->json([
             'message' => "Device deleted successfully!"

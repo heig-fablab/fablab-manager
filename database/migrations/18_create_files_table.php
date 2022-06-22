@@ -12,9 +12,9 @@ return new class extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             // Fields
-            $table->string('name');
-            $table->string('hash');
-            $table->string('directory');
+            $table->string('name', 255);
+            $table->string('hash', 64);
+            $table->string('directory', 2);
             // Options
             $table->timestamps();
             // Foreign keys

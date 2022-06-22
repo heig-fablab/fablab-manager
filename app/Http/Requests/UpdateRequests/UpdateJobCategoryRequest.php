@@ -3,6 +3,7 @@
 namespace App\Http\Requests\UpdateRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Constants\Regex;
 
 class UpdateJobCategoryRequest extends FormRequest
 {
@@ -17,13 +18,13 @@ class UpdateJobCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => ['required', 'integer', 'min:1', 'exists:job_categories,id'],
-            'acronym' => ['required', 'string', 'max:10'],
-            'name' => ['required', 'string', 'max:50'],
+            'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:job_categories,id'],
+            'acronym' => ['required', 'string', 'max:3', 'regex:' . Regex::ACRONYM],
+            'name' => ['required', 'string', 'max:50', 'regex:' . Regex::JOB_CATEGORY_NAME],
             'devices' => ['required', 'array'],
-            'devices.*' => ['required', 'integer', 'min:1', 'exists:devices,id'],
+            'devices.*' => ['required', 'integer', 'numeric', 'min:1', 'exists:devices,id'],
             'file_types' => ['required', 'array'],
-            'file_types.*' => ['required', 'integer', 'min:1', 'exists:file_types,id'],
+            'file_types.*' => ['required', 'string', 'regex:' . Regex::FILE_TYPE_NAME, 'exists:file_types,name'],
         ];
     }
 }

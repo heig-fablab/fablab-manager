@@ -6,6 +6,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Job;
 use App\Models\User;
+use App\Constants\EventTypes;
 
 class NotificationsEmail extends Mailable
 {
@@ -67,7 +68,7 @@ class NotificationsEmail extends Mailable
     {
         return $this->events
             ->filter(function ($value, $key) use ($job) {
-                return $value->job_id == $job->id && $value->type == 'status';
+                return $value->job_id == $job->id && $value->type == EventTypes::STATUS;
             })
             ->sortByDesc(function ($event) {
                 return $event->created_at;
@@ -80,7 +81,7 @@ class NotificationsEmail extends Mailable
     {
         return $this->events
             ->filter(function ($value, $key) use ($job) {
-                return $value->job_id == $job->id && $value->type == 'files';
+                return $value->job_id == $job->id && $value->type == EventTypes::FILE;
             })
             ->count();
     }
@@ -89,7 +90,7 @@ class NotificationsEmail extends Mailable
     {
         return $this->events
             ->filter(function ($value, $key) use ($job) {
-                return $value->job_id == $job->id && $value->type == 'messages';
+                return $value->job_id == $job->id && $value->type == EventTypes::MESSAGE;
             })
             ->count();
     }

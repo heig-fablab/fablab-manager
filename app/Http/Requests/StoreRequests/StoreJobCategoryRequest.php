@@ -3,6 +3,7 @@
 namespace App\Http\Requests\StoreRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Constants\Regex;
 
 class StoreJobCategoryRequest extends FormRequest
 {
@@ -17,12 +18,12 @@ class StoreJobCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'acronym' => ['required', 'string', 'max:10'],
-            'name' => ['required', 'string', 'max:50'],
+            'acronym' => ['required', 'string', 'max:3', 'regex:' . Regex::ACRONYM, 'unique:job_categories,acronym'],
+            'name' => ['required', 'string', 'max:50', 'regex:' . Regex::JOB_CATEGORY_NAME],
             'devices' => ['required', 'array'],
-            'devices.*' => ['required', 'integer', 'min:1', 'exists:devices,id'],
+            'devices.*' => ['required', 'integer', 'numeric', 'min:1', 'exists:devices,id'],
             'file_types' => ['required', 'array'],
-            'file_types.*' => ['required', 'integer', 'min:1', 'exists:file_types,id'],
+            'file_types.*' => ['required', 'string', 'regex:' . Regex::FILE_TYPE_NAME, 'exists:file_types,name'],
         ];
     }
 }

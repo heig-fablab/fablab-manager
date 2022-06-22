@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Constants\EventTypes;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -40,9 +41,9 @@ class NotificationsEmailJob implements ShouldQueue, ShouldBeUnique
 
         if ($events->count() > 0) {
             // Verify for each type of event if we need to send email
-            if (($user->require_status_email && $events->contains('type', 'status'))
-                || ($user->require_files_email && $events->contains('type', 'file'))
-                || ($user->require_messages_email && $events->contains('type', 'message'))
+            if (($user->require_status_email && $events->contains('type', EventTypes::STATUS))
+                || ($user->require_files_email && $events->contains('type', EventTypes::FILE))
+                || ($user->require_messages_email && $events->contains('type', EventTypes::MESSAGE))
             ) {
                 Mail::to($user->email)->send(new NotificationsEmail($user, $events));
             }

@@ -17,8 +17,8 @@ class UpdateJobRatingRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => ['required', 'integer', 'min:1', 'exists:jobs,id'],
-            'rating' => ['required', 'integer', 'min:1', 'max:6'],
+            'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
+            'rating' => ['required', 'integer', 'numeric', 'min:1', 'max:6'],
         ];
     }
 }
