@@ -25,11 +25,11 @@ use App\Http\Controllers\Api\UserController;
     return $request->user();
 });*/
 
-// Futur all users routes
-
 // All {id} and {switch_uuid} parameters are required and validated in RouteServiceProvider file
 
-//Route::apiResource('jobs', JobController::class);
+// TODO: Do we transform all update routes with id given in path?
+
+// Futur all users routes
 Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::get('', 'index'); // admin
     Route::get('/unassigned', 'unassigned_jobs');
@@ -48,7 +48,6 @@ Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::delete('/{id}', 'destroy');
 });
 
-//Route::apiResource('files', FileController::class);
 Route::prefix('/files')->controller(FileController::class)->group(function () {
     //Route::get('', 'index');
     Route::get('/{id}', 'show');
@@ -65,7 +64,6 @@ Route::prefix('/messages')->controller(MessageController::class)->group(function
 });
 
 // Futur admin routes
-//Route::apiResource('devices', DeviceController::class);
 Route::prefix('/devices')->controller(DeviceController::class)->group(function () {
     Route::get('', 'index');
     Route::get('/{id}', 'show');
@@ -74,7 +72,6 @@ Route::prefix('/devices')->controller(DeviceController::class)->group(function (
     Route::delete('/{id}', 'destroy');
 }); // TODO -> verify admin via middleware
 
-//Route::apiResource('file_types', FileTypeController::class); // todo -> verify admin via middleware
 Route::prefix('/file_types')->controller(FileTypeController::class)->group(function () {
     Route::get('', 'index');
     Route::get('/{id}', 'show');
@@ -83,10 +80,14 @@ Route::prefix('/file_types')->controller(FileTypeController::class)->group(funct
     Route::delete('/{id}', 'destroy');
 }); // TODO -> verify admin via middleware
 
-Route::apiResource('job_categories', JobCategoryController::class); // todo -> verify admin via middleware
+Route::prefix('/job_categories')->controller(JobCategoryController::class)->group(function () {
+    Route::get('', 'index');
+    Route::get('/{id}', 'show');
+    Route::post('', 'store');
+    Route::put('', 'update');
+    Route::delete('/{id}', 'destroy');
+}); // TODO -> verify admin via middleware
 
-//Route::apiResource('users', UserController::class);
-//Route::apiResource('devices', DeviceController::class);
 Route::prefix('/users')->controller(UserController::class)->group(function () {
     Route::get('', 'index');
     Route::get('/{switch_uuid}', 'show');

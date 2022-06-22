@@ -6,11 +6,14 @@ use Illuminate\Support\Facades\Log;
 
 final class Regex
 {
-    public const DESCRIPTION = '/^.*$/'; // TODO
-    public const TITLE = '/^.*$/'; // TODO
+    public const DESCRIPTION = '/^[\w .,-_:()\\/]{4,65535}$/';
+    public const TITLE = '/^[\w -_\\/]{3,50}$/';
     public const SWITCH_UUID = '/^.*$/'; // TODO //[0-9a-zA-Z]{3,}@(hes-so|heig-vd).ch
-    public const NAME = '/^.*$/'; // TODO
+    public const NAME = '/^[\w -_]{3,50}$/';
     public const ROLE_NAME = '/^[a-z]{3,12}$/';
+    public const ACRONYM = '/^[A-Z0-9]{2,3}$/';
+    public const JOB_CATEGORY_NAME = '/^[\w .,-_:()\\/]{3,50}$/';
+    public const DEVICE_NAME = '/^[\w .,-_:()\\/]{3,50}$/';
     public const FILE_TYPE_NAME = '/^[a-z0-9]{2,10}$/';
     public const MIME_TYPE = '/^\w+\/[-.\w]+$/';
     //src: https://stackoverflow.com/questions/25201083/regex-to-match-and-validate-internet-media-type
