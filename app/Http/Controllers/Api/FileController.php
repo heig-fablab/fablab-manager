@@ -13,8 +13,6 @@ class FileController extends Controller
 {
     public function show(int $id)
     {
-        // TODO: validate $id input
-
         $file = File::findOrFail($id);
         $file->file = File::get_file($file);
         return new FileResource($file);
@@ -48,11 +46,9 @@ class FileController extends Controller
 
     public function destroy(int $id)
     {
-        // TODO: validate $id input
-
         $file = File::findOrFail($id);
 
-        // Verify if only db file using this physic file
+        // Verify if only this DB file using this physic file
         $same_files = File::where('hash', $file->hash)->get();
         if ($same_files->count() == 1) {
             File::delete_file($file);

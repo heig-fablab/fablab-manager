@@ -20,7 +20,6 @@ class JobCategoryController extends Controller
 
     public function show(int $id)
     {
-        // TODO: validate $id input
         return new JobCategoryResource(JobCategory::findOrFail($id));
     }
 
@@ -65,7 +64,6 @@ class JobCategoryController extends Controller
 
     public function destroy(int $id)
     {
-        // TODO: validate $id input
         JobCategory::find($id)->delete();
         return response()->json([
             'message' => "Job category deleted successfully!"

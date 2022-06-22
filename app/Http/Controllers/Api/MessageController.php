@@ -7,6 +7,7 @@ use App\Http\Requests\StoreRequests\StoreMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use App\Models\Event;
+use App\Models\Job;
 use App\Events\MessageCreatedEvent;
 use App\Constants\EventTypes;
 
@@ -20,15 +21,21 @@ class MessageController extends Controller
 
     public function show(int $id)
     {
-        // TODO: validate $id input
         $message = Message::findOrFail($id);
         return new MessageResource($message);
     }
 
     public function store(StoreMessageRequest $request)
     {
-        // TODO: verify if the job exists and is assigned
-        $message = Message::create($request->validated());
+        $req_validated = $request->validated();
+
+        if (Job::findOrFail($request->job_id)->worker_switch_uuid == null) {
+            return response()->json([
+                'message' => "You can't create a message related to a job who hasn't a worker defined!"
+            ], 400);
+        }
+
+        $message = Message::create($req_validated);
 
         // Notifications
         broadcast(new MessageCreatedEvent($message)); //->toOthers();

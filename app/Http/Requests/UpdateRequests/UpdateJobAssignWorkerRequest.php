@@ -19,7 +19,7 @@ class UpdateJobAssignWorkerRequest extends FormRequest
     {
         return [
             'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
-            'worker_switch_uuid' => ['required', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'exists:user,switch_uuid'],
+            'worker_switch_uuid' => ['required', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'exists:users,switch_uuid'],
         ];
     }
 }
