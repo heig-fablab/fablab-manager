@@ -11,6 +11,9 @@ final class Regex
     public const SWITCH_UUID = '/^.*$/'; // TODO //[0-9a-zA-Z]{3,}@(hes-so|heig-vd).ch
     public const NAME = '/^.*$/'; // TODO
     public const ROLE_NAME = '/^[a-z]{3,12}$/';
+    public const FILE_TYPE_NAME = '/^[a-z0-9]{2,10}$/';
+    public const MIME_TYPE = '/^\w+\/[-.\w]+$/';
+    //src: https://stackoverflow.com/questions/25201083/regex-to-match-and-validate-internet-media-type
 
     // TODO: perhaps creates a rule
     private const PASSWORD_UPPER_CASE = '/[A-Z]/';

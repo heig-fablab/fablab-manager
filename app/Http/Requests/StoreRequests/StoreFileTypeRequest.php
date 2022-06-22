@@ -3,6 +3,7 @@
 namespace App\Http\Requests\StoreRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Constants\Regex;
 
 class StoreFileTypeRequest extends FormRequest
 {
@@ -17,8 +18,8 @@ class StoreFileTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:255'],
-            'mime_type' => ['required', 'max:255'],
+            'name' => ['required', 'string', 'max:10', 'regex:' . Regex::FILE_TYPE_NAME],
+            'mime_type' => ['required', 'string', 'max:255', 'regex:' . Regex::MIME_TYPE],
         ];
     }
 }
