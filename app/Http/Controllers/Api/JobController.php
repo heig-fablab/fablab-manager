@@ -182,13 +182,6 @@ class JobController extends Controller
             ], 400);
         }
 
-        // TODO: perhaps in form validation https://laravel.com/docs/9.x/validation#rule-required-if
-        if ($request->status == Job::S_COMPLETED && $request->working_hours == null) {
-            return response()->json([
-                'message' => "You can't complete a job without annoncing how many working hours you did!"
-            ], 400);
-        }
-
         $job->update($req_validated);
 
         // Notifications

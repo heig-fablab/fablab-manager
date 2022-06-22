@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('deadline');
             $table->unsignedTinyInteger('rating')->nullable();
-            $table->float('working_hours', 3, 1, true)->nullable(); // unsigned
+            $table->float('working_hours', 4, 2, true)->nullable(); // unsigned
             $table->enum('status', ['new', 'validated', 'assigned', 'ongoing', 'on-hold', 'completed', 'closed'])->default('new');
             // Options
             $table->softDeletes();

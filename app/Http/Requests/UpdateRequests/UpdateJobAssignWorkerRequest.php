@@ -3,6 +3,7 @@
 namespace App\Http\Requests\UpdateRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Constants\Regex;
 
 class UpdateJobAssignWorkerRequest extends FormRequest
 {
@@ -17,8 +18,8 @@ class UpdateJobAssignWorkerRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => ['required', 'integer', 'min:1', 'exists:jobs,id'],
-            'worker_switch_uuid' => ['required', 'max:320'], // TODO: regex
+            'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
+            'worker_switch_uuid' => ['required', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID],
         ];
     }
 }

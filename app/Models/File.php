@@ -51,7 +51,7 @@ class File extends Model
         }
     }
 
-    public static function is_validate_file($file, int $job_category_id, int $job_id)
+    public static function is_valid_file($file, int $job_category_id, int $job_id)
     {
         if ($file->getClientOriginalExtension() == $file->extension()) {
             return false;
@@ -66,14 +66,6 @@ class File extends Model
             FileType::where('job_category_id', $job_category_id)
                 ->pluck('mime_type')
         );
-        // TODO: verify mime_type via ->extension()
-        // TODO: verify file_type via ->getClientOriginalExtension
-        /* function ($attribute, $value, $fail) {
-        if ($value === 'foo') {
-            $fail('The '.$attribute.' is invalid.');
-        }
-        },*/ // use closure to test extension types of files
-        //$extension = $file->extension(); // Determine the file's extension based on the file's MIME type...
     }
 
     public static function get_file(File $file)
