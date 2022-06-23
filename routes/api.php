@@ -37,9 +37,9 @@ Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::get('', 'index'); // admin
     Route::get('/unassigned', 'unassigned_jobs');
     Route::get('/user/{switch_uuid}', 'user_jobs');
-    Route::get('/client/{switch_uuid}', 'user_as_client_jobs');
-    Route::get('/worker/{switch_uuid}', 'user_as_worker_jobs'); // todo verify role ->middleware()
-    Route::get('/validator/{switch_uuid}', 'user_as_validator_jobs'); // todo verify role ->middleware()
+    Route::get('/client/{switch_uuid}', 'user_as_client_jobs'); // usefull?
+    Route::get('/worker/{switch_uuid}', 'user_as_worker_jobs'); // todo verify role ->middleware() // usefull?
+    Route::get('/validator/{switch_uuid}', 'user_as_validator_jobs'); // todo verify role ->middleware() // usefull?
     Route::get('/{id}', 'show');
     Route::post('', 'store');
     Route::put('', 'update');
@@ -64,6 +64,7 @@ Route::prefix('/messages')->controller(MessageController::class)->group(function
     Route::get('', 'index');
     Route::get('/{id}', 'show');
     Route::post('', 'store');
+    // TODO: perhaps a route to get all messages for a job
 });
 
 // Futur admin routes
