@@ -22,20 +22,20 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
             // Foreign keys
-            $table->string('client_switch_uuid', 254);
-            $table->string('worker_switch_uuid', 254)->nullable(); // Nullable because can / must be attributed later
-            $table->string('validator_switch_uuid', 254)->nullable(); // Nullable because can / must be attributed later
+            $table->string('client_username', 17);
+            $table->string('worker_username', 17)->nullable(); // Nullable because can / must be attributed later
+            $table->string('validator_username', 17)->nullable(); // Nullable because can / must be attributed later
 
             $table->foreignId('job_category_id')->constrained();
 
-            $table->foreign('client_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
-            $table->foreign('worker_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
-            $table->foreign('validator_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
+            $table->foreign('client_username')->references('username')->on('users')->onDelete('cascade');
+            $table->foreign('worker_username')->references('username')->on('users')->onDelete('cascade');
+            $table->foreign('validator_username')->references('username')->on('users')->onDelete('cascade');
             // Indexes
             $table->index('job_category_id');
-            $table->index('client_switch_uuid');
-            $table->index('worker_switch_uuid');
-            $table->index('validator_switch_uuid');
+            $table->index('client_username');
+            $table->index('worker_username');
+            $table->index('validator_username');
         });
     }
 
