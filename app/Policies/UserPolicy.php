@@ -12,91 +12,46 @@ class UserPolicy
 
     public function before(User $user, $ability)
     {
+        if (!$user->has_given_role($user, Roles::CLIENT)) {
+            return false;
+        }
+
         if ($user->has_given_role($user, Roles::ADMIN)) {
             return true;
         }
     }
 
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
+    // Standard API functions
     public function viewAny(User $user)
     {
-        //
+        return false; // Because admin role is already checked
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
     public function view(User $user, User $model)
     {
-        //
+        return $model->username == $user->username;
     }
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function create(?User $user)
-    //public function create(User $user)
+    //public function create(?User $user)
+    public function create(User $user)
     {
         //return optional($user)->id === $post->user_id;
+        return false; // Because admin role is already checked
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
     public function update(User $user, User $model)
     {
-        //
+        return $user->username === $model->username;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
     public function delete(User $user, User $model)
     {
-        //
+        return false; // Because admin role is already checked
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user, User $model)
+    // Others API functions
+    public function update_email_notifications(User $user, User $model)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user, User $model)
-    {
-        //
+        return true; // Because client role is already checked
     }
 }

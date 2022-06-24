@@ -24,10 +24,6 @@ use App\Http\Controllers\Api\UserController;
 
 // TODO: Do we transform all update routes with id given in path?
 
-// TODO: verify acces with middleware
-// https://laravel.com/docs/9.x/authorization#via-middleware
-
-
 Route::middleware('auth:api')->group(function () {
 
     Route::prefix('/jobs')->controller(JobController::class)->group(function () {
@@ -69,7 +65,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{username}', 'show')->can('view', 'user');
         Route::post('', 'store')->can('create', 'App\Models\User');
         Route::put('', 'update')->can('update', 'user');
-        Route::patch('/notifications', 'update_email_notifications');
+        Route::patch('/notifications', 'update_email_notifications')->can('update_email_notifications', 'user');
         Route::delete('/{username}', 'destroy')->can('delete', 'App\Models\User');
     });
 

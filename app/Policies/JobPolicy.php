@@ -58,12 +58,12 @@ class JobPolicy
 
     public function user_jobs(User $userb)
     {
-        return true;
+        return true; // Because client role is already checked
     }
 
     public function user_as_client_jobs(User $user)
     {
-        return true;
+        return true; // Because client role is already checked
     }
 
     public function user_as_worker_jobs(User $user)
