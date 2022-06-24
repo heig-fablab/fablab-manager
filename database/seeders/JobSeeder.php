@@ -45,7 +45,7 @@ class JobSeeder extends Seeder
             'job_category_id' => 3,
             'client_username' => 'client.client',
             'worker_username' => 'worker.worker',
-            'validator_username' => 'validator.validator',
+            'validator_username' => 'validato.validato',
         ]);
     }
 }

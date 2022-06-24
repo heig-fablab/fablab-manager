@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'username' => 'validator.validator',
+            'username' => 'validato.validato',
             'email' => 'validator@heig-vd.ch',
             'name' => 'validator',
             'surname' => 'validator',

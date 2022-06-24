@@ -25,7 +25,7 @@ class RoleUserSeeder extends Seeder
         ]);
 
         DB::table('role_user')->insert([
-            'user_username' => 'validator.validator',
+            'user_username' => 'validato.validato',
             'role_id' => 3,
         ]);
 
@@ -41,7 +41,7 @@ class RoleUserSeeder extends Seeder
         ]);
 
         DB::table('role_user')->insert([
-            'user_username' => 'validator.validator',
+            'user_username' => 'validato.validato',
             'role_id' => 4,
         ]);
 
