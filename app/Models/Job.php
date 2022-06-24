@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use App\Constants\JobStatus;
+use App\Constants\Roles;
 
 class Job extends Model
 {
@@ -20,9 +21,9 @@ class Job extends Model
         'working_hours',
         'status',
         'job_category_id',
-        'client_switch_uuid',
-        'worker_switch_uuid',
-        'validator_switch_uuid'
+        'client_username',
+        'worker_username',
+        'validator_username'
     ];
 
     // Default values
@@ -33,37 +34,37 @@ class Job extends Model
     // Service methods
     public static function get_unassigned_jobs()
     {
-        return Job::where('worker_switch_uuid', null)
+        return Job::where('worker_username', null)
             ->get();
     }
 
-    public static function get_user_jobs($switch_uuid)
+    public static function get_user_jobs($username)
     {
-        return Job::where('client_switch_uuid', $switch_uuid)
-            ->orWhere('worker_switch_uuid', $switch_uuid)
-            ->orWhere('validator_switch_uuid', $switch_uuid)
+        return Job::where('client_username', $username)
+            ->orWhere('worker_username', $username)
+            ->orWhere('validator_username', $username)
             ->where('status', '!=', JobStatus::CLOSED)
             ->get();
     }
 
-    public static function get_client_jobs($switch_uuid)
+    public static function get_client_jobs($username)
     {
-        return Job::get_role_jobs($switch_uuid, 'client');
+        return Job::get_role_jobs($username, Roles::CLIENT);
     }
 
-    public static function get_worker_jobs($switch_uuid)
+    public static function get_worker_jobs($username)
     {
-        return Job::get_role_jobs($switch_uuid, 'worker');
+        return Job::get_role_jobs($username, Roles::WORKER);
     }
 
-    public static function get_validator_jobs($switch_uuid)
+    public static function get_validator_jobs($username)
     {
-        return Job::get_role_jobs($switch_uuid, 'validator');
+        return Job::get_role_jobs($username, Roles::VALIDATOR);
     }
 
-    protected static function get_role_jobs($switch_uuid, $role_user)
+    protected static function get_role_jobs($username, $role_user)
     {
-        return Job::where($role_user . '_switch_uuid', $switch_uuid)
+        return Job::where($role_user . '_username', $username)
             ->where('status', '!=', JobStatus::CLOSED)
             ->get();
     }
@@ -87,17 +88,17 @@ class Job extends Model
     // BelongsTo
     public function requestor()
     {
-        return $this->belongsTo(User::class, 'client_switch_uuid');
+        return $this->belongsTo(User::class, 'client_username');
     }
 
     public function worker()
     {
-        return $this->belongsTo(User::class, 'worker_switch_uuid');
+        return $this->belongsTo(User::class, 'worker_username');
     }
 
     public function validator()
     {
-        return $this->belongsTo(User::class, 'validator_switch_uuid');
+        return $this->belongsTo(User::class, 'validator_username');
     }
 
     public function job_category()
