@@ -18,29 +18,29 @@ class MessageSeeder extends Seeder
         DB::table('messages')->insert([
             'text' => Str::random(10),
             'job_id' => 1,
-            'sender_switch_uuid' => '444@hes-so.ch',
-            'receiver_switch_uuid' => '222@hes-so.ch',
+            'sender_username' => 'client.client',
+            'receiver_username' => 'worker.worker',
         ]);
 
         DB::table('messages')->insert([
             'text' => Str::random(10),
             'job_id' => 1,
-            'sender_switch_uuid' => '222@hes-so.ch',
-            'receiver_switch_uuid' => '444@hes-so.ch',
+            'sender_username' => 'worker.worker',
+            'receiver_username' => 'client.client',
         ]);
 
         DB::table('messages')->insert([
             'text' => Str::random(10),
             'job_id' => 2,
-            'sender_switch_uuid' => '444@hes-so.ch',
-            'receiver_switch_uuid' => '222@hes-so.ch',
+            'sender_username' => 'client.client',
+            'receiver_username' => 'worker.worker',
         ]);
 
         DB::table('messages')->insert([
             'text' => Str::random(10),
             'job_id' => 3,
-            'sender_switch_uuid' => '444@hes-so.ch',
-            'receiver_switch_uuid' => '222@hes-so.ch',
+            'sender_username' => 'client.client',
+            'receiver_username' => 'worker.worker',
         ]);
     }
 }

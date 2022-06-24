@@ -19,33 +19,33 @@ class JobSeeder extends Seeder
             'title' => Str::random(10),
             'description' => Str::random(10),
             'deadline' => '2023-01-01',
-            'rating' => 1,
+            'rating' => null,
             'status' => 'new',
             'job_category_id' => 1,
-            'client_switch_uuid' => '444@hes-so.ch',
-            'worker_switch_uuid' => '222@hes-so.ch',
-            'validator_switch_uuid' => '333@hes-so.ch',
+            'client_username' => 'client.client',
         ]);
 
         DB::table('jobs')->insert([
             'title' => Str::random(10),
             'description' => Str::random(10),
             'deadline' => '2023-01-01',
-            'rating' => 2,
+            'rating' => null,
             'status' => 'new',
             'job_category_id' => 2,
-            'client_switch_uuid' => '444@hes-so.ch',
-            'worker_switch_uuid' => '222@hes-so.ch',
+            'client_username' => 'client.client',
+            'worker_username' => 'worker.worker',
         ]);
 
         DB::table('jobs')->insert([
             'title' => Str::random(10),
             'description' => Str::random(10),
             'deadline' => '2023-01-01',
-            'rating' => 3,
+            'rating' => null,
             'status' => 'new',
             'job_category_id' => 3,
-            'client_switch_uuid' => '444@hes-so.ch',
+            'client_username' => 'client.client',
+            'worker_username' => 'worker.worker',
+            'validator_username' => 'validator.validator',
         ]);
     }
 }

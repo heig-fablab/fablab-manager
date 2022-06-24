@@ -15,22 +15,38 @@ class RoleUserSeeder extends Seeder
     public function run()
     {
         DB::table('role_user')->insert([
-            'user_switch_uuid' => '111@hes-so.ch',
+            'user_username' => 'admin.admin',
             'role_id' => 1,
         ]);
 
         DB::table('role_user')->insert([
-            'user_switch_uuid' => '222@hes-so.ch',
+            'user_username' => 'worker.worker',
             'role_id' => 2,
         ]);
 
         DB::table('role_user')->insert([
-            'user_switch_uuid' => '333@hes-so.ch',
+            'user_username' => 'validator.validator',
             'role_id' => 3,
         ]);
 
+        // They are also all clients
         DB::table('role_user')->insert([
-            'user_switch_uuid' => '444@hes-so.ch',
+            'user_username' => 'admin.admin',
+            'role_id' => 4,
+        ]);
+
+        DB::table('role_user')->insert([
+            'user_username' => 'worker.worker',
+            'role_id' => 4,
+        ]);
+
+        DB::table('role_user')->insert([
+            'user_username' => 'validator.validator',
+            'role_id' => 4,
+        ]);
+
+        DB::table('role_user')->insert([
+            'user_username' => 'client.client',
             'role_id' => 4,
         ]);
     }

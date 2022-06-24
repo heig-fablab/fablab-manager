@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -17,7 +16,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'switch_uuid' => '111@hes-so.ch',
+            'username' => 'admin.admin',
             'email' => 'admin@heig-vd.ch',
             'name' => 'admin',
             'surname' => 'admin',
@@ -25,26 +24,26 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'switch_uuid' => '222@hes-so.ch',
+            'username' => 'worker.worker',
             'email' => 'alec.berney@heig-vd.ch', //'worker@heig-vd.ch'
-            'name' => Str::random(10),
-            'surname' => Str::random(10),
+            'name' => 'worker',
+            'surname' => 'worker',
             'password' => Hash::make('password'),
         ]);
 
         DB::table('users')->insert([
-            'switch_uuid' => '333@hes-so.ch',
+            'username' => 'validator.validator',
             'email' => 'validator@heig-vd.ch',
-            'name' => Str::random(10),
-            'surname' => Str::random(10),
+            'name' => 'validator',
+            'surname' => 'validator',
             'password' => Hash::make('password'),
         ]);
 
         DB::table('users')->insert([
-            'switch_uuid' => '444@hes-so.ch',
+            'username' => 'client.client',
             'email' => 'beral@sevjnet.ch', //'client@heig-vd.ch'
-            'name' => Str::random(10),
-            'surname' => Str::random(10),
+            'name' => 'client',
+            'surname' => 'client',
             'password' => Hash::make('password'),
         ]);
     }
