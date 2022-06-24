@@ -227,12 +227,15 @@ class JobController extends Controller
 
     // Called when a user has checked the job and needs to remove the notify flag
     // We assume that when a user has seen a job, he has seen all messages, new files and new status
-    public function update_notifications(int $id)
+    public function update_notifications(int $id, string $username)
     {
         $job = Job::findOrFail($id);
 
         // All events of job given are updated
-        $events = Event::where('job_id', $job->id)->get();
+        $events = Event::where('job_id', $job->id)
+            ->where('user_username', $username)
+            ->get();
+
         foreach ($events as $event) {
             $event->to_notify = false;
             $event->save();

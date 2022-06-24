@@ -49,7 +49,7 @@ Route::middleware('auth:api')->group(function () {
         Route::patch('/worker/assign', 'assign_worker'); // todo verify role ->middleware()
         Route::patch('/status', 'update_status'); // todo verify role and user ->middleware()
         Route::patch('/rating', 'update_rating'); // todo verify user ->middleware()
-        Route::patch('{id}/notifications', 'update_notifications');
+        Route::patch('{id}/notifications/user/{username}', 'update_notifications');
         Route::delete('/{id}', 'destroy');
     });
 

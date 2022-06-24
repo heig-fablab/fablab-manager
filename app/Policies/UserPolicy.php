@@ -10,6 +10,13 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user, $ability)
+    {
+        if ($user->has_given_role($user, Roles::ADMIN)) {
+            return true;
+        }
+    }
+
     /**
      * Determine whether the user can view any models.
      *
