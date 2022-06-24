@@ -25,7 +25,7 @@ use App\Http\Controllers\Api\UserController;
     return $request->user();
 });*/
 
-// All {id} and {switch_uuid} parameters are required and validated in RouteServiceProvider file
+// All {id} and {username} parameters are required and validated in RouteServiceProvider file
 
 // TODO: Do we transform all update routes with id given in path?
 
@@ -36,14 +36,14 @@ use App\Http\Controllers\Api\UserController;
 Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::get('', 'index'); // admin
     Route::get('/unassigned', 'unassigned_jobs');
-    Route::get('/user/{switch_uuid}', 'user_jobs');
-    Route::get('/client/{switch_uuid}', 'user_as_client_jobs'); // usefull?
-    Route::get('/worker/{switch_uuid}', 'user_as_worker_jobs'); // todo verify role ->middleware() // usefull?
-    Route::get('/validator/{switch_uuid}', 'user_as_validator_jobs'); // todo verify role ->middleware() // usefull?
+    Route::get('/user/{username}', 'user_jobs');
+    Route::get('/client/{username}', 'user_as_client_jobs'); // usefull?
+    Route::get('/worker/{username}', 'user_as_worker_jobs'); // todo verify role ->middleware() // usefull?
+    Route::get('/validator/{username}', 'user_as_validator_jobs'); // todo verify role ->middleware() // usefull?
     Route::get('/{id}', 'show');
     Route::post('', 'store');
     Route::put('', 'update');
-    //Route::patch('/{id}/validator/{switch_uuid}', 'assign_validator'); // todo verify role ->middleware()
+    //Route::patch('/{id}/validator/{username}', 'assign_validator'); // todo verify role ->middleware()
     Route::patch('/worker/assign', 'assign_worker'); // todo verify role ->middleware()
     Route::patch('/status', 'update_status'); // todo verify role and user ->middleware()
     Route::patch('/rating', 'update_rating'); // todo verify user ->middleware()
@@ -96,11 +96,11 @@ Route::prefix('/job_categories')->controller(JobCategoryController::class)->grou
 
 Route::prefix('/users')->controller(UserController::class)->group(function () {
     Route::get('', 'index');
-    Route::get('/{switch_uuid}', 'show');
+    Route::get('/{username}', 'show');
     Route::post('', 'store'); // TODO -> verify admin via middleware
     Route::put('', 'update'); // TODO -> verify admin via middleware
     Route::patch('/notifications', 'update_email_notifications'); // TODO -> verify if connected
-    Route::delete('/{switch_uuid}', 'destroy'); // TODO -> verify admin via middleware
+    Route::delete('/{username}', 'destroy'); // TODO -> verify admin via middleware
 }); // TODO -> verify admin via middleware
 
 /*Route::prefix('/user')->group(function () {

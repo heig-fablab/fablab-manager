@@ -22,10 +22,10 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    public function show($switch_uuid)
+    public function show($username)
     {
-        // TODO: verify $switch_uuid input
-        $user = User::findOrFail($switch_uuid);
+        // TODO: verify $username input
+        $user = User::findOrFail($username);
         $user->roles = $user->roles;
         return new UserResource($user);
     }
@@ -52,7 +52,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request)
     {
         $req_validated = $request->validated();
-        $user = User::findOrFail($request->switch_uuid);
+        $user = User::findOrFail($request->username);
 
         $user_email_exists = User::where('email', $request->email)->first();
 
@@ -74,10 +74,10 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function destroy($switch_uuid)
+    public function destroy($username)
     {
-        // TODO: verify $switch_uuid input
-        User::findOrFail($switch_uuid)->delete();
+        // TODO: verify $username input
+        User::findOrFail($username)->delete();
         return response()->json([
             'message' => "Device deleted successfully!"
         ], 200);
@@ -92,7 +92,7 @@ class UserController extends Controller
     public function update_email_notifications(UpdateUserEmailNotificationsRequest $request)
     {
         $req_validated = $request->validated();
-        $user = User::findOrFail($request->switch_uuid);
+        $user = User::findOrFail($request->username);
         $user->update($req_validated);
 
         Log::debug('user updated');
