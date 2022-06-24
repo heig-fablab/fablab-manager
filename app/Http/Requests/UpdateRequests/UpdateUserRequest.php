@@ -17,7 +17,7 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'switch_uuid' => ['required', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'exists:users,switch_uuid'],
+            'username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
             'email' => ['required', 'email', 'max:254'],
             'name' => ['required', 'string', 'max:50', 'regex:' . Regex::NAME],
             'surname' => ['required', 'string', 'max:50', 'regex:' . Regex::NAME],

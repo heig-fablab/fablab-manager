@@ -18,7 +18,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'switch_uuid' => ['required', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'unique:users,switch_uuid'],
+            'username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'unique:users,username'],
             'email' => ['required', 'email', 'max:254', 'unique:users,email'],
             'name' => ['required', 'string', 'max:50', 'regex:' . Regex::NAME],
             'surname' => ['required', 'string', 'max:50', 'regex:' . Regex::NAME],

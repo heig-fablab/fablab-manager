@@ -9,7 +9,7 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'switch_uuid' => $this->switch_uuid,
+            'username' => $this->username,
             'email' => $this->email,
             'name' => $this->name,
             'surname' => $this->surname,

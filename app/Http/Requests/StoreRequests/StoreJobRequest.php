@@ -32,9 +32,9 @@ class StoreJobRequest extends FormRequest
                 return true;
             }],
             'files.*' => ['file', 'max:100000000'], // 100Mo max
-            'client_switch_uuid' => ['required', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'exists:users,switch_uuid'],
-            'worker_switch_uuid' => ['sometimes', 'nullable', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'exists:users,switch_uuid'],
-            'validator_switch_uuid' => ['sometimes', 'nullable', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'exists:users,switch_uuid'],
+            'client_username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
+            'worker_username' => ['sometimes', 'nullable', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
+            'validator_username' => ['sometimes', 'nullable', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
         ];
     }
 }
