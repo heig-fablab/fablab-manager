@@ -2,12 +2,11 @@
 
 namespace App\Policies;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Models\Message;
+use App\Models\Job;
 use App\Models\User;
-use App\Constants\Roles;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class MessagePolicy
+class JobPolicy
 {
     use HandlesAuthorization;
 
@@ -26,10 +25,10 @@ class MessagePolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Message  $message
+     * @param  \App\Models\Job  $job
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Message $message)
+    public function view(User $user, Job $job)
     {
         //
     }
@@ -49,10 +48,10 @@ class MessagePolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Message  $message
+     * @param  \App\Models\Job  $job
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Message $message)
+    public function update(User $user, Job $job)
     {
         //
     }
@@ -61,10 +60,10 @@ class MessagePolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Message  $message
+     * @param  \App\Models\Job  $job
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Message $message)
+    public function delete(User $user, Job $job)
     {
         //
     }
@@ -73,10 +72,10 @@ class MessagePolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Message  $message
+     * @param  \App\Models\Job  $job
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Message $message)
+    public function restore(User $user, Job $job)
     {
         //
     }
@@ -85,10 +84,10 @@ class MessagePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Message  $message
+     * @param  \App\Models\Job  $job
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Message $message)
+    public function forceDelete(User $user, Job $job)
     {
         //
     }

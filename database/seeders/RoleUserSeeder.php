@@ -25,6 +25,11 @@ class RoleUserSeeder extends Seeder
         ]);
 
         DB::table('role_user')->insert([
+            'user_username' => 'alec.berney',
+            'role_id' => 2,
+        ]);
+
+        DB::table('role_user')->insert([
             'user_username' => 'validato.validato',
             'role_id' => 3,
         ]);
@@ -37,6 +42,11 @@ class RoleUserSeeder extends Seeder
 
         DB::table('role_user')->insert([
             'user_username' => 'worker.worker',
+            'role_id' => 4,
+        ]);
+
+        DB::table('role_user')->insert([
+            'user_username' => 'alec.berney',
             'role_id' => 4,
         ]);
 
