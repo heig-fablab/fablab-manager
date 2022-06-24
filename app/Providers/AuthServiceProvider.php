@@ -9,6 +9,11 @@ use App\Models\File;
 use App\Models\JobCategory;
 use App\Policies\DevicePolicy;
 use App\Policies\FilePolicy;
+use App\Policies\FileTypePolicy;
+use App\Policies\JobCategoryPolicy;
+use App\Policies\JobPolicy;
+use App\Policies\MessagePolicy;
+use App\Policies\UserPolicy;
 
 use function Ramsey\Uuid\v1;
 
