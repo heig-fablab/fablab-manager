@@ -8,6 +8,10 @@ use App\Http\Controllers\Api\JobCategoryController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\Job;
+use App\Models\File;
+use App\Models\Message;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,46 +31,46 @@ use App\Http\Controllers\Api\UserController;
 Route::middleware('auth:api')->group(function () {
 
     Route::prefix('/jobs')->controller(JobController::class)->group(function () {
-        Route::get('', 'index')->can('viewAny', 'App\Models\Job');
-        Route::get('/unassigned', 'unassigned_jobs')->can('unassigned_jobs,App\Models\Job');
-        Route::get('/user/{username}', 'user_jobs')->can('user_jobs,App\Models\Job');
-        Route::get('/client/{username}', 'user_as_client_jobs')->can('user_as_client_jobs,App\Models\Job'); // usefull?
-        Route::get('/worker/{username}', 'user_as_worker_jobs')->can('user_as_worker_jobs,App\Models\Job'); // usefull?
-        Route::get('/validator/{username}', 'user_as_validator_jobs')->can('user_as_validator_jobs,App\Models\Job'); // usefull?
-        Route::get('/{id}', 'show')->can('view,job');
-        Route::post('', 'store')->can('store,App\Models\Job');
-        Route::put('', 'update')->can('update,job');
-        //Route::patch('/{id}/validator/{username}', 'assign_validator')->can('assign_validator,App\Models\Job');
-        Route::patch('/worker/assign', 'assign_worker')->can('assign_worker,App\Models\Job');
-        Route::patch('/status', 'update_status')->can('update_status,job');
-        Route::patch('/rating', 'update_rating')->can('update_rating,job');
-        Route::patch('{id}/notifications/user/{username}', 'update_notifications')->can('update_notifications,job');
-        Route::delete('/{id}', 'destroy')->can('destroy,job');
+        Route::get('', 'index')->can('viewAny', Job::class);
+        Route::get('/unassigned', 'unassigned_jobs')->can('unassigned_jobs', Job::class);
+        Route::get('/user/{username}', 'user_jobs')->can('user_jobs', Job::class);
+        Route::get('/client/{username}', 'user_as_client_jobs')->can('user_as_client_jobs', Job::class); // usefull?
+        Route::get('/worker/{username}', 'user_as_worker_jobs')->can('user_as_worker_jobs', Job::class); // usefull?
+        Route::get('/validator/{username}', 'user_as_validator_jobs')->can('user_as_validator_jobs', Job::class); // usefull?
+        Route::get('/{id}', 'show')->can('view', 'job');
+        Route::post('', 'store')->can('create', Job::class);
+        Route::put('', 'update')->can('update', 'job');
+        //Route::patch('/{id}/validator/{username}', 'assign_validator')->can('assign_validator', Job::class);
+        Route::patch('/worker/assign', 'assign_worker')->can('assign_worker', Job::class);
+        Route::patch('/status', 'update_status')->can('update_status', 'job');
+        Route::patch('/rating', 'update_rating')->can('update_rating', 'job');
+        Route::patch('{id}/notifications/user/{username}', 'update_notifications')->can('update_notifications', 'job');
+        Route::delete('/{id}', 'destroy')->can('destroy', 'job');
     });
 
     Route::prefix('/files')->controller(FileController::class)->group(function () {
-        //Route::get('', 'index')->can('viewAny', 'App\Models\File');
-        Route::get('/{id}', 'show')->can('view,file');
-        Route::post('', 'store')->can('store,App\Models\File');
+        //Route::get('', 'index')->can('viewAny', File::class);
+        Route::get('/{id}', 'show')->can('view', 'file');
+        Route::post('', 'store')->can('create', File::class);
         //Route::post('/job/{id}', 'job_files');
-        Route::put('', 'update')->can('update,file');
-        Route::delete('/{id}', 'destroy');
+        Route::put('', 'update')->can('update', 'file');
+        Route::delete('/{id}', 'destroy')->can('destroy', 'file');
     });
 
     Route::prefix('/messages')->controller(MessageController::class)->group(function () {
-        Route::get('', 'index')->can('viewAny', 'App\Models\Job');
-        Route::get('/{id}', 'show')->can('view,message');
-        Route::post('', 'store')->can('store,App\Models\Message');
+        Route::get('', 'index')->can('viewAny', Message::class);
+        Route::get('/{id}', 'show')->can('view', 'message');
+        Route::post('', 'store')->can('create', Message::class);
         // TODO: perhaps a route to get all messages for a job
     });
 
     Route::prefix('/users')->controller(UserController::class)->group(function () {
-        Route::get('', 'index')->can('viewAny', 'App\Models\User');
+        Route::get('', 'index')->can('viewAny', User::class);
         Route::get('/{username}', 'show')->can('view', 'user');
-        Route::post('', 'store')->can('create', 'App\Models\User');
+        Route::post('', 'store')->can('create', User::class);
         Route::put('', 'update')->can('update', 'user');
         Route::patch('/notifications', 'update_email_notifications')->can('update_email_notifications', 'user');
-        Route::delete('/{username}', 'destroy')->can('delete', 'App\Models\User');
+        Route::delete('/{username}', 'destroy')->can('delete', User::class);
     });
 
     // Admin routes

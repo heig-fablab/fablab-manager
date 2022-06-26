@@ -13,6 +13,6 @@ class FileTypePolicy
 
     public function before(User $user, $ability)
     {
-        return $user->has_given_role($user, Roles::ADMIN);
+        return $user->has_given_role(Roles::ADMIN);
     }
 }

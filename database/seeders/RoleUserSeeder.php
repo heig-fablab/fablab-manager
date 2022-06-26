@@ -59,5 +59,16 @@ class RoleUserSeeder extends Seeder
             'user_username' => 'client.client',
             'role_id' => 4,
         ]);
+
+        // Test roles
+        /*DB::table('role_user')->insert([
+            'user_username' => 'alec.berney',
+            'role_id' => 1,
+        ]);
+
+        DB::table('role_user')->insert([
+            'user_username' => 'alec.berney',
+            'role_id' => 3,
+        ]);*/
     }
 }
