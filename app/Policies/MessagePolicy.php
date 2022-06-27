@@ -38,8 +38,8 @@ class MessagePolicy
 
     public function create(User $user)
     {
-        // Verify if user uploading file is client in job given
+        // Verify if user creating the message participate in job given
         $job = Job::findOrFail(app('request')->get('job_id'));
-        return $job->client_username == $user->username;
+        return $job->participate_in_job($user->username);
     }
 }

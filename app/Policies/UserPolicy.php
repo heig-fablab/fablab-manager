@@ -54,6 +54,6 @@ class UserPolicy
     // Others API functions
     public function update_email_notifications(User $user)
     {
-        return true; // Because client role is already checked
+        return $user->username == app('request')->get('username');
     }
 }

@@ -40,4 +40,9 @@ final class Regex
             && preg_match(self::PASSWORD_SPECIAL_CHAR, $password)
             && preg_match(self::PASSWORD_GLOBAL, $password);
     }
+
+    public static function is_valid(string $input, string $regex)
+    {
+        return preg_match($regex, $input);
+    }
 }
