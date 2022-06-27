@@ -147,6 +147,9 @@ Not unable yet!
 As we develop with Laravel Sail, the libraire [MailHog](https://github.com/mailhog/MailHog) is available, watch the test mail send at this address: \
 http://localhost:8025/
 
+## Keycloak package
+The keycloak package is modified in packages folder, when you want to run the program, after ran composer install, just copy the keycloak modified package to the vendor one.
+
 ## Support
 
 ## Contribute

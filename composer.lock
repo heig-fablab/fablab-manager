@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d39916ee6a332abe84f55216b5a1886",
+    "content-hash": "2fa566cd0acf65a5e9128e06d2e921c0",
     "packages": [
         {
             "name": "beyondcode/laravel-websockets",
@@ -1250,65 +1250,6 @@
                 }
             ],
             "time": "2022-06-20T21:43:11+00:00"
-        },
-        {
-            "name": "heig-fablab/laravel-keycloak-guard",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "./packages/laravel-keycloak-guard",
-                "reference": "92169a2331fdb7979085f35efeea498181d3872f"
-            },
-            "require": {
-                "firebase/php-jwt": "^5.0"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^3.7@dev",
-                "phpunit/phpunit": "^7.3@dev"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "KeycloakGuard\\KeycloakGuardServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "KeycloakGuard\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "KeycloakGuard\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "vendor/bin/phpunit"
-                ],
-                "test-coverage": [
-                    "phpunit --coverage-html coverage"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Robson Tenório & Alec Berney"
-                }
-            ],
-            "description": "🔑 Simple Keycloak Guard for Laravel",
-            "homepage": "https://github.com/heig-fablab/laravel-keycloak-guard",
-            "keywords": [
-                "keycloak",
-                "laravel"
-            ],
-            "transport-options": {
-                "relative": true
-            }
         },
         {
             "name": "laravel/framework",
@@ -4201,6 +4142,61 @@
                 "source": "https://github.com/ringcentral/psr7/tree/master"
             },
             "time": "2018-05-29T20:21:04+00:00"
+        },
+        {
+            "name": "robsontenorio/laravel-keycloak-guard",
+            "version": "1.3.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robsontenorio/laravel-keycloak-guard.git",
+                "reference": "fe6b9c597dd195012cdef226e605cae6bcbc4ad4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robsontenorio/laravel-keycloak-guard/zipball/fe6b9c597dd195012cdef226e605cae6bcbc4ad4",
+                "reference": "fe6b9c597dd195012cdef226e605cae6bcbc4ad4",
+                "shasum": ""
+            },
+            "require": {
+                "firebase/php-jwt": "^5.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.7@dev",
+                "phpunit/phpunit": "^7.3@dev"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "KeycloakGuard\\KeycloakGuardServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "KeycloakGuard\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robson Tenório"
+                }
+            ],
+            "description": "🔑 Simple Keycloak Guard for Laravel",
+            "homepage": "https://github.com/robsontenorio/laravel-keycloak-guard",
+            "keywords": [
+                "keycloak",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/robsontenorio/laravel-keycloak-guard/issues",
+                "source": "https://github.com/robsontenorio/laravel-keycloak-guard/tree/1.3.5"
+            },
+            "time": "2022-03-25T09:48:30+00:00"
         },
         {
             "name": "symfony/console",
@@ -9266,9 +9262,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "heig-fablab/laravel-keycloak-guard": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

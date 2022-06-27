@@ -21,7 +21,7 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "pusher/pusher-php-server": "^7.0",
-        "heig-fablab/laravel-keycloak-guard": "dev-master"
+        "robsontenorio/laravel-keycloak-guard": "^1.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
