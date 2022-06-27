@@ -24,7 +24,6 @@ class UserController extends Controller
 
     public function show($username)
     {
-        // TODO: verify $username input
         $user = User::findOrFail($username);
         $user->roles = $user->roles;
         return new UserResource($user);
@@ -32,9 +31,6 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        //$this->authorize('create', User::class);
-        Log::debug('store controller');
-
         $user = User::create($request->validated());
 
         // Add client role by default
@@ -77,7 +73,6 @@ class UserController extends Controller
 
     public function destroy($username)
     {
-        // TODO: verify $username input
         User::findOrFail($username)->delete();
         return response()->json([
             'message' => "Device deleted successfully!"

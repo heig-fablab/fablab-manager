@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequests\StoreJobRequest;
 use App\Http\Requests\UpdateRequests\UpdateJobRequest;

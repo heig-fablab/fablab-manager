@@ -105,4 +105,12 @@ class Job extends Model
     {
         return $this->belongsTo(JobCategory::class);
     }
+
+    // Services methods
+    public function participate_in_job(User $user)
+    {
+        return $this->client_username == $user->username
+            || $this->worker_username == $user->username
+            || $this->validator_username == $user->username;
+    }
 }

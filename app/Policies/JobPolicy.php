@@ -30,26 +30,26 @@ class JobPolicy
         return false; // Because admin role is already checked
     }
 
-    public function view(User $user, Job $job)
+    public function view(User $user, int $id)
     {
-        return $job->client_username == $user->username
-            || $job->worker_username == $user->username
-            || $job->validator_username == $user->username;
+        $job = Job::findOrFail($id);
+        return $job->participate_in_job($user);
     }
 
     public function create(User $user)
     {
-        Log::debug('create authorization');
         return true;
     }
 
-    public function update(User $user, Job $job)
+    public function update(User $user)
     {
+        $job = Job::findOrFail(app('request')->get('id'));
         return $job->client_username == $user->username;
     }
 
-    public function delete(User $user, Job $job)
+    public function destroy(User $user, int $id)
     {
+        $job = Job::findOrFail($id);
         return $job->client_username == $user->username;
     }
 
@@ -59,46 +59,51 @@ class JobPolicy
         return $user->has_given_role(Roles::WORKER);
     }
 
-    public function user_jobs(User $userb)
+    public function user_jobs(User $user, string $username)
     {
-        return true; // Because client role is already checked
+        return $user->username == $username;
     }
 
-    public function user_as_client_jobs(User $user)
+    public function user_as_client_jobs(User $user, string $username)
     {
-        return true; // Because client role is already checked
+        return $user->username == $username;
     }
 
-    public function user_as_worker_jobs(User $user)
+    public function user_as_worker_jobs(User $user, string $username)
     {
-        return $user->has_given_role(Roles::WORKER);
+        return $user->has_given_role(Roles::WORKER)
+            && $user->username == $username;
     }
 
-    public function user_as_validator_jobs(User $user)
+    public function user_as_validator_jobs(User $user, string $username)
     {
-        return $user->has_given_role(Roles::VALIDATOR);
+        return $user->has_given_role(Roles::VALIDATOR)
+            && $user->username == $username;
     }
 
     public function assign_worker(User $user)
     {
-        return $user->has_given_role(Roles::WORKER);
-    }
-
-    public function update_status(User $user, Job $job)
-    {
         return $user->has_given_role(Roles::WORKER)
-            || $job->worker_username == $user->username;
+            && app('request')->get('worker_username') == $user->username;
     }
 
-    public function update_rating(User $user, Job $job)
+    public function update_status(User $user)
     {
+        $job = Job::findOrFail(app('request')->get('id'));
+        return $user->has_given_role(Roles::WORKER)
+            && $job->worker_username == $user->username;
+    }
+
+    public function update_rating(User $user)
+    {
+        $job = Job::findOrFail(app('request')->get('id'));
         return $job->client_username == $user->username;
     }
 
-    public function update_notifications(User $user, Job $job)
+    public function update_notifications(User $user, int $id, string $username)
     {
-        return $job->client_username == $user->username
-            || $job->worker_username == $user->username
-            || $job->validator_username == $user->username;
+        $job = Job::findOrFail($id);
+        return $job->participate_in_job($user)
+            && $user->username == $username;
     }
 }

@@ -27,9 +27,9 @@ class UserPolicy
         return false; // Because admin role is already checked
     }
 
-    public function view(User $user, User $model)
+    public function view(User $user, string $username)
     {
-        return $model->username == $user->username;
+        return $username == $user->username;
     }
 
     //public function create(?User $user)
@@ -39,18 +39,20 @@ class UserPolicy
         return false; // Because admin role is already checked
     }
 
-    public function update(User $user, User $model)
+    public function update(User $user)
     {
-        return $user->username === $model->username;
+        /*$model = User::findOrFail(app('request')->get('username'));
+        return $user->username === $model->username;*/
+        return false; // Because admin role is already checked
     }
 
-    public function delete(User $user, User $model)
+    public function destroy(User $user, string $username)
     {
         return false; // Because admin role is already checked
     }
 
     // Others API functions
-    public function update_email_notifications(User $user, User $model)
+    public function update_email_notifications(User $user)
     {
         return true; // Because client role is already checked
     }
