@@ -8,7 +8,7 @@ final class Regex
 {
     public const DESCRIPTION = '/^[\w .,-_:()\\/]{4,65535}$/';
     public const TITLE = '/^[\w -_\\/]{3,50}$/';
-    public const USERNAME = '/^[a-z0-9]{2,8}\.[a-z]{2,8}$/';
+    public const USERNAME = '/^[a-z]{2,7}[a-z0-9]?\.[a-z]{2,8}$/';
     public const NAME = '/^[\w -_]{3,50}$/';
     public const ROLE_NAME = '/^[a-z]{3,12}$/';
     public const ACRONYM = '/^[A-Z0-9]{2,3}$/';
@@ -43,6 +43,6 @@ final class Regex
 
     public static function is_valid(string $input, string $regex)
     {
-        return preg_match($regex, $input);
+        return preg_match($regex, $input) && 1;
     }
 }

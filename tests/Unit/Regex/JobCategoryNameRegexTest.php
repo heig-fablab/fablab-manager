@@ -10,6 +10,7 @@ class JobCategoryNameRegexTest extends TestCase
     public function test_is_valid_job_category_name_length()
     {
         // Pass
+        $this->assertTrue(true);
 
         // Fail
 
@@ -19,6 +20,7 @@ class JobCategoryNameRegexTest extends TestCase
     public function test_is_valid_job_category_name_characters()
     {
         // Pass
+        $this->assertTrue(true);
 
         // Fail & Corner cases
     }
