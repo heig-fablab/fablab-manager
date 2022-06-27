@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateRequests\UpdateUserEmailNotificationsRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\Role;
+use App\Constants\Roles;
 
 class UserController extends Controller
 {
@@ -34,7 +35,7 @@ class UserController extends Controller
         $user = User::create($request->validated());
 
         // Add client role by default
-        $user->roles()->attach(Role::where('name', 'client')->first()->id);
+        $user->roles()->attach(Role::where('name', Roles::CLIENT)->first()->id);
 
         // Add other roles
         // For the moment not active, to see which right we gives to this route
@@ -61,7 +62,7 @@ class UserController extends Controller
 
         // Update all roles
         $user->roles()->detach();
-        $user->roles()->attach(Role::where('name', 'client')->first()->id);
+        $user->roles()->attach(Role::where('name', Roles::CLIENT)->first()->id);
         foreach ($request->roles as $role_name) {
             $user->roles()->attach(Role::where('name', $role_name)->first()->id);
         }

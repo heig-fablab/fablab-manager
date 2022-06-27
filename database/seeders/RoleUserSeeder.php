@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class RoleUserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('role_user')->insert([
@@ -24,10 +19,10 @@ class RoleUserSeeder extends Seeder
             'role_id' => 2,
         ]);
 
-        DB::table('role_user')->insert([
+        /*DB::table('role_user')->insert([
             'user_username' => 'alec.berney',
             'role_id' => 2,
-        ]);
+        ]);*/
 
         DB::table('role_user')->insert([
             'user_username' => 'validato.validato',
@@ -45,10 +40,10 @@ class RoleUserSeeder extends Seeder
             'role_id' => 4,
         ]);
 
-        DB::table('role_user')->insert([
+        /*DB::table('role_user')->insert([
             'user_username' => 'alec.berney',
             'role_id' => 4,
-        ]);
+        ]);*/
 
         DB::table('role_user')->insert([
             'user_username' => 'validato.validato',
@@ -64,9 +59,9 @@ class RoleUserSeeder extends Seeder
         /*DB::table('role_user')->insert([
             'user_username' => 'alec.berney',
             'role_id' => 1,
-        ]);
+        ]);*/
 
-        DB::table('role_user')->insert([
+        /*DB::table('role_user')->insert([
             'user_username' => 'alec.berney',
             'role_id' => 3,
         ]);*/
