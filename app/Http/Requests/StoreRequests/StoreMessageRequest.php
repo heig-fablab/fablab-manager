@@ -20,8 +20,8 @@ class StoreMessageRequest extends FormRequest
         return [
             'text' => ['required', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION],
             'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
-            'sender_switch_uuid' => ['required', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'exists:users,switch_uuid'],
-            'receiver_switch_uuid' => ['required', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'exists:users,switch_uuid']
+            'sender_username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
+            'receiver_username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username']
         ];
     }
 }

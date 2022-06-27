@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -14,11 +15,11 @@ class User extends Authenticatable
     use SoftDeletes;
 
     // Primary key options
-    protected $primaryKey = 'switch_uuid';
+    protected $primaryKey = 'username';
     protected $keyType = 'string';
 
     protected $fillable = [
-        'switch_uuid',
+        'username',
         'email',
         'name',
         'surname',
@@ -49,32 +50,38 @@ class User extends Authenticatable
     // Has many
     public function requestor_jobs()
     {
-        return $this->hasMany(Job::class, 'client_switch_uuid');
+        return $this->hasMany(Job::class, 'client_username');
     }
 
     public function worker_jobs()
     {
-        return $this->hasMany(Job::class, 'worker_switch_uuid');
+        return $this->hasMany(Job::class, 'worker_username');
     }
 
     public function validator_jobs()
     {
-        return $this->hasMany(Job::class, 'validator_switch_uuid');
+        return $this->hasMany(Job::class, 'validator_username');
     }
 
     public function sended_messages()
     {
-        return $this->hasMany(Message::class, 'sender_switch_uuid');
+        return $this->hasMany(Message::class, 'sender_username');
     }
 
     public function received_messages()
     {
-        return $this->hasMany(Message::class, 'receiver_switch_uuid');
+        return $this->hasMany(Message::class, 'receiver_username');
     }
 
     // Belongs to many
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    // User Service
+    public function has_given_role(string $role)
+    {
+        return $this->roles->pluck('name')->contains($role);
     }
 }

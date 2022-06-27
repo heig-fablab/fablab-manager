@@ -21,20 +21,20 @@ class NotificationsEmailJob implements ShouldQueue, ShouldBeUnique
     public $backoff = 3;
 
     public int $unique_id;
-    public string $user_switch_uuid;
+    public string $user_username;
 
-    public function __construct(int $id, string $user_switch_uuid)
+    public function __construct(int $id, string $user_username)
     {
         $this->unique_id = $id;
-        $this->user_switch_uuid = $user_switch_uuid;
+        $this->user_username = $user_username;
     }
 
     public function handle()
     {
-        $user = User::find($this->user_switch_uuid);
+        $user = User::find($this->user_username);
 
         // Get all events to notify (unread) that has user give and that are not outdated
-        $events = Event::where('user_switch_uuid', $user->switch_uuid)
+        $events = Event::where('user_username', $user->username)
             ->where('to_notify', true)
             ->where('created_at', '>', $user->last_email_sent)
             ->get();

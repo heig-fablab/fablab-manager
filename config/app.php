@@ -168,6 +168,7 @@ return [
         /*
          * Package Service Providers...
          */
+        KeycloakGuard\KeycloakGuardServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -195,6 +196,7 @@ return [
         'Regex' => App\Constants\Regex::class,
         'JobStatus' => App\Constants\JobStatus::class,
         'EventTypes' => App\Constants\EventTypes::class,
+        'Roles' => App\Constants\Roles::class,
     ])->toArray(),
 
 ];

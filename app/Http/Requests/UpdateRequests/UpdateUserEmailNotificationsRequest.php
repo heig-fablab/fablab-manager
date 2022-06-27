@@ -18,7 +18,7 @@ class UpdateUserEmailNotificationsRequest extends FormRequest
     public function rules()
     {
         return [
-            'switch_uuid' => ['required', 'string', 'max:254', 'regex:' . Regex::SWITCH_UUID, 'exists:users,switch_uuid'],
+            'username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
             'require_status_email' => ['required', 'boolean'],
             'require_files_email' => ['required', 'boolean'],
             'require_messages_email' => ['required', 'boolean'],

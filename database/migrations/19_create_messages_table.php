@@ -22,17 +22,17 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
             // Foreign keys
-            $table->string('sender_switch_uuid');
-            $table->string('receiver_switch_uuid');
+            $table->string('sender_username', 17);
+            $table->string('receiver_username', 17);
 
             $table->foreignId('job_id')->constrained()->onDelete('cascade');
 
-            $table->foreign('sender_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
-            $table->foreign('receiver_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
+            $table->foreign('sender_username')->references('username')->on('users')->onDelete('cascade');
+            $table->foreign('receiver_username')->references('username')->on('users')->onDelete('cascade');
             // Indexes
             $table->index('job_id');
-            $table->index('sender_switch_uuid');
-            $table->index('receiver_switch_uuid');
+            $table->index('sender_username');
+            $table->index('receiver_username');
         });
     }
 

@@ -2,7 +2,6 @@
 Template found on https://freefrontend.com/css-forms/
 Author : Håvard Brynjulfsen, 17/07/2020
 Modified and adapted by : Tristan Lieberherr, 21/07/2021
-Modified and adapted by : Alec Berney, 20/06/2022
 -->
 <!DOCTYPE html>
 <html lang="en" class="html">

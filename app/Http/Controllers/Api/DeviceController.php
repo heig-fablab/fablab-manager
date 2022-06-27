@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequests\StoreDeviceRequest;
 use App\Http\Requests\UpdateRequests\UpdateDeviceRequest;
@@ -12,8 +13,11 @@ use App\Models\JobCategory;
 class DeviceController extends Controller
 {
     // API Standard function
-    public function index()
+    public function index() //Request $request)
     {
+        // Authorization
+        //$this->authorize('viewAny');
+
         $devices = Device::all();
         return DeviceResource::collection($devices);
     }

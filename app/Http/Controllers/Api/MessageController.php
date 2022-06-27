@@ -29,7 +29,7 @@ class MessageController extends Controller
     {
         $req_validated = $request->validated();
 
-        if (Job::findOrFail($request->job_id)->worker_switch_uuid == null) {
+        if (Job::findOrFail($request->job_id)->worker_username == null) {
             return response()->json([
                 'message' => "You can't create a message related to a job who hasn't a worker defined!"
             ], 400);
@@ -44,12 +44,12 @@ class MessageController extends Controller
         Event::create([
             'type' => EventTypes::MESSAGE,
             'to_notify' => true,
-            'user_switch_uuid' => $message->receiver_switch_uuid,
+            'user_username' => $message->receiver_username,
             'job_id' => $message->job_id
         ]);
 
         // Emails
-        Event::create_mail_job($message->receiver_switch_uuid);
+        Event::create_mail_job($message->receiver_username);
 
         return new MessageResource($message);
     }

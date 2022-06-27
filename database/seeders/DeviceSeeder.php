@@ -8,11 +8,6 @@ use Illuminate\Support\Str;
 
 class DeviceSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('devices')->insert([

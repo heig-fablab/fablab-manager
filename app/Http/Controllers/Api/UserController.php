@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateRequests\UpdateUserEmailNotificationsRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\Role;
+use App\Constants\Roles;
 
 class UserController extends Controller
 {
@@ -22,10 +23,9 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    public function show($switch_uuid)
+    public function show($username)
     {
-        // TODO: verify $switch_uuid input
-        $user = User::findOrFail($switch_uuid);
+        $user = User::findOrFail($username);
         $user->roles = $user->roles;
         return new UserResource($user);
     }
@@ -35,7 +35,7 @@ class UserController extends Controller
         $user = User::create($request->validated());
 
         // Add client role by default
-        $user->roles()->attach(Role::where('name', 'client')->first()->id);
+        $user->roles()->attach(Role::where('name', Roles::CLIENT)->first()->id);
 
         // Add other roles
         // For the moment not active, to see which right we gives to this route
@@ -50,7 +50,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request)
     {
         $req_validated = $request->validated();
-        $user = User::findOrFail($request->switch_uuid);
+        $user = User::findOrFail($request->username);
 
         $user_email_exists = User::where('email', $request->email)->first();
 
@@ -62,7 +62,7 @@ class UserController extends Controller
 
         // Update all roles
         $user->roles()->detach();
-        $user->roles()->attach(Role::where('name', 'client')->first()->id);
+        $user->roles()->attach(Role::where('name', Roles::CLIENT)->first()->id);
         foreach ($request->roles as $role_name) {
             $user->roles()->attach(Role::where('name', $role_name)->first()->id);
         }
@@ -72,10 +72,9 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function destroy($switch_uuid)
+    public function destroy($username)
     {
-        // TODO: verify $switch_uuid input
-        User::findOrFail($switch_uuid)->delete();
+        User::findOrFail($username)->delete();
         return response()->json([
             'message' => "Device deleted successfully!"
         ], 200);
@@ -90,7 +89,7 @@ class UserController extends Controller
     public function update_email_notifications(UpdateUserEmailNotificationsRequest $request)
     {
         $req_validated = $request->validated();
-        $user = User::findOrFail($request->switch_uuid);
+        $user = User::findOrFail($request->username);
         $user->update($req_validated);
 
         Log::debug('user updated');

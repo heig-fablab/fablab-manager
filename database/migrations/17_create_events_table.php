@@ -19,12 +19,12 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             // Foreign keys
-            $table->string('user_switch_uuid');
-            $table->foreign('user_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
+            $table->string('user_username', 17);
+            $table->foreign('user_username')->references('username')->on('users')->onDelete('cascade');
             $table->foreignId('job_id')->constrained()->onDelete('cascade');
             // Indexes
             $table->index('job_id');
-            $table->index('user_switch_uuid');
+            $table->index('user_username');
         });
     }
 

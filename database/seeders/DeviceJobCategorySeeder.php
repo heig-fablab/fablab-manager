@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class DeviceJobCategorySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('device_job_category')->insert([
