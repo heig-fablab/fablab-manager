@@ -39,6 +39,17 @@ class UsernameRegexTest extends TestCase
 
         $this->assertFalse(Regex::is_valid('Test.test', Regex::USERNAME));
         $this->assertFalse(Regex::is_valid('test.Test', Regex::USERNAME));
+    }
+
+    public function test_is_valid_username_format()
+    {
+        // Pass
+        $this->assertTrue(Regex::is_valid('test.test', Regex::USERNAME));
+
+        // Fail & Corner cases
+        $this->assertFalse(Regex::is_valid('test', Regex::USERNAME));
+        $this->assertFalse(Regex::is_valid('test.', Regex::USERNAME));
+        $this->assertFalse(Regex::is_valid('test.t', Regex::USERNAME));
 
         $this->assertFalse(Regex::is_valid('test/test', Regex::USERNAME));
         $this->assertFalse(Regex::is_valid('test-test', Regex::USERNAME));

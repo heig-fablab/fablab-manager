@@ -30,7 +30,7 @@ class DeviceNameRegexTest extends TestCase
         $this->assertTrue(Regex::is_valid('testtest', Regex::DEVICE_NAME));
         $this->assertTrue(Regex::is_valid('Testtest', Regex::DEVICE_NAME));
         $this->assertTrue(Regex::is_valid('Testtest1', Regex::DEVICE_NAME));
-        $this->assertTrue(Regex::is_valid(' .,-_:()\/', Regex::DEVICE_NAME));
+        $this->assertTrue(Regex::is_valid(' .,-_:()/', Regex::DEVICE_NAME));
 
         // Fail & Corner cases
         $this->assertFalse(Regex::is_valid('test$', Regex::DEVICE_NAME));

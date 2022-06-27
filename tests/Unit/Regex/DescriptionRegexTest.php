@@ -26,7 +26,7 @@ class DescriptionRegexTest extends TestCase
         $this->assertTrue(Regex::is_valid('testtest', Regex::DESCRIPTION));
         $this->assertTrue(Regex::is_valid('Testtest', Regex::DESCRIPTION));
         $this->assertTrue(Regex::is_valid('Testtest1', Regex::DESCRIPTION));
-        $this->assertTrue(Regex::is_valid(' .,-_:()\/', Regex::DESCRIPTION));
+        $this->assertTrue(Regex::is_valid(' .,-_:()/', Regex::DESCRIPTION));
 
         // Fail & Corner cases
         $this->assertFalse(Regex::is_valid('test$', Regex::DESCRIPTION));
