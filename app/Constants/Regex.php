@@ -41,8 +41,8 @@ final class Regex
             && preg_match(self::PASSWORD_GLOBAL, $password);
     }
 
-    public static function is_valid(string $input, string $regex)
+    public static function is_valid(string $input, string $regex): bool
     {
-        return preg_match($regex, $input) && 1;
+        return preg_match($regex, $input);
     }
 }
