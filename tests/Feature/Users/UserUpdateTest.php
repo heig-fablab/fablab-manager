@@ -93,13 +93,33 @@ class UserUpdateTest extends TestCase
             ->assertStatus(403);
     }
 
+    public function test_admin_update_user_with_existing_email_success()
+    {
+        $user = TestHelpers::create_test_user(array(Roles::ADMIN));
+
+        $payload = [
+            'username' => $user->username,
+            'email' => 'worker@heig-vd.ch',
+            'name' => 'test',
+            'surname' => 'test',
+            'roles' => [
+                Roles::WORKER,
+                Roles::VALIDATOR
+            ],
+        ];
+
+        $this->actingAs($user, 'api')
+            ->json(self::METHOD, self::ACTUAL_ROUTE, $payload)
+            ->assertStatus(400);
+    }
+
     public function test_admin_update_user_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::ADMIN));
 
         $payload = [
             'username' => $user->username,
-            'email' => 'test@test.test',
+            'email' => 'test' . $user->name . ' @test.test',
             'name' => 'test',
             'surname' => 'test',
             'roles' => [
@@ -114,7 +134,7 @@ class UserUpdateTest extends TestCase
             ->assertJson([
                 'data' => [
                     'username' => $user->username,
-                    'email' => 'test@test.test',
+                    'email' => 'test' . $user->name . '@test.test',
                     'name' => 'test',
                     'surname' => 'test',
                     'require_status_email' => 1,
@@ -136,7 +156,7 @@ class UserUpdateTest extends TestCase
 
         $payload = [
             'username' => $other_user->username,
-            'email' => 'test2@test.test',
+            'email' => 'test' . $user->name . '@test.test',
             'name' => 'test',
             'surname' => 'test',
             'roles' => [
@@ -151,7 +171,7 @@ class UserUpdateTest extends TestCase
             ->assertJson([
                 'data' => [
                     'username' => $other_user->username,
-                    'email' => 'test2@test.test',
+                    'email' => 'test' . $user->name . '@test.test',
                     'name' => 'test',
                     'surname' => 'test',
                     'require_status_email' => 1,
