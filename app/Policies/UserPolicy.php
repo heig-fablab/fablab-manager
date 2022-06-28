@@ -12,12 +12,12 @@ class UserPolicy
 
     public function before(User $user, $ability)
     {
-        if (!$user->has_given_role(Roles::CLIENT)) {
-            return false;
-        }
-
         if ($user->has_given_role(Roles::ADMIN)) {
             return true;
+        }
+
+        if (!$user->has_given_role(Roles::CLIENT)) {
+            return false;
         }
     }
 

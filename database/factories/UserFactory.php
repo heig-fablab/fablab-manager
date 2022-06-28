@@ -10,6 +10,17 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+    private function generateRandomString($length = 8)
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
     /**
      * Define the model's default state.
      *
@@ -17,12 +28,17 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        //$name = $this->faker->name;
+        $name = $this->generateRandomString(8);
+        //$surname = $this->faker->name;
+        $surname = $this->generateRandomString(8);
+        $username = substr(strtolower($name), 0, 8) . '.' . substr(strtolower($surname), 0, 8);
+
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'username' => $username,
+            'name' => $name,
+            'surname' => $surname,
+            'email' => $this->faker->unique()->safeEmail()
         ];
     }
 

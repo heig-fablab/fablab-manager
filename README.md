@@ -130,10 +130,6 @@ default developement server in on port 80
 
 ## Tests
 ````
-./vendor/bin/phpunit
-````
-or
-````
 ./vendor/bin/sail artisan test
 ````
 
