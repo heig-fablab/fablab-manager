@@ -119,7 +119,7 @@ class UserUpdateTest extends TestCase
 
         $payload = [
             'username' => $user->username,
-            'email' => 'test' . $user->name . ' @test.test',
+            'email' => 'test' . $user->name . '@test.test',
             'name' => 'test',
             'surname' => 'test',
             'roles' => [

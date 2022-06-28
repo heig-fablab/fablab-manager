@@ -71,10 +71,11 @@ class UserStoreTest extends TestCase
     public function test_admin_add_user_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::ADMIN));
+        $random_str = TestHelpers::generateRandomString(3);
 
         $this->actingAs($user, 'api')
             ->postJson(self::ACTUAL_ROUTE, [
-                'username' => 'test.test',
+                'username' => 'test' . $random_str . '.test',
                 'email' => 'test' . $user->name . '@test.test',
                 'name' => 'test',
                 'surname' => 'test'
@@ -82,13 +83,13 @@ class UserStoreTest extends TestCase
             ->assertStatus(201)
             ->assertJson([
                 'data' => [
-                    'username' => 'test.test',
+                    'username' => 'test' . $random_str . '.test',
                     'email' => 'test' . $user->name . '@test.test',
                     'name' => 'test',
                     'surname' => 'test',
-                    'require_status_email' => 1,
-                    'require_files_email' => 1,
-                    'require_messages_email' => 1,
+                    'require_status_email' => true,
+                    'require_files_email' => true,
+                    'require_messages_email' => true,
                     "roles" => [
                         "client"
                     ]
