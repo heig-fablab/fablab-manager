@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Messages;
+namespace Tests\Feature\Users;
 
 use Tests\TestCase;
 use Tests\TestHelpers;
@@ -8,11 +8,11 @@ use App\Constants\Roles;
 
 class UserGetAllTest extends TestCase
 {
-    private const ACTUAL_ROUTE = '/api/messages';
+    private const ACTUAL_ROUTE = '/api/users';
 
     //-------------------------
     // Roles and success tests
-    public function test_anonymous_get_messages_fail()
+    public function test_anonymous_get_users_fail()
     {
         $user = TestHelpers::create_test_user(array());
 
@@ -21,7 +21,7 @@ class UserGetAllTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function test_client_get_messages_fail()
+    public function test_client_get_users_fail()
     {
         $user = TestHelpers::create_test_user(array(Roles::CLIENT));
 
@@ -30,7 +30,7 @@ class UserGetAllTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function test_worker_get_messages_fail()
+    public function test_worker_get_users_fail()
     {
         $user = TestHelpers::create_test_user(array(Roles::WORKER));
 
@@ -39,7 +39,7 @@ class UserGetAllTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function test_validator_get_messages_fail()
+    public function test_validator_get_users_fail()
     {
         $user = TestHelpers::create_test_user(array(Roles::VALIDATOR));
 
@@ -48,7 +48,7 @@ class UserGetAllTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function test_admin_get_messages_success()
+    public function test_admin_get_users_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::ADMIN));
 

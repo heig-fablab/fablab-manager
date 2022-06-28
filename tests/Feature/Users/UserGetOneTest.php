@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Messages;
+namespace Tests\Feature\Users;
 
 use Tests\TestCase;
 use Tests\TestHelpers;
@@ -8,92 +8,71 @@ use App\Constants\Roles;
 
 class UserGetOneTest extends TestCase
 {
-    private const ACTUAL_ROUTE = '/api/messages/';
+    private const ACTUAL_ROUTE = '/api/users/';
 
     //-------------------------
     // Roles and success tests
     public function test_anonymous_get_job_fail()
     {
         $user = TestHelpers::create_test_user(array());
-        $job = TestHelpers::create_test_job($user->username);
-        $message = TestHelpers::create_test_message($user->username, 'worker.worker', $job->id);
 
         $this->actingAs($user, 'api')
-            ->get(self::ACTUAL_ROUTE . $message->id)
+            ->get(self::ACTUAL_ROUTE . $user->username)
             ->assertStatus(403);
     }
 
-    public function test_user_get_message_not_participate_fail()
+    public function test_user_get_other_user_fail()
     {
         $user = TestHelpers::create_test_user(array(Roles::CLIENT));
-        $message = TestHelpers::create_test_message();
+        $other_user = TestHelpers::create_test_user(array(Roles::CLIENT));
 
         $this->actingAs($user, 'api')
-            ->get(self::ACTUAL_ROUTE . $message->id)
+            ->get(self::ACTUAL_ROUTE . $other_user->username)
             ->assertStatus(403);
     }
 
-    public function test_sender_get_message_success()
+    public function test_user_get_own_user_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::CLIENT));
-        $job = TestHelpers::create_test_job($user->username);
-        $message = TestHelpers::create_test_message($user->username, 'worker.worker', $job->id);
 
         $this->actingAs($user, 'api')
-            ->get(self::ACTUAL_ROUTE . $message->id)
+            ->get(self::ACTUAL_ROUTE . $user->username)
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
-                    'text' => 'test',
-                    'sender_username' => $user->username,
-                    'receiver_username' => 'worker.worker',
-                    'job' => [
-                        "id" => $job->id,
-                        "title" => $job->title,
+                    'username' => $user->username,
+                    'email' => $user->email,
+                    'name' => $user->name,
+                    'surname' => $user->surname,
+                    'require_status_email' => 1,
+                    'require_files_email' => 1,
+                    'require_messages_email' => 1,
+                    "roles" => [
+                        "client"
                     ]
                 ]
             ]);
     }
 
-    public function test_receiver_get_message_success()
+    public function test_admin_get_other_user_success()
     {
-        $user = TestHelpers::create_test_user(array(Roles::CLIENT));
-        $job = TestHelpers::create_test_job($user->username);
-        $message = TestHelpers::create_test_message('client.client', $user->username, $job->id);
+        $admin_user = TestHelpers::create_test_user(array(Roles::ADMIN));
+        $other_user = TestHelpers::create_test_user(array(Roles::CLIENT));
 
-        $this->actingAs($user, 'api')
-            ->get(self::ACTUAL_ROUTE . $message->id)
+        $this->actingAs($admin_user, 'api')
+            ->get(self::ACTUAL_ROUTE . $other_user->username)
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
-                    'text' => 'test',
-                    'sender_username' => 'client.client',
-                    'receiver_username' => $user->username,
-                    'job' => [
-                        "id" => $job->id,
-                        "title" => $job->title,
-                    ]
-                ]
-            ]);
-    }
-
-    public function test_admin_get_job_not_participate_success()
-    {
-        $user = TestHelpers::create_test_user(array(Roles::ADMIN));
-        $job = TestHelpers::create_test_job('client.client');
-        $message = TestHelpers::create_test_message('client.client', 'worker.worker', $job->id);
-
-        $this->actingAs($user, 'api')
-            ->get(self::ACTUAL_ROUTE . $message->id)
-            ->assertStatus(200)
-            ->assertJson([
-                'data' => [
-                    'text' => 'test',
-                    'sender_username' => 'client.client',
-                    'receiver_username' => 'worker.worker',
-                    'job' => [
-                        "id" => $job->id,
-                        "title" => $job->title,
+                    'username' => $other_user->username,
+                    'email' => $other_user->email,
+                    'name' => $other_user->name,
+                    'surname' => $other_user->surname,
+                    'require_status_email' => 1,
+                    'require_files_email' => 1,
+                    'require_messages_email' => 1,
+                    "roles" => [
+                        "client"
                     ]
                 ]
             ]);

@@ -5,6 +5,7 @@ namespace App\Policies;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use App\Models\User;
 use App\Constants\Roles;
+use Illuminate\Support\Facades\Log;
 
 class UserPolicy
 {

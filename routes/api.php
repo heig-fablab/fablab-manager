@@ -68,7 +68,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('', 'index')->can('viewAny', User::class);
         Route::get('/{username}', 'show')->can('view', [User::class, 'username']);
         Route::post('', 'store')->can('create', User::class);
-        Route::put('', 'update')->can('update', 'user');
+        Route::put('', 'update')->can('update', User::class);
         Route::patch('/notifications', 'update_email_notifications')->can('update_email_notifications', User::class);
         Route::delete('/{username}', 'destroy')->can('destroy', [User::class, 'username']);
     });
