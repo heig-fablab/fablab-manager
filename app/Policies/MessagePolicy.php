@@ -38,8 +38,10 @@ class MessagePolicy
 
     public function create(User $user)
     {
-        // Verify if user creating the message participate in job given
+        // To verify if user creating the message participate in job given 
+        // & if user creating the message is the sender in message given
         $job = Job::findOrFail(app('request')->get('job_id'));
-        return $job->participate_in_job($user->username);
+        return $job->participate_in_job($user)
+            && $user->username == app('request')->get('sender_username');
     }
 }

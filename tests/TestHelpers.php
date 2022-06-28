@@ -5,6 +5,7 @@ namespace Tests;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Job;
+use App\Models\Message;
 use App\Constants\JobStatus;
 
 class TestHelpers
@@ -19,6 +20,7 @@ class TestHelpers
         return $user;
     }
 
+    // Job methods
     public static function create_test_job(string $client_username = 'client.client'): Job
     {
         return Job::create([
@@ -59,6 +61,20 @@ class TestHelpers
             'client_username' => $client_username,
             'worker_username' => 'worker.worker',
             'validator_username' => 'validato.validato',
+        ]);
+    }
+
+    // Message methods
+    public static function create_test_message(
+        string $sender_username = 'client.client',
+        string $receiver_username = 'worker.worker',
+        int $job_id = 1
+    ): Message {
+        return Message::create([
+            'text' => 'test',
+            'job_id' => $job_id,
+            'sender_username' => $sender_username,
+            'receiver_username' => $receiver_username,
         ]);
     }
 }

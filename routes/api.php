@@ -70,7 +70,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('', 'store')->can('create', User::class);
         Route::put('', 'update')->can('update', 'user');
         Route::patch('/notifications', 'update_email_notifications')->can('update_email_notifications', User::class);
-        Route::delete('/{username}', 'destroy')->can('delete', [User::class, 'username']);
+        Route::delete('/{username}', 'destroy')->can('destroy', [User::class, 'username']);
     });
 
     // Admin routes

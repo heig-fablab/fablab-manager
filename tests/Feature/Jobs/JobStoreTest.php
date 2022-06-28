@@ -71,7 +71,7 @@ class JobStoreTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function test_client_add_job_without_files_successfull()
+    public function test_client_add_job_without_files_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::CLIENT));
 
@@ -103,7 +103,7 @@ class JobStoreTest extends TestCase
             ]);
     }
 
-    public function test_admin_add_job_without_files_successfull()
+    public function test_admin_add_job_without_files_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::ADMIN));
 
