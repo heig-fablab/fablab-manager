@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Jobs;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Tests\TestHelpers;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use App\Models\User;
-use App\Models\Role;
 use App\Constants\Roles;
+use App\Constants\JobStatus;
 
 class JobStoreTest extends TestCase
 {
@@ -22,22 +22,16 @@ class JobStoreTest extends TestCase
         $this->artisan('migrate:fresh --seed');
     }*/
 
-    public function create_test_user(array $roles): User
-    {
-        $user = User::factory()->create();
-        foreach ($roles as $role) {
-            $user->roles()->attach(Role::where('name', $role)->first());
-        }
-        $user->save();
-        return $user;
-    }
+    private const ACTUAL_ROUTE = '/api/jobs';
 
+    //-------------------------
+    // Roles and success tests
     public function test_anonymous_add_job_without_files_fail()
     {
-        $user = $this->create_test_user(array());
+        $user = TestHelpers::create_test_user(array());
 
         $this->actingAs($user, 'api')
-            ->postJson('/api/jobs', [
+            ->postJson(self::ACTUAL_ROUTE, [
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
@@ -49,10 +43,10 @@ class JobStoreTest extends TestCase
 
     public function test_worker_add_job_without_files_fail()
     {
-        $user = $this->create_test_user(array(Roles::WORKER));
+        $user = TestHelpers::create_test_user(array(Roles::WORKER));
 
         $this->actingAs($user, 'api')
-            ->postJson('/api/jobs', [
+            ->postJson(self::ACTUAL_ROUTE, [
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
@@ -64,10 +58,10 @@ class JobStoreTest extends TestCase
 
     public function test_validator_add_job_without_files_fail()
     {
-        $user = $this->create_test_user(array(Roles::VALIDATOR));
+        $user = TestHelpers::create_test_user(array(Roles::VALIDATOR));
 
         $this->actingAs($user, 'api')
-            ->postJson('/api/jobs', [
+            ->postJson(self::ACTUAL_ROUTE, [
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
@@ -79,10 +73,10 @@ class JobStoreTest extends TestCase
 
     public function test_client_add_job_without_files_successfull()
     {
-        $user = $this->create_test_user(array(Roles::CLIENT));
+        $user = TestHelpers::create_test_user(array(Roles::CLIENT));
 
         $this->actingAs($user, 'api')
-            ->postJson('/api/jobs', [
+            ->postJson(self::ACTUAL_ROUTE, [
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
@@ -97,7 +91,7 @@ class JobStoreTest extends TestCase
                     'deadline' => '2022-09-20',
                     'rating' => null,
                     'working_hours' => null,
-                    'status' => 'new',
+                    'status' => JobStatus::NEW,
                     'job_category_id' => 1,
                     'client_username' => $user->username,
                     'worker_username' => null,
@@ -111,10 +105,10 @@ class JobStoreTest extends TestCase
 
     public function test_admin_add_job_without_files_successfull()
     {
-        $user = $this->create_test_user(array(Roles::ADMIN));
+        $user = TestHelpers::create_test_user(array(Roles::ADMIN));
 
         $this->actingAs($user, 'api')
-            ->postJson('/api/jobs', [
+            ->postJson(self::ACTUAL_ROUTE, [
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
@@ -129,7 +123,7 @@ class JobStoreTest extends TestCase
                     'deadline' => '2022-09-20',
                     'rating' => null,
                     'working_hours' => null,
-                    'status' => 'new',
+                    'status' => JobStatus::NEW,
                     'job_category_id' => 1,
                     'client_username' => $user->username,
                     'worker_username' => null,
@@ -144,14 +138,14 @@ class JobStoreTest extends TestCase
     /*public function test_client_add_job_with_files_successfull()
     {
         // File upload: https://laravel.com/docs/9.x/http-tests#testing-file-uploads
-        $user = $this->create_test_user(array(Roles::CLIENT));
+        $user = TestHelpers::create_test_user(array(Roles::CLIENT));
 
         Storage::fake('avatars');
 
         $file = UploadedFile::fake()->image('avatar.pdf');
 
         $this->actingAs($user, 'api')
-            ->postJson('/api/jobs', [
+            ->postJson(self::ACTUAL_ROUTE, [
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
@@ -167,7 +161,7 @@ class JobStoreTest extends TestCase
                     'deadline' => '2022-09-20',
                     'rating' => null,
                     'working_hours' => null,
-                    'status' => 'new',
+                    'status' => JobStatus::NEW,
                     'job_category_id' => 1,
                     'client_username' => $user->username,
                     'worker_username' => null,

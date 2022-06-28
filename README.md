@@ -135,8 +135,21 @@ default developement server in on port 80
 
 ### Test coverage
 Not unable yet!
+
+Add the following line to your php.ini file:
 ````
-./vendor/bin/sail artisan test --coverage
+xdebug.mode=coverage
+````
+
+All tests:
+````
+vendor/bin/sail artisan test --coverage
+vendor/bin/sail artisan test --coverage-html tests/coverage
+````
+
+On file:
+````
+vendor/bin/sail artisan test --filter FileName
 ````
 
 ### Mail testing

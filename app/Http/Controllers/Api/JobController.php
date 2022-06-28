@@ -193,6 +193,13 @@ class JobController extends Controller
 
         $job = Job::findOrFail($request->id);
 
+        // Verify if job is assigned
+        if ($job->worker_username == null) {
+            return response()->json([
+                'message' => "You can't rate of a job that has no worker assigned!"
+            ], 400);
+        }
+
         if ($job->status != JobStatus::COMPLETED) {
             return response()->json([
                 'message' => "You can't rate of a job that is not completed!"
