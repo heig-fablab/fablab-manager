@@ -14,13 +14,13 @@ class JobPolicy
 
     public function before(User $user, $ability)
     {
+        if ($user->has_given_role(Roles::ADMIN)) {
+            return true;
+        }
+
         if (!$user->has_given_role(Roles::CLIENT)) {
             Log::info('JobPolicy: user ' . $user->username . ' is not a client');
             return false;
-        }
-
-        if ($user->has_given_role(Roles::ADMIN)) {
-            return true;
         }
     }
 

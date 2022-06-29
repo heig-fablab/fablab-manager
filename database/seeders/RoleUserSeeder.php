@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\DB;
 
 class RoleUserSeeder extends Seeder
 {
+    // 1 = ADMIN
+    // 2 = WORKER
+    // 3 = VALIDATOR
+    // 4 = CLIENT
+
     public function run()
     {
         DB::table('role_user')->insert([
@@ -56,10 +61,10 @@ class RoleUserSeeder extends Seeder
         ]);
 
         // Test roles
-        /*DB::table('role_user')->insert([
+        DB::table('role_user')->insert([
             'user_username' => 'alec.berney',
             'role_id' => 1,
-        ]);*/
+        ]);
 
         /*DB::table('role_user')->insert([
             'user_username' => 'alec.berney',

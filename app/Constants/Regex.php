@@ -6,16 +6,16 @@ use Illuminate\Support\Facades\Log;
 
 final class Regex
 {
-    public const DESCRIPTION = '/^[\w .,-_:()\\/]{4,65535}$/';
-    public const TITLE = '/^[\w -_\\/]{3,50}$/';
-    public const USERNAME = '/^[a-z0-9]{2,8}\.[a-z]{2,8}$/';
-    public const NAME = '/^[\w -_]{3,50}$/';
+    public const DESCRIPTION = '/^[\w .,\-_:()\/]{4,65535}$/';
+    public const TITLE = '/^[\w \-_\/]{3,50}$/';
+    public const USERNAME = '/^[a-z]{2,7}[a-z0-9]?\.[a-z]{2,8}$/';
+    public const NAME = '/^[\w\- ]{3,50}$/';
     public const ROLE_NAME = '/^[a-z]{3,12}$/';
     public const ACRONYM = '/^[A-Z0-9]{2,3}$/';
-    public const JOB_CATEGORY_NAME = '/^[\w .,-_:()\\/]{3,50}$/';
-    public const DEVICE_NAME = '/^[\w .,-_:()\\/]{3,50}$/';
+    public const JOB_CATEGORY_NAME = '/^[\w .,\-_:()\/]{3,50}$/';
+    public const DEVICE_NAME = '/^[\w .,\-_:()\/]{3,50}$/';
     public const FILE_TYPE_NAME = '/^[a-z0-9]{2,10}$/';
-    public const MIME_TYPE = '/^\w+\/[-.\w]+$/';
+    public const MIME_TYPE = '/^\w+\/[\-.\w]+$/';
     //src: https://stackoverflow.com/questions/25201083/regex-to-match-and-validate-internet-media-type
 
     // TODO: perhaps creates a rule
@@ -39,5 +39,10 @@ final class Regex
             && preg_match(self::PASSWORD_DIGIT, $password)
             && preg_match(self::PASSWORD_SPECIAL_CHAR, $password)
             && preg_match(self::PASSWORD_GLOBAL, $password);
+    }
+
+    public static function is_valid(string $input, string $regex): bool
+    {
+        return preg_match($regex, $input);
     }
 }

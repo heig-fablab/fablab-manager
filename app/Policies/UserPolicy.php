@@ -5,6 +5,7 @@ namespace App\Policies;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use App\Models\User;
 use App\Constants\Roles;
+use Illuminate\Support\Facades\Log;
 
 class UserPolicy
 {
@@ -12,12 +13,12 @@ class UserPolicy
 
     public function before(User $user, $ability)
     {
-        if (!$user->has_given_role(Roles::CLIENT)) {
-            return false;
-        }
-
         if ($user->has_given_role(Roles::ADMIN)) {
             return true;
+        }
+
+        if (!$user->has_given_role(Roles::CLIENT)) {
+            return false;
         }
     }
 
@@ -54,6 +55,6 @@ class UserPolicy
     // Others API functions
     public function update_email_notifications(User $user)
     {
-        return true; // Because client role is already checked
+        return $user->username == app('request')->get('username');
     }
 }

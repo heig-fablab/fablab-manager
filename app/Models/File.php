@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Constants\EventTypes;
-//use App\Constants\JobStatus;
-
 
 class File extends Model
 {
@@ -34,8 +32,8 @@ class File extends Model
     }
 
     // File Storage Service
-    private const FILE_STORAGE_PATH = 'FileStorage/';
-    private const HASH_ALGORITHME = 'sha256';
+    public const FILE_STORAGE_PATH = 'FileStorage/';
+    public const HASH_ALGORITHME = 'sha256';
 
     private static function create_event_and_mail(int $job_id)
     {
@@ -55,20 +53,49 @@ class File extends Model
         }
     }
 
-    public static function is_valid_file($file, int $job_category_id, int $job_id)
+    public static function is_valid_file($file, int $job_category_id, int $job_id): bool
     {
-        if ($file->getClientOriginalExtension() == $file->extension()) {
+        if ($file == null) {
             return false;
         }
 
-        if ($job_category_id == -1) {
-            $job_category_id = Job::findOrFail($job_id)->job_category_id;
+        // Size is in bytes 100'000'000 B
+        if ($file->getSize() > 100000000) {
+            return false;
         }
 
+        if ($file->getClientOriginalExtension() != $file->extension()) {
+            return false;
+        }
+
+        // Verify category to get accepted types
+        $job = Job::find($job_id);
+        $job_category = JobCategory::find($job_category_id);
+
+        if ($job == null && $job_category == null) {
+            return false;
+        }
+
+        if ($job_category == null) {
+            $job_category = $job->job_category;
+        }
+
+        // Verify if file type exists in BD
+        $file_type = FileType::where('name', '=', $file->getClientOriginalExtension())->first();
+        if ($file_type == null) {
+            return false;
+        }
+
+        // $file->extension() = Determine the file's extension based on the file's MIME type
+        // Check matching file type with file extension
+        if ($file_type->mime_type != $file->extension()) {
+            return false;
+        }
+
+        // Verify accepted types
         return in_array(
             $file->extension(),
-            FileType::where('job_category_id', $job_category_id)
-                ->pluck('mime_type')
+            $job_category->file_types->pluck('mime_type')->toArray()
         );
     }
 

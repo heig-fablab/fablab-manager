@@ -63,4 +63,11 @@ jobs:
         DB_USERNAME: user
         DB_PASSWORD: secret
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
+        KEYCLOAK_REALM_PUBLIC_KEY: test
+        KEYCLOAK_LOAD_USER_FROM_DATABASE: true
+        KEYCLOAK_USER_PROVIDER_CREDENTIAL: username
+        KEYCLOAK_TOKEN_PRINCIPAL_ATTRIBUTE: preferred_username
+        KEYCLOAK_APPEND_DECODED_TOKEN: false
+        KEYCLOAK_ALLOWED_RESOURCES: ""
+        KEYCLOAK_IGNORE_VALIDATE_RESOURCES: true
       run: vendor/bin/phpunit

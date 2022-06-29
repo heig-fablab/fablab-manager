@@ -14,12 +14,12 @@ class MessagePolicy
 
     public function before(User $user, $ability)
     {
-        if (!$user->has_given_role(Roles::CLIENT)) {
-            return false;
-        }
-
         if ($user->has_given_role(Roles::ADMIN)) {
             return true;
+        }
+
+        if (!$user->has_given_role(Roles::CLIENT)) {
+            return false;
         }
     }
 
@@ -38,8 +38,10 @@ class MessagePolicy
 
     public function create(User $user)
     {
-        // Verify if user uploading file is client in job given
+        // To verify if user creating the message participate in job given 
+        // & if user creating the message is the sender in message given
         $job = Job::findOrFail(app('request')->get('job_id'));
-        return $job->client_username == $user->username;
+        return $job->participate_in_job($user)
+            && $user->username == app('request')->get('sender_username');
     }
 }
