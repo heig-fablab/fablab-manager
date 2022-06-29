@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\users;
+namespace Tests\Feature\Users;
 
 use Tests\TestCase;
 use Tests\TestHelpers;

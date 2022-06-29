@@ -12,7 +12,7 @@ class UserFactory extends Factory
 {
     private function generateRandomString($length = 8)
     {
-        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters = 'abcdefghijklmnopqrstuvwxyz';
         $charactersLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < $length; $i++) {
@@ -28,17 +28,15 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        //$name = $this->faker->name;
         $name = $this->generateRandomString(8);
-        //$surname = $this->faker->name;
         $surname = $this->generateRandomString(8);
-        $username = substr(strtolower($name), 0, 8) . '.' . substr(strtolower($surname), 0, 8);
+        $username = $name. '.' . $surname;
 
         return [
             'username' => $username,
             'name' => $name,
             'surname' => $surname,
-            'email' => $this->faker->unique()->safeEmail()
+            'email' => $username . '@example.ch' //$this->faker->unique()->safeEmail()
         ];
     }
 

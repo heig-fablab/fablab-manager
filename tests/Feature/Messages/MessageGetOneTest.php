@@ -12,7 +12,7 @@ class MessageGetOneTest extends TestCase
 
     //-------------------------
     // Roles and success tests
-    public function test_anonymous_get_job_fail()
+    public function test_anonymous_get_message_fail()
     {
         $user = TestHelpers::create_test_user(array());
         $job = TestHelpers::create_test_job($user->username);
@@ -77,7 +77,7 @@ class MessageGetOneTest extends TestCase
             ]);
     }
 
-    public function test_admin_get_job_not_participate_success()
+    public function test_admin_get_message_not_participate_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::ADMIN));
         $job = TestHelpers::create_test_job('client.client');

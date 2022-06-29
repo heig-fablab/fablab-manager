@@ -2,11 +2,14 @@
 
 namespace Tests;
 
+use App\Models\File;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Job;
 use App\Models\Message;
 use App\Constants\JobStatus;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class TestHelpers
 {
@@ -87,5 +90,36 @@ class TestHelpers
             'sender_username' => $sender_username,
             'receiver_username' => $receiver_username,
         ]);
+    }
+
+    // File methods
+    private static function get_test_file_path(object $file): string
+    {
+        $hash = hash_file(File::HASH_ALGORITHME, $file);
+        $dir = substr($hash, 0, 2);
+        return File::FILE_STORAGE_PATH . $dir . '/' . $hash;
+    }
+
+    public static function create_test_file(
+        string $name= 'document.pdf',
+        string $mime_type = 'application/pdf',
+        int $size = 100
+    ): object {
+        Storage::fake(File::FILE_STORAGE_PATH);
+        return UploadedFile::fake()->create(
+            $name,
+            $size,
+            $mime_type
+        );
+    }
+
+    public static function assert_file_present_in_storage(object $file): void
+    {
+        Storage::assertExists(self::get_test_file_path($file));
+    }
+
+    public static function assert_file_missing_in_storage(object $file): void
+    {
+        Storage::assertMissing(self::get_test_file_path($file));
     }
 }

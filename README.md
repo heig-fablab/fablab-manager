@@ -67,8 +67,6 @@ Dépendances à installer via la commande `composer require [packageName]`:
 
 ##### Commande Laravel pour créer un projet
 * composer create-project laravel/laravel nomprojet
-* 
-
 
 #### Ajout du projet Vue.js compilé à Laravel pour réaliser un SPA
 Pour intégrer la SPA du frontend dans le code du backend, il faut d’abord compiler le
@@ -102,7 +100,7 @@ cp .env.example .env
 
 3. It use Laravel Sail, so go use the following command:
 ````
-./vendor/bin/sail up
+./vendor/bin/sail up -d
 ````
 
 4. You can also create an alias for _sail_ like that:
@@ -130,31 +128,73 @@ default developement server in on port 80
 
 ## Tests
 ````
-./vendor/bin/sail artisan test
+./vendor/bin/sail test
+````
+
+### Installation xdebug
+
+````
+sudo apt-get install php8.1-xdebug
+````
+
+path php.ini wsl 2:
+````
+\\wsl.localhost\Ubuntu\etc\php\8.1\cli
+````
+
+Add:
+````
+[xdebug]
+zend_extension="<path to xdebug extension>"
+xdebug.mode=debug
+xdebug.client_host=127.0.0.1
+xdebug.client_port="<the port (9003 by default) to which Xdebug connects>"
 ````
 
 ### Test coverage
 Not unable yet!
 
+https://laravel.com/docs/9.x/sail#debugging-with-xdebug
+(not with sail)
 Add the following line to your php.ini file:
 ````
 xdebug.mode=coverage
 ````
 
+https://laracasts.com/discuss/channels/laravel/laravel-9-code-coverage
+https://stackoverflow.com/questions/66876314/laravel-not-generating-code-coverage-report
+
 All tests:
 ````
-vendor/bin/sail artisan test --coverage
-vendor/bin/sail artisan test --coverage-html tests/coverage
+vendor/bin/sail test --coverage
 ````
 
-On file:
+On a specific file:
 ````
 vendor/bin/sail artisan test --filter FileName
+````
+
+### Access container
+````
+vendor/bin/sail root-shell
+````
+
+### Debugging:
+https://laravel.com/docs/9.x/sail#xdebug-browser-usage
+https://blog.devgenius.io/how-to-enable-xdebug-on-laravel-sail-and-debugging-code-with-vs-code-872fd750b340
+https://www.youtube.com/watch?v=Xgn0EtB4chc
+
+Start a debug session:
+````
+vendor/bin/sail debug
 ````
 
 ### Mail testing
 As we develop with Laravel Sail, the libraire [MailHog](https://github.com/mailhog/MailHog) is available, watch the test mail send at this address: \
 http://localhost:8025/
+
+### All about sail
+https://laravel.com/docs/9.x/sail
 
 ## Keycloak package
 The keycloak package is modified in packages folder, when you want to run the program, after ran composer install, just copy the keycloak modified package to the vendor one.
@@ -164,7 +204,7 @@ The keycloak package is modified in packages folder, when you want to run the pr
 ## Contribute
 
 ### Postman
-To help at testing API, an Postman exists:
+To help at testing API, a Postman exists:
 [fablab-manager-postman](https://go.postman.co/workspace/fablab-manager~549aafa9-4f89-47c7-838a-ef74a6d1f398/collection/15807442-1ea77052-bd3c-4f9b-b806-25e11d878c0e?action=share&creator=15807442)
 
 ## Authors
