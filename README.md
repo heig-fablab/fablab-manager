@@ -73,9 +73,10 @@ Pour intégrer la SPA du frontend dans le code du backend, il faut d’abord com
 projet. Lors de la compilation, les pages et composants Vue sont traduits en HTML,
 CSS et JavaScript. Une fois terminé, le dossier "dist" est rempli avec deux fichiers
 et un dossier :
-— Le dossier "assets", qui contient les images, les logos, et le code JS et CSS.
-— Le fichier "favicon.ico", qui est l’icône qui apparait dans le navigateur.
-— Le fichier "index.html", qui contient la page HTML de lancement.
+* Le dossier "assets", qui contient les images, les logos, et le code JS et CSS.
+* Le fichier "favicon.ico", qui est l’icône qui apparait dans le navigateur.
+* Le fichier "index.html", qui contient la page HTML de lancement.
+
 Ces trois éléments du dossier "dist" doivent ensuite être déposés dans le dossier
 "public" du backend. Il faut aussi impérativement copier le contenu de "index.html"
 pour le mettre dans "resources/views/app.blade.php".
@@ -85,6 +86,11 @@ If you use visual studio, don't forget to install the extension for:
 * Vue.js
 * Laravel
 * PHP
+
+But if you can pay for jetbrains, use these one:
+* [PHP Storm](https://www.jetbrains.com/fr-fr/phpstorm/) for backend
+* [WebStorm](https://www.jetbrains.com/fr-fr/webstorm/) for frontend
+
 
 ## Use
 
