@@ -1,18 +1,6 @@
 version: "3.8"
 
 services:
-    app:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        ports:
-            - 3306:3306
-        volumes:
-            - .:/app
-            - '/app/node_modules'
-        depends_on:
-            - mysql_server
-
     db:
         image: mysql:latest
         command: --default-authentication-plugin=mysql_native_password
