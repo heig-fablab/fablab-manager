@@ -20,15 +20,18 @@ use App\Models\Message;
     return (int) $user->id === (int) $id;
 });*/
 
-Broadcast::channel('message.{switch_uuid}', function ($user, $switch_uuid) {
-    return $user->switch_uuid === $switch_uuid;
-});
-  
-Broadcast::channel('job.{switch_uuid}', function ($user, $switch_uuid) {
-    return $user->switch_uuid === $switch_uuid;
+Broadcast::channel('message.{username}', function ($user, $username) {
+    return $user->username === $username;
 });
 
-Broadcast::channel('job.workers.{switch_uuid}', function ($user, $switch_uuid) {
-    return $user->switch_uuid === $switch_uuid;
+Broadcast::channel('job.{username}', function ($user, $username) {
+    return $user->username === $username;
 });
-  
+
+/*Broadcast::channel('job.workers.{username}', function ($user, $username) {
+    return $user->username === $username;
+});*/
+
+Broadcast::channel('job.workers', function ($user, $username) {
+    return $user->roles->contains('name', 'worker');
+});

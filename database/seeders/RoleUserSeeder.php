@@ -7,31 +7,68 @@ use Illuminate\Support\Facades\DB;
 
 class RoleUserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
+    // 1 = ADMIN
+    // 2 = WORKER
+    // 3 = VALIDATOR
+    // 4 = CLIENT
+
     public function run()
     {
         DB::table('role_user')->insert([
-            'user_switch_uuid' => '111@hes-so.ch',
+            'user_username' => 'admin.admin',
             'role_id' => 1,
         ]);
 
         DB::table('role_user')->insert([
-            'user_switch_uuid' => '222@hes-so.ch',
+            'user_username' => 'worker.worker',
             'role_id' => 2,
         ]);
 
         DB::table('role_user')->insert([
-            'user_switch_uuid' => '333@hes-so.ch',
-            'role_id' => 3,
+            'user_username' => 'alec.berney',
+            'role_id' => 2,
         ]);
 
         DB::table('role_user')->insert([
-            'user_switch_uuid' => '444@hes-so.ch',
+            'user_username' => 'validato.validato',
+            'role_id' => 3,
+        ]);
+
+        // They are also all clients
+        DB::table('role_user')->insert([
+            'user_username' => 'admin.admin',
             'role_id' => 4,
         ]);
+
+        DB::table('role_user')->insert([
+            'user_username' => 'worker.worker',
+            'role_id' => 4,
+        ]);
+
+        DB::table('role_user')->insert([
+            'user_username' => 'alec.berney',
+            'role_id' => 4,
+        ]);
+
+        DB::table('role_user')->insert([
+            'user_username' => 'validato.validato',
+            'role_id' => 4,
+        ]);
+
+        DB::table('role_user')->insert([
+            'user_username' => 'client.client',
+            'role_id' => 4,
+        ]);
+
+        // Test roles
+        DB::table('role_user')->insert([
+            'user_username' => 'alec.berney',
+            'role_id' => 1,
+        ]);
+
+        /*DB::table('role_user')->insert([
+            'user_username' => 'alec.berney',
+            'role_id' => 3,
+        ]);*/
     }
 }

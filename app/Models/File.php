@@ -4,14 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use App\Constants\EventTypes;
 
 class File extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -33,16 +32,17 @@ class File extends Model
     }
 
     // File Storage Service
-    private const FILE_STORAGE_PATH = 'FileStorage/';
-    private const HASH_ALGORITHME = 'sha256';
+    public const FILE_STORAGE_PATH = 'FileStorage/';
+    public const HASH_ALGORITHME = 'sha256';
 
     private static function create_event_and_mail(int $job_id)
     {
         // Create and save Event (notify worker)
         $user_to_notify_switch_uuid = Job::findOrFail($job_id)->worker_switch_uuid;
+
         if ($user_to_notify_switch_uuid != null) {
             Event::create([
-                'type' => Event::T_FILE,
+                'type' => EventTypes::FILE,
                 'to_notify' => true,
                 'user_switch_uuid' => $user_to_notify_switch_uuid,
                 'job_id' => $job_id
@@ -53,24 +53,50 @@ class File extends Model
         }
     }
 
-    public static function validate_file(Request $request)
+    public static function is_valid_file($file, int $job_category_id, int $job_id): bool
     {
-        // TODO
-
-
-        /*$request->validate([
-            'file' => 'required|file|max:2048',
-            'job_id' => 'required|integer',
-        ]);*/
-
-        // TODO: verify mime_type via ->extension()
-        // TODO: verify file_type via ->getClientOriginalExtension
-        /* function ($attribute, $value, $fail) {
-        if ($value === 'foo') {
-            $fail('The '.$attribute.' is invalid.');
+        if ($file == null) {
+            return false;
         }
-        },*/ // use closure to test extension types of files
-        //$extension = $file->extension(); // Determine the file's extension based on the file's MIME type...
+
+        // Size is in bytes 100'000'000 B
+        if ($file->getSize() > 100000000) {
+            return false;
+        }
+
+        if ($file->getClientOriginalExtension() != $file->extension()) {
+            return false;
+        }
+
+        // Verify category to get accepted types
+        $job = Job::find($job_id);
+        $job_category = JobCategory::find($job_category_id);
+
+        if ($job == null && $job_category == null) {
+            return false;
+        }
+
+        if ($job_category == null) {
+            $job_category = $job->job_category;
+        }
+
+        // Verify if file type exists in BD
+        $file_type = FileType::where('name', '=', $file->getClientOriginalExtension())->first();
+        if ($file_type == null) {
+            return false;
+        }
+
+        // $file->extension() = Determine the file's extension based on the file's MIME type
+        // Check matching file type with file extension
+        if ($file_type->mime_type != $file->extension()) {
+            return false;
+        }
+
+        // Verify accepted types
+        return in_array(
+            $file->extension(),
+            $job_category->file_types->pluck('mime_type')->toArray()
+        );
     }
 
     public static function get_file(File $file)

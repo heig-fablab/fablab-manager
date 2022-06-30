@@ -19,7 +19,6 @@ class FileTypeController extends Controller
 
     public function show(int $id)
     {
-        // TODO: validate $id input
         return new FileTypeResource(FileType::findOrFail($id));
     }
 
@@ -39,7 +38,6 @@ class FileTypeController extends Controller
 
     public function destroy(int $id)
     {
-        // TODO: validate $id input
         FileType::findOrFail($id)->delete();
         return response()->json([
             'message' => "FileType deleted successfully!"

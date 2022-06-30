@@ -7,21 +7,15 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             // Fields
-            $table->string('name');
-            $table->string('hash');
-            $table->string('directory');
+            $table->string('name', 255);
+            $table->string('hash', 64);
+            $table->string('directory', 2);
             // Options
-            $table->softDeletes();
             $table->timestamps();
             // Foreign keys
             $table->foreignId('file_type_id')->constrained()->onDelete('cascade');
@@ -32,11 +26,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');

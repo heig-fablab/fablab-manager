@@ -3,6 +3,7 @@
 namespace App\Http\Requests\StoreRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Constants\Regex;
 
 class StoreDeviceRequest extends FormRequest
 {
@@ -17,11 +18,11 @@ class StoreDeviceRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:50', 'regex:' . Regex::DEVICE_NAME],
             'image_path'  => ['required'],
-            'description' => ['required', 'string', 'max:500'],
+            'description' => ['sometimes', 'filled', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION],
             'job_categories' => ['required', 'array'],
-            'job_categories.*' => ['required', 'integer', 'min:1', 'exists:job_categories,id'],
+            'job_categories.*' => ['required', 'string', 'regex:' . Regex::ACRONYM, 'exists:job_categories,acronym'],
         ];
     }
 }

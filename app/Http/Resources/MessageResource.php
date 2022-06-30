@@ -11,9 +11,12 @@ class MessageResource extends JsonResource
         return [
             'id' => $this->id,
             'text' => $this->text,
-            'sender_switch_uuid' => $this->sender_switch_uuid,
-            'receiver_switch_uuid' => $this->receiver_switch_uuid,
-            'job' => $this->job->pluck('title', 'id'),
+            'sender_username' => $this->sender_username,
+            'receiver_username' => $this->receiver_username,
+            'job' => array(
+                'id' => $this->job->id,
+                'title' => $this->job->title,
+            ),
         ];
     }
 }

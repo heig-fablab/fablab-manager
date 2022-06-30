@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Europe/Zurich',
 
     /*
     |--------------------------------------------------------------------------
@@ -163,17 +163,19 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        //StudentAffairsUwm\Shibboleth\ShibbolethServiceProvider::class,
 
         /*
          * Package Service Providers...
          */
+        KeycloakGuard\KeycloakGuardServiceProvider::class,
 
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
@@ -191,7 +193,10 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Regex' => App\Constants\Regex::class,
+        'JobStatus' => App\Constants\JobStatus::class,
+        'EventTypes' => App\Constants\EventTypes::class,
+        'Roles' => App\Constants\Roles::class,
     ])->toArray(),
 
 ];

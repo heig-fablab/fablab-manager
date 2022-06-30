@@ -8,6 +8,10 @@ use App\Http\Controllers\Api\JobCategoryController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\Job;
+use App\Models\File;
+use App\Models\Message;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,113 +24,86 @@ use App\Http\Controllers\Api\UserController;
 |
 */
 
-// Default
-/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
+// All {id} and {username} parameters are required and validated in RouteServiceProvider file
 
+// TODO: Do we transform all update (put and patch) routes with id given in path?
 
-// TODO: verify route inputs with:
-// https://laravel.com/docs/9.x/routing#required-parameters
+Route::middleware('auth:api')->group(function () {
 
-// Futur all users routes
-
-//Route::apiResource('jobs', JobController::class);
-
-Route::prefix('/jobs')->controller(JobController::class)->group(function () {
-    Route::get('', 'index'); // admin
-    Route::get('/unassigned', 'unassigned_jobs');
-    Route::get('/user/{switch_uuid}', 'user_jobs');
-    Route::get('/client/{switch_uuid}', 'user_as_client_jobs');
-    Route::get('/worker/{switch_uuid}', 'user_as_worker_jobs'); // todo verify role ->middleware()
-    Route::get('/validator/{switch_uuid}', 'user_as_validator_jobs'); // todo verify role ->middleware()
-    Route::get('/{id}', 'show');
-    Route::post('', 'store');
-    Route::put('', 'update');
-    //Route::patch('/{id}/validator/{switch_uuid}', 'assign_validator'); // todo verify role ->middleware()
-    Route::patch('/worker/assign', 'assign_worker'); // todo verify role ->middleware()
-    Route::patch('/status', 'update_status'); // todo verify role and user ->middleware()
-    Route::patch('/rating', 'update_rating'); // todo verify user ->middleware()
-    Route::patch('/notifications/{id}', 'update_notifications');
-    Route::delete('/{id}', 'destroy');
-});
-
-//Route::apiResource('files', FileController::class);
-Route::prefix('/files')->controller(FileController::class)->group(function () {
-    //Route::get('', 'index');
-    Route::get('/{id}', 'show');
-    Route::post('', 'store');
-    //Route::post('/job/{id}', 'job_files');
-    Route::put('', 'update');
-    Route::delete('/{id}', 'destroy');
-});
-
-Route::prefix('/messages')->controller(MessageController::class)->group(function () {
-    Route::get('', 'index');
-    Route::get('/{id}', 'show');
-    Route::post('', 'store');
-});
-
-// Futur admin routes
-//Route::apiResource('devices', DeviceController::class);
-Route::prefix('/devices')->controller(DeviceController::class)->group(function () {
-    Route::get('', 'index');
-    Route::get('/{id}', 'show');
-    Route::post('', 'store');
-    Route::put('', 'update');
-    Route::delete('/{id}', 'destroy');
-}); // TODO -> verify admin via middleware
-
-//Route::apiResource('file_types', FileTypeController::class); // todo -> verify admin via middleware
-Route::prefix('/file_types')->controller(FileTypeController::class)->group(function () {
-    Route::get('', 'index');
-    Route::get('/{id}', 'show');
-    Route::post('', 'store');
-    Route::put('', 'update');
-    Route::delete('/{id}', 'destroy');
-}); // TODO -> verify admin via middleware
-
-Route::apiResource('job_categories', JobCategoryController::class); // todo -> verify admin via middleware
-
-//Route::apiResource('users', UserController::class);
-//Route::apiResource('devices', DeviceController::class);
-Route::prefix('/users')->controller(UserController::class)->group(function () {
-    Route::get('', 'index');
-    Route::get('/{switch_uuid}', 'show');
-    Route::post('', 'store'); // TODO -> verify admin via middleware
-    Route::put('', 'update'); // TODO -> verify admin via middleware
-    //Route::patch('/{switch_uuid}/notifications', 'update_notify');
-    Route::delete('/{switch_uuid}', 'destroy'); // TODO -> verify admin via middleware
-}); // TODO -> verify admin via middleware
-
-// Old code
-
-/*Route::prefix('/user')->group(function () {
-    Route::post('/logout', [UserController::class, 'logout']);
-});
-  
-Route::group(['middleware' => ['auth']], function () {
-
-    Route::prefix('/user')->group(function () {
-        Route::get('/retrieve', function() { return Auth::user(); });
-        Route::post('/update-settings', [UserController::class, 'updateSettings']);
+    Route::prefix('/jobs')->controller(JobController::class)->group(function () {
+        Route::get('', 'index')->can('viewAny', Job::class);
+        Route::get('/unassigned', 'unassigned_jobs')->can('unassigned_jobs', Job::class);
+        Route::get('/user/{username}', 'user_jobs')->can('user_jobs', [Job::class, 'username']);
+        Route::get('/client/{username}', 'user_as_client_jobs')->can('user_as_client_jobs', [Job::class, 'username']); // usefull?
+        Route::get('/worker/{username}', 'user_as_worker_jobs')->can('user_as_worker_jobs', [Job::class, 'username']); // usefull?
+        Route::get('/validator/{username}', 'user_as_validator_jobs')->can('user_as_validator_jobs', [Job::class, 'username']); // usefull?
+        Route::get('/{id}', 'show')->can('view', [Job::class, 'id']);
+        Route::post('', 'store')->can('create', Job::class);
+        Route::put('', 'update')->can('update', Job::class);
+        //Route::patch('/{id}/validator/{username}', 'assign_validator')->can('assign_validator', Job::class);
+        Route::patch('/worker/assign', 'assign_worker')->can('assign_worker', Job::class);
+        Route::patch('/status', 'update_status')->can('update_status', Job::class);
+        Route::patch('/rating', 'update_rating')->can('update_rating', Job::class);
+        Route::patch('{id}/notifications/user/{username}', 'update_notifications')->can('update_notifications', [Job::class, 'id', 'username']);
+        Route::delete('/{id}', 'destroy')->can('destroy', [Job::class, 'id']);
     });
 
-    Route::get('/jobs/{id}', [JobController::class, 'index']);
-    Route::prefix('/job')->group(function () { 
-        Route::post('/store', [JobController::class, 'store']);
-        Route::post('/update-status', [JobController::class, 'updateStatus']);
-        Route::post('/update-notify', [JobController::class, 'updateNotify']);
-        Route::post('/assign', [JobController::class, 'assign']);
-        Route::post('/terminate', [JobController::class, 'terminate']);
+    Route::prefix('/files')->controller(FileController::class)->group(function () {
+        //Route::get('', 'index')->can('viewAny', File::class);
+        Route::get('/{id}', 'show')->can('view', [File::class, 'id']);
+        Route::post('', 'store')->can('create', File::class);
+        //Route::post('/job/{id}', 'job_files')->can('job_files', [File::class, 'id']);
+        Route::put('', 'update')->can('update', File::class);
+        Route::delete('/{id}', 'destroy')->can('destroy', [File::class, 'id']);
     });
 
-    Route::prefix('/message')->group(function () { 
-        Route::post('/store', [MessageController::class, 'store']);
+    Route::prefix('/messages')->controller(MessageController::class)->group(function () {
+        Route::get('', 'index')->can('viewAny', Message::class);
+        Route::get('/{id}', 'show')->can('view', [Message::class, 'id']);
+        Route::post('', 'store')->can('create', Message::class);
+        // TODO: perhaps a route to get all messages for a job
     });
 
-    Route::prefix('/file')->group(function () { 
-        Route::post('/store', [FileController::class, 'store']);
-        Route::get('/download/{id}', [FileController::class, 'download']);
+    Route::prefix('/users')->controller(UserController::class)->group(function () {
+        Route::get('', 'index')->can('viewAny', User::class);
+        Route::get('/{username}', 'show')->can('view', [User::class, 'username']);
+        Route::post('', 'store')->can('create', User::class);
+        Route::put('', 'update')->can('update', User::class);
+        Route::patch('/notifications', 'update_email_notifications')->can('update_email_notifications', User::class);
+        Route::delete('/{username}', 'destroy')->can('destroy', [User::class, 'username']);
     });
-});*/
+
+    // Admin routes
+    Route::prefix('/devices')
+        ->controller(DeviceController::class)
+        ->middleware('can:before,App\Models\Device')
+        ->group(function () {
+            Route::get('', 'index');
+            Route::get('/{id}', 'show');
+            Route::post('', 'store');
+            Route::put('', 'update');
+            Route::delete('/{id}', 'destroy');
+        });
+
+    Route::prefix('/file_types')
+        ->controller(FileTypeController::class)
+        ->middleware('can:before,App\Models\FileType')
+        ->group(function () {
+            Route::get('', 'index');
+            Route::get('/{id}', 'show');
+            Route::post('', 'store');
+            Route::put('', 'update');
+            Route::delete('/{id}', 'destroy');
+        });
+
+    Route::prefix('/job_categories')
+        ->controller(JobCategoryController::class)
+        ->middleware('can:before,App\Models\JobCategory')
+        ->group(function () {
+            Route::get('', 'index');
+            Route::get('/{id}', 'show');
+            Route::post('', 'store');
+            Route::put('', 'update');
+            Route::delete('/{id}', 'destroy');
+        });
+});

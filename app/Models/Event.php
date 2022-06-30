@@ -3,32 +3,29 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use App\Jobs\NotificationsEmailJob;
 
 class Event extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'type',
         'to_notify',
         'data',
-        'user_switch_uuid',
+        'user_username',
         'job_id'
     ];
 
-    // Types of event values
-    public const T_MESSAGE = 'message';
-    public const T_FILE = 'file';
-    public const T_STATUS = 'status';
-
     // Mail Service
-    public static function create_mail_job(string $user_switch_uuid)
+    public static function create_mail_job(string $user_username)
     {
         static $id_counter = 0;
-        //NotificationsEmailJob::dispatch($id_counter, $user_switch_uuid)->delay(now()->addMinutes(10));
-        NotificationsEmailJob::dispatch($id_counter, $user_switch_uuid)->delay(now()->addSeconds(20));
+        //NotificationsEmailJob::dispatch($id_counter, $user_username)->delay(now()->addMinutes(10));
+        NotificationsEmailJob::dispatch($id_counter, $user_username)->delay(now()->addSeconds(20));
         $id_counter += 1;
     }
 
@@ -40,6 +37,6 @@ class Event extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_switch_uuid');
+        return $this->belongsTo(User::class, 'user_username');
     }
 }

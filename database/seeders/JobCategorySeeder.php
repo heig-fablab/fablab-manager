@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class JobCategorySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('job_categories')->insert([

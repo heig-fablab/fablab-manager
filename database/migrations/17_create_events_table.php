@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
@@ -19,24 +14,20 @@ return new class extends Migration
             // Fields
             $table->enum('type', ['status', 'file', 'message']);
             $table->boolean('to_notify')->default(true);
-            $table->string('data')->nullable(); // to store status type
+            $table->string('data', 12)->nullable(); // to store status type
             // Options
             $table->timestamps();
+            $table->softDeletes();
             // Foreign keys
-            $table->string('user_switch_uuid');
-            $table->foreign('user_switch_uuid')->references('switch_uuid')->on('users')->onDelete('cascade');
+            $table->string('user_username', 17);
+            $table->foreign('user_username')->references('username')->on('users')->onDelete('cascade');
             $table->foreignId('job_id')->constrained()->onDelete('cascade');
             // Indexes
             $table->index('job_id');
-            $table->index('user_switch_uuid');
+            $table->index('user_username');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');

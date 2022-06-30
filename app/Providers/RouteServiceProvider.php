@@ -37,7 +37,9 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
+        // Validate query string parameters
         Route::pattern('id', '[0-9]+');
+        Route::pattern('username', '[a-z0-9]{2,8}\.[a-z]{2,8}');
     }
 
     /**

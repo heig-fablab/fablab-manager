@@ -7,7 +7,9 @@ use App\Http\Requests\StoreRequests\StoreMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use App\Models\Event;
+use App\Models\Job;
 use App\Events\MessageCreatedEvent;
+use App\Constants\EventTypes;
 
 class MessageController extends Controller
 {
@@ -19,29 +21,35 @@ class MessageController extends Controller
 
     public function show(int $id)
     {
-        // TODO: validate $id input
         $message = Message::findOrFail($id);
         return new MessageResource($message);
     }
 
     public function store(StoreMessageRequest $request)
     {
-        // TODO: verify if the job exists and is assigned
-        $message = Message::create($request->validated());
+        $req_validated = $request->validated();
+
+        if (Job::findOrFail($request->job_id)->worker_username == null) {
+            return response()->json([
+                'message' => "You can't create a message related to a job who hasn't a worker defined!"
+            ], 400);
+        }
+
+        $message = Message::create($req_validated);
 
         // Notifications
         broadcast(new MessageCreatedEvent($message)); //->toOthers();
 
         // Create and save Event (notify receiver)
         Event::create([
-            'type' => Event::T_MESSAGE,
+            'type' => EventTypes::MESSAGE,
             'to_notify' => true,
-            'user_switch_uuid' => $message->receiver_switch_uuid,
+            'user_username' => $message->receiver_username,
             'job_id' => $message->job_id
         ]);
 
         // Emails
-        Event::create_mail_job($message->receiver_switch_uuid);
+        Event::create_mail_job($message->receiver_username);
 
         return new MessageResource($message);
     }

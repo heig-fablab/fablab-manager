@@ -14,19 +14,19 @@ class Message extends Model
     protected $fillable = [
         'text',
         'job_id',
-        'sender_switch_uuid',
-        'receiver_switch_uuid'
+        'sender_username',
+        'receiver_username'
     ];
 
     // Belongs to
     public function sender()
     {
-        return $this->belongsTo(User::class, 'sender_switch_uuid');
+        return $this->belongsTo(User::class, 'sender_username');
     }
 
     public function receiver()
     {
-        return $this->belongsTo(User::class, 'receiver_switch_uuid');
+        return $this->belongsTo(User::class, 'receiver_username');
     }
 
     public function job()

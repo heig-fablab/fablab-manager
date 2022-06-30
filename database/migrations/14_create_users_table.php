@@ -15,17 +15,18 @@ return new class extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->string('switch_uuid', 320)->unique()->primary();
+            $table->string('username', 17)->unique()->primary();
             // Fields
-            $table->string('email', 320)->unique();
-            $table->string('name');
-            $table->string('surname');
-            $table->string('password')->nullable();
+            $table->string('email', 254)->unique();
+            $table->string('name', 50);
+            $table->string('surname', 50);
+            $table->string('password', 64)->nullable();
             $table->boolean('require_status_email')->default(true);
             $table->boolean('require_files_email')->default(true);
             $table->boolean('require_messages_email')->default(true);
             $table->timestamp('last_email_sent')->useCurrent()->nullable();
             // Options
+            $table->rememberToken();
             $table->softDeletes();
         });
     }
