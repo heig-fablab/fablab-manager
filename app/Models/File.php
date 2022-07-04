@@ -20,6 +20,12 @@ class File extends Model
         'job_id'
     ];
 
+    // Has one
+    public function job_category()
+    {
+        return $this->hasOne(JobCategory::class);
+    }
+
     // Belongs to
     public function file_type()
     {
@@ -53,7 +59,7 @@ class File extends Model
         }
     }
 
-    public static function is_valid_file($file, int $job_category_id, int $job_id): bool
+    public static function is_valid_file($file, $accepted_mime_types): bool
     {
         if ($file == null) {
             return false;
@@ -66,18 +72,6 @@ class File extends Model
 
         if ($file->getClientOriginalExtension() != $file->extension()) {
             return false;
-        }
-
-        // Verify category to get accepted types
-        $job = Job::find($job_id);
-        $job_category = JobCategory::find($job_category_id);
-
-        if ($job == null && $job_category == null) {
-            return false;
-        }
-
-        if ($job_category == null) {
-            $job_category = $job->job_category;
         }
 
         // Verify if file type exists in BD
@@ -93,10 +87,7 @@ class File extends Model
         }
 
         // Verify accepted types
-        return in_array(
-            $file->extension(),
-            $job_category->file_types->pluck('mime_type')->toArray()
-        );
+        return in_array($file->extension(), $accepted_mime_types);
     }
 
     public static function get_file(File $file)
@@ -104,7 +95,7 @@ class File extends Model
         return Storage::download(File::FILE_STORAGE_PATH . $file->directory . '/' . $file->hash, $file->name);
     }
 
-    public static function store_file($req_file, int $job_id)
+    public static function store_file($req_file, $job_id)
     {
         // File infos
         $hash = hash_file(File::HASH_ALGORITHME, $req_file);

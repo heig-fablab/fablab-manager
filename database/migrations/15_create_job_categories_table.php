@@ -20,10 +20,6 @@ return new class extends Migration
             $table->string('acronym', 3)->unique();
             $table->string('name', 50);
             $table->text('description');
-            // Foreign keys
-            $table->foreignId('file_id')->constrained('file')->onDelete('cascade');
-            // Indexes
-            $table->index('file_id');
         });
     }
 

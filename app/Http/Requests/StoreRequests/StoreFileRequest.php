@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\StoreRequests;
 
+use App\Models\Job;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\File;
 
@@ -17,11 +18,14 @@ class StoreFileRequest extends FormRequest
     public function rules()
     {
         return [
+            'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
             // 100Mo max
             'file' => ['required', 'file', 'max:100000', function () {
-                return File::is_valid_file($this->file('file'), -1, $this->job_id);
+                return File::is_valid_file($this->file('file'),
+                    Job::findOrFail($this->job_id)
+                    ->job_category->file_types->pluck('mime_type')->toArray()
+                );
             }],
-            'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
         ];
     }
 }

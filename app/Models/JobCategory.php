@@ -13,22 +13,23 @@ class JobCategory extends Model
 
     protected $fillable = [
         'acronym',
-        'name'
+        'name',
+        'description'
     ];
 
     // Options
     public $timestamps = false;
 
+    // Has one
+    public function file()
+    {
+        return $this->belongsTo(File::class);
+    }
+
     // Has many
     public function jobs()
     {
         return $this->hasMany(Job::class);
-    }
-
-    // Belongs to many
-    public function devices()
-    {
-        return $this->belongsToMany(Device::class);
     }
 
     public function file_types()

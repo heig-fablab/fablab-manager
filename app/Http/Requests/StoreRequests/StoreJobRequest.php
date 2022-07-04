@@ -4,6 +4,7 @@ namespace App\Http\Requests\StoreRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Constants\Regex;
+use App\Models\JobCategory;
 use App\Models\File;
 
 class StoreJobRequest extends FormRequest
@@ -25,7 +26,9 @@ class StoreJobRequest extends FormRequest
             'job_category_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:job_categories,id'],
             'files' => ['sometimes', 'filled', 'max:10', function () {
                 foreach ($this->file('files') as $file) {
-                    if (!File::is_valid_file($file, $this->job_category_id, -1)) {
+                    if (!File::is_valid_file($file,
+                        JobCategory::findOrFail($this->job_category_id)->file_types->pluck('mime_type')->toArray()
+                    )) {
                         return false;
                     }
                 }

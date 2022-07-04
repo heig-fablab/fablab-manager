@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\DeviceController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\FileTypeController;
 use App\Http\Controllers\Api\JobCategoryController;
@@ -74,17 +73,6 @@ Route::middleware('auth:api')->group(function () {
     });
 
     // Admin routes
-    Route::prefix('/devices')
-        ->controller(DeviceController::class)
-        ->middleware('can:before,App\Models\Device')
-        ->group(function () {
-            Route::get('', 'index');
-            Route::get('/{id}', 'show');
-            Route::post('', 'store');
-            Route::put('', 'update');
-            Route::delete('/{id}', 'destroy');
-        });
-
     Route::prefix('/file_types')
         ->controller(FileTypeController::class)
         ->middleware('can:before,App\Models\FileType')

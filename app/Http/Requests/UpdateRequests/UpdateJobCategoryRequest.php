@@ -4,6 +4,7 @@ namespace App\Http\Requests\UpdateRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Constants\Regex;
+use App\Models\File;
 
 class UpdateJobCategoryRequest extends FormRequest
 {
@@ -21,10 +22,14 @@ class UpdateJobCategoryRequest extends FormRequest
             'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:job_categories,id'],
             'acronym' => ['required', 'string', 'max:3', 'regex:' . Regex::ACRONYM],
             'name' => ['required', 'string', 'max:50', 'regex:' . Regex::JOB_CATEGORY_NAME],
-            'devices' => ['required', 'array'],
-            'devices.*' => ['required', 'integer', 'numeric', 'min:1', 'exists:devices,id'],
+            'description' => ['sometimes', 'filled', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION],
             'file_types' => ['required', 'array'],
             'file_types.*' => ['required', 'string', 'regex:' . Regex::FILE_TYPE_NAME, 'exists:file_types,name'],
+            'image' => ['required', 'file', 'max:100000', function () {
+                return File::is_valid_file($this->file('file'),
+                    ['image/png', 'image/jpeg', 'image/svg+xml']
+                );
+            }],
         ];
     }
 }

@@ -19,10 +19,12 @@ return new class extends Migration
             $table->timestamps();
             // Foreign keys
             $table->foreignId('file_type_id')->constrained()->onDelete('cascade');
-            $table->foreignId('job_id')->constrained()->onDelete('cascade');
+            $table->foreignId('job_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('job_category_id')->constrained();
             // Indexes
             $table->index('file_type_id');
             $table->index('job_id');
+            $table->index('job_category_id');
         });
     }
 
