@@ -48,4 +48,16 @@ class FilePolicy
         $file = File::findOrFail($id);
         return $file->job->client_username == $user->username;
     }
+
+    // Other functions
+    public function download(User $user, int $id)
+    {
+        $file = File::findOrFail($id);
+
+        if ($file->job == null && $file->job_category != null) {
+            return true;
+        }
+
+        return $file->job->participate_in_job($user);
+    }
 }

@@ -22,7 +22,7 @@ use App\Constants\JobStatus;
 
 // php artisan websockets:serve --host=127.0.0.1
 // -> to communicate only on localhost that is possible, wait and see if it works
-// php artisan websockets:serve --port=3030 
+// php artisan websockets:serve --port=3030
 // -> TODO: define an port for websockets 80 or 443 -> perhaps 8000
 
 class JobController extends Controller
@@ -92,7 +92,7 @@ class JobController extends Controller
         ], 200);
     }
 
-    // Others function
+    // Other functions
     public function unassigned_jobs()
     {
         return JobResource::collection(Job::get_unassigned_jobs());

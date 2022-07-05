@@ -50,6 +50,7 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('/files')->controller(FileController::class)->group(function () {
         //Route::get('', 'index')->can('viewAny', File::class);
         Route::get('/{id}', 'show')->can('view', [File::class, 'id']);
+        Route::get('/{id}/download', 'download')->can('download', [File::class, 'id']);
         Route::post('', 'store')->can('create', File::class);
         //Route::post('/job/{id}', 'job_files')->can('job_files', [File::class, 'id']);
         Route::put('', 'update')->can('update', File::class);

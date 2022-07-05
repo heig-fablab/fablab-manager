@@ -11,11 +11,10 @@ use App\Events\JobFileUpdatedEvent;
 
 class FileController extends Controller
 {
+    // API Standard function
     public function show(int $id)
     {
-        $file = File::findOrFail($id);
-        $file->file = File::get_file($file);
-        return new FileResource($file);
+        return new FileResource(File::findOrFail($id));
     }
 
     public function store(StoreFileRequest $request)
@@ -62,4 +61,12 @@ class FileController extends Controller
             'message' => "File deleted successfully!"
         ], 200);
     }
+
+    // Other functions
+    public function download(int $id)
+    {
+        return File::get_file(File::findOrFail($id));
+    }
+
+    // TODO: try to create a file url route for job categories
 }
