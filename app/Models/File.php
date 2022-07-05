@@ -92,9 +92,13 @@ class File extends Model
         return in_array($file->extension(), $accepted_mime_types);
     }
 
-    public static function get_file(File $file)
+    public static function get_file($file)
     {
-        return Storage::download(File::FILE_STORAGE_PATH . $file->directory . '/' . $file->hash, $file->name);
+        if ($file != null) {
+            return Storage::download(File::FILE_STORAGE_PATH . $file->directory . '/' . $file->hash, $file->name);
+        } else {
+            return null;
+        }
     }
 
     public static function store_file($req_file, $job_id): File
