@@ -34,8 +34,8 @@ class JobCategoryController extends Controller
 
         // Add image of the job category
         $file = File::store_file($request->file('image'), null);
-        $job_category->image->attach($file->id);
-        $job_category->save();
+        $file->job_category_id = $job_category->id;
+        $file->save();
 
         return new JobCategoryResource($job_category);
     }
@@ -54,11 +54,15 @@ class JobCategoryController extends Controller
         }
 
         // Update image of the job category
-        $file = File::update_file($job_category->file, $request->file('image'), null);
-        $job_category->image->detach();
-        $job_category->image->attach($file->id);
-        $job_category->save();
+        if ($job_category->file == null) {
+            $file = File::store_file($request->file('image'), null);
+        } else {
+            $file = File::update_file($job_category->file, $request->file('image'), null);
+        }
+        $file->job_category_id = $job_category->id;
+        $file->save();
 
+        // Update job file types accepted for the job category
         $job_category->file_types()->detach();
         foreach ($request->file_types as $file_type_name) {
             $job_category->file_types()->attach(FileType::where('name', $file_type_name)->first()->id);

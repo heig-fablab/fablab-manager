@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Constants\EventTypes;
@@ -17,22 +18,23 @@ class File extends Model
         'hash',
         'directory',
         'file_type_id',
-        'job_id'
+        'job_id',
+        'job_category_id',
     ];
 
     // Has one
-    public function job_category()
+    public function job_category(): BelongsTo
     {
-        return $this->hasOne(JobCategory::class);
+        return $this->belongsTo(JobCategory::class);
     }
 
     // Belongs to
-    public function file_type()
+    public function file_type(): BelongsTo
     {
         return $this->belongsTo(FileType::class);
     }
 
-    public function job()
+    public function job(): BelongsTo
     {
         return $this->belongsTo(Job::class);
     }
@@ -95,7 +97,7 @@ class File extends Model
         return Storage::download(File::FILE_STORAGE_PATH . $file->directory . '/' . $file->hash, $file->name);
     }
 
-    public static function store_file($req_file, $job_id)
+    public static function store_file($req_file, $job_id): File
     {
         // File infos
         $hash = hash_file(File::HASH_ALGORITHME, $req_file);
@@ -116,7 +118,9 @@ class File extends Model
             'job_id' => $job_id,
         ]);
 
-        File::create_event_and_mail($job_id);
+        if ($job_id != null) {
+            File::create_event_and_mail($job_id);
+        }
 
         // Add to filestorage
         // Create a directory with 2 first letter of hashed_name
@@ -126,7 +130,7 @@ class File extends Model
         return $file;
     }
 
-    public static function update_file(File $file, $req_file, int $req_job_id)
+    public static function update_file(File $file, $req_file, $req_job_id): File
     {
         $hash = hash_file(File::HASH_ALGORITHME, $req_file);
         $dir = substr($hash, 0, 2);
@@ -144,7 +148,9 @@ class File extends Model
             $file->directory = $dir;
             $file->file_type_id = $file_type->id;
 
-            File::create_event_and_mail($req_job_id);
+            if ($req_job_id != null) {
+                File::create_event_and_mail($req_job_id);
+            }
         }
 
         // Update file infos for BD
