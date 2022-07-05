@@ -80,18 +80,13 @@ class UserController extends Controller
     }
 
     // Others functions
-    /*public function logout(Request $request) //Called when the user wants to disconnect
-    {
-        return redirect("shibboleth-logout");
-    } //return : route to shibboleth logout handler*/
-
     public function update_email_notifications(UpdateUserEmailNotificationsRequest $request)
     {
         $req_validated = $request->validated();
         $user = User::findOrFail($request->username);
         $user->update($req_validated);
 
-        Log::debug('user updated');
+        Log::debug('user notifications updated');
         Log::debug('require_status_email:' . $user->require_status_email);
         Log::debug('require_files_email: ' . $user->require_files_email);
         Log::debug('require_messages_email: ' . $user->require_messages_email);

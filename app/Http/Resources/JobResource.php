@@ -35,8 +35,8 @@ class JobResource extends JsonResource
         }
 
         if ($this->messages != null) {
-            //$messages = MessageResource::collection($this->messages),
-            $messages = $this->messages->pluck('id', 'text');
+            $messages = MessageResource::collection($this->messages);
+            ///$messages = $this->messages->pluck('id', 'text');
         }
 
         if ($this->files != null) {
@@ -53,6 +53,7 @@ class JobResource extends JsonResource
             'status' => $this->status,
             'job_category' => array(
                 'id' => $this->job_category->id,
+                'acronym' => $this->job_category->acronym,
                 'name' => $this->job_category->name,
             ),
             'client' => array(

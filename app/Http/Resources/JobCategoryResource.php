@@ -15,7 +15,7 @@ class JobCategoryResource extends JsonResource
             'acronym' => $this->acronym,
             'name' => $this->name,
             'description' => $this->description,
-            'file_types' => $this->file_types->pluck('name', 'id'),
+            'file_types' => $this->file_types->pluck('name'),
             'image' => File::get_file($this->file),//FileResource::collection($this->file),
         ];
     }

@@ -6,7 +6,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class FileResource extends JsonResource
 {
-    // TODO: verify if file is downloaded or not
     public function toArray($request)
     {
         $job = null;
