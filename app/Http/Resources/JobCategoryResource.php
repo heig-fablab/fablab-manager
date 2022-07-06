@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\File;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class JobCategoryResource extends JsonResource
@@ -14,6 +15,7 @@ class JobCategoryResource extends JsonResource
             $image = array(
                 'id' => $this->file->id,
                 'name' => $this->file->name,
+                'url' => File::get_file_url($this->file),
             );
         }
 

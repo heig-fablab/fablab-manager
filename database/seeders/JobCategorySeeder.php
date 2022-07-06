@@ -56,5 +56,11 @@ class JobCategorySeeder extends Seeder
             'name' => 'autre',
             'description' => '',
         ]);
+
+        DB::table('job_categories')->insert([
+            'acronym' => 'TES',
+            'name' => 'test',
+            'description' => '',
+        ]);
     }
 }

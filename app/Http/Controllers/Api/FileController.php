@@ -65,8 +65,6 @@ class FileController extends Controller
     // Other functions
     public function download(int $id)
     {
-        return File::get_file(File::findOrFail($id));
+        return File::download_file(File::findOrFail($id));
     }
-
-    // TODO: try to create a file url route for job categories
 }

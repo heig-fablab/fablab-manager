@@ -40,7 +40,8 @@ class File extends Model
     }
 
     // File Storage Service
-    public const FILE_STORAGE_PATH = 'FileStorage/';
+    public const PRIVATE_FILE_STORAGE_PATH = 'private/file-storage/';
+    public const PUBLIC_FILE_STORAGE_PATH = 'public/file-storage/';
     public const HASH_ALGORITHME = 'sha256';
 
     private static function create_event_and_mail(int $job_id)
@@ -92,16 +93,27 @@ class File extends Model
         return in_array($file->extension(), $accepted_mime_types);
     }
 
-    public static function get_file($file)
+    public static function download_file($file)
     {
         if ($file != null) {
-            return Storage::download(File::FILE_STORAGE_PATH . $file->directory . '/' . $file->hash, $file->name);
+            return Storage::download(File::PRIVATE_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash, $file->name);
         } else {
             return null;
         }
     }
 
-    public static function store_file($req_file, $job_id): File
+    public static function get_file_url($file)
+    {
+        if ($file != null) {
+            return Storage::url(File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash);
+            /*return env('APP_FILE_STORAGE_FULL_PATH', '/www/var/')
+                . File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash;*/
+        } else {
+            return null;
+        }
+    }
+
+    public static function store_file($req_file, $job_id, bool $is_public = false): File
     {
         // File infos
         $hash = hash_file(File::HASH_ALGORITHME, $req_file);
@@ -129,22 +141,24 @@ class File extends Model
         // Add to filestorage
         // Create a directory with 2 first letter of hashed_name
         // It's a Laravel trick to not be stopped after x files in directory
-        $req_file->storeAs(File::FILE_STORAGE_PATH . $dir, $hash);
+        $file_storage_path = $is_public ? File::PUBLIC_FILE_STORAGE_PATH : File::PRIVATE_FILE_STORAGE_PATH;
+        $req_file->storeAs($file_storage_path . $dir, $hash);
 
         return $file;
     }
 
-    public static function update_file(File $file, $req_file, $req_job_id): File
+    public static function update_file(File $file, $req_file, $req_job_id, bool $is_public = false): File
     {
         $hash = hash_file(File::HASH_ALGORITHME, $req_file);
         $dir = substr($hash, 0, 2);
+        $file_storage_path = $is_public ? File::PUBLIC_FILE_STORAGE_PATH : File::PRIVATE_FILE_STORAGE_PATH;
 
         if ($hash != $file->hash || $dir != $file->directory) {
             // Delete old file
-            File::delete_file($file);
+            File::delete_file($file, true);
 
             // Create new file
-            $req_file->storeAs(File::FILE_STORAGE_PATH . $dir, $hash);
+            $req_file->storeAs($file_storage_path . $dir, $hash);
 
             // Update file infos linked to physic file content for BD
             $file_type = FileType::where('name', '=', $req_file->getClientOriginalExtension())->firstOrFail();
@@ -164,13 +178,15 @@ class File extends Model
         return $file;
     }
 
-    public static function delete_file(File $file)
+    public static function delete_file(File $file, bool $is_public = false)
     {
-        Storage::delete(File::FILE_STORAGE_PATH . $file->directory . '/' . $file->hash);
+        $file_storage_path = $is_public ? File::PUBLIC_FILE_STORAGE_PATH : File::PRIVATE_FILE_STORAGE_PATH;
+
+        Storage::delete($file_storage_path . $file->directory . '/' . $file->hash);
 
         // Delete only empty folder
-        if (Storage::exists(File::FILE_STORAGE_PATH . $file->directory)) {
-            Storage::deleteDirectory(File::FILE_STORAGE_PATH . $file->directory);
+        if (Storage::exists($file_storage_path. $file->directory)) {
+            Storage::deleteDirectory($file_storage_path . $file->directory);
         }
     }
 }

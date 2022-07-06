@@ -2,18 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\File;
+//use App\Models\File;
 use App\Models\JobCategory;
 use Illuminate\Database\Seeder;
-use Illuminate\Filesystem\Filesystem;
+//use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\DB;
 
 class FileSeeder extends Seeder
 {
-    // TODO: Add job category files to the seeder
-    // Doesn't work yet
-    // Need to do it manually via API and PUT method
     public function run()
     {
+        // Doesn't work yet
         /*$filesystem = new Filesystem();
         //$images = $filesystem->allFiles('./database/seeders/images');
         $images = $filesystem->allFiles('./database/seeders/images');
@@ -26,5 +25,18 @@ class FileSeeder extends Seeder
                 ->save();
             $cpt += 1;
         }*/
+
+        // Add job category files to the seeder
+        // Watch README for more info
+        for ($i = 1; $i <= JobCategory::all()->count(); $i+=1) {
+            DB::table('files')->insert([
+                'name' => 'cat' . $i . 'png',
+                'hash' => 'cat' . $i,
+                'directory' => 'ca',
+                'file_type_id' => 7,
+                'job_id' => null,
+                'job_category_id' => $i,
+            ]);
+        }
     }
 }

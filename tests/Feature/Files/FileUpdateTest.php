@@ -18,7 +18,7 @@ class FileUpdateTest extends TestCase
 
     public function tearDown(): void
     {
-        Storage::deleteDirectory(File::FILE_STORAGE_PATH);
+        Storage::deleteDirectory(File::PRIVATE_FILE_STORAGE_PATH);
         parent::tearDown();
     }
 

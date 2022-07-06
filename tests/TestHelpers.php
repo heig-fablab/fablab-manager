@@ -97,7 +97,7 @@ class TestHelpers
     {
         $hash = hash_file(File::HASH_ALGORITHME, $file);
         $dir = substr($hash, 0, 2);
-        return File::FILE_STORAGE_PATH . $dir . '/' . $hash;
+        return File::PRIVATE_FILE_STORAGE_PATH . $dir . '/' . $hash;
     }
 
     public static function create_test_file(
@@ -105,7 +105,7 @@ class TestHelpers
         string $mime_type = 'application/pdf',
         int $size = 100
     ): object {
-        Storage::fake(File::FILE_STORAGE_PATH);
+        Storage::fake(File::PRIVATE_FILE_STORAGE_PATH);
         return UploadedFile::fake()->create(
             $name,
             $size,

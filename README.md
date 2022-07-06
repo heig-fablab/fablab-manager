@@ -73,9 +73,9 @@ Pour intégrer la SPA du frontend dans le code du backend, il faut d’abord com
 projet. Lors de la compilation, les pages et composants Vue sont traduits en HTML,
 CSS et JavaScript. Une fois terminé, le dossier "dist" est rempli avec deux fichiers
 et un dossier :
-— Le dossier "assets", qui contient les images, les logos, et le code JS et CSS.
-— Le fichier "favicon.ico", qui est l’icône qui apparait dans le navigateur.
-— Le fichier "index.html", qui contient la page HTML de lancement.
+* Le dossier "assets", qui contient les images, les logos, et le code JS et CSS.
+* Le fichier "favicon.ico", qui est l’icône qui apparait dans le navigateur.
+* Le fichier "index.html", qui contient la page HTML de lancement.
 Ces trois éléments du dossier "dist" doivent ensuite être déposés dans le dossier
 "public" du backend. Il faut aussi impérativement copier le contenu de "index.html"
 pour le mettre dans "resources/views/app.blade.php".
@@ -198,6 +198,12 @@ https://laravel.com/docs/9.x/sail
 
 ## Keycloak package
 The keycloak package is modified in packages folder, when you want to run the program, after ran composer install, just copy the keycloak modified package to the vendor one.
+
+## Job Category images
+Seeders already creates all data necessary to make work the program. \
+You just need to add the job category images in the folder "storage/public/file-storage/cat". \
+They must be named: "cat_id.png". \
+Job Category has actually 9 entries, so you need to add 9 images.
 
 ## Support
 

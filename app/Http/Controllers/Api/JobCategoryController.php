@@ -33,7 +33,7 @@ class JobCategoryController extends Controller
         }
 
         // Add image of the job category
-        $file = File::store_file($request->file('image'), null);
+        $file = File::store_file($request->file('image'), null, true);
         $file->job_category_id = $job_category->id;
         $file->save();
 
@@ -55,9 +55,9 @@ class JobCategoryController extends Controller
 
         // Update image of the job category
         if ($job_category->file == null) {
-            $file = File::store_file($request->file('image'), null);
+            $file = File::store_file($request->file('image'), null, true);
         } else {
-            $file = File::update_file($job_category->file, $request->file('image'), null);
+            $file = File::update_file($job_category->file, $request->file('image'), null, true);
         }
         $file->job_category_id = $job_category->id;
         $file->save();
@@ -74,7 +74,9 @@ class JobCategoryController extends Controller
 
     public function destroy(int $id)
     {
-        JobCategory::find($id)->delete();
+        $job_category = JobCategory::findOrFail($id);
+        File::delete_file($job_category->file);
+        $job_category->delete();
         return response()->json([
             'message' => "Job category deleted successfully!"
         ], 200);
