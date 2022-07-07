@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Jobs;
 
+use App\Models\JobCategory;
 use Tests\TestCase;
 use Tests\TestHelpers;
 use App\Constants\Roles;
@@ -65,7 +66,7 @@ class JobUpdateStatusTest extends TestCase
     public function test_worker_update_status_job_not_worker_in_fail()
     {
         $user = TestHelpers::create_test_user(array(Roles::CLIENT, Roles::WORKER));
-        $job = TestHelpers::create_assigned_test_job('client.client', 'worker.worker');
+        $job = TestHelpers::create_assigned_test_job();
 
         $payload = [
             'id' => $job->id,
@@ -94,19 +95,33 @@ class JobUpdateStatusTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test',
                     'description' => 'test',
                     'deadline' => '2022-09-20',
                     'rating' => null,
                     'working_hours' => null,
                     'status' => JobStatus::ONGOING,
-                    'job_category_id' => 1,
-                    'client_username' => 'client.client',
-                    'worker_username' => $user->username,
-                    'validator_username' => 'validato.validato',
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => 'client.client',
+                        'name' => 'client',
+                        'surname' => 'client',
+                    ],
+                    'worker' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'validator' => [
+                        'username' => 'validato.validato',
+                        'name' => 'validator',
+                        'surname' => 'validator',
+                    ],
                 ]
             ]);
     }
@@ -127,19 +142,33 @@ class JobUpdateStatusTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test',
                     'description' => 'test',
                     'deadline' => '2022-09-20',
                     'rating' => null,
                     'working_hours' => null,
                     'status' => JobStatus::ONGOING,
-                    'job_category_id' => 1,
-                    'client_username' => 'client.client',
-                    'worker_username' => $user->username,
-                    'validator_username' => 'validato.validato',
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => 'client.client',
+                        'name' => 'client',
+                        'surname' => 'client',
+                    ],
+                    'worker' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'validator' => [
+                        'username' => 'validato.validato',
+                        'name' => 'validator',
+                        'surname' => 'validator',
+                    ],
                 ]
             ]);
     }
@@ -160,19 +189,33 @@ class JobUpdateStatusTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test',
                     'description' => 'test',
                     'deadline' => '2022-09-20',
                     'rating' => null,
                     'working_hours' => null,
                     'status' => JobStatus::ONGOING,
-                    'job_category_id' => 1,
-                    'client_username' => 'client.client',
-                    'worker_username' => 'worker.worker',
-                    'validator_username' => 'validato.validato',
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => 'client.client',
+                        'name' => 'client',
+                        'surname' => 'client',
+                    ],
+                    'worker' => [
+                        'username' => 'worker.worker',
+                        'name' => 'worker',
+                        'surname' => 'worker',
+                    ],
+                    'validator' => [
+                        'username' => 'validato.validato',
+                        'name' => 'validator',
+                        'surname' => 'validator',
+                    ],
                 ]
             ]);
     }
@@ -210,19 +253,33 @@ class JobUpdateStatusTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test',
                     'description' => 'test',
                     'deadline' => '2022-09-20',
                     'rating' => null,
                     'working_hours' => 1.5,
                     'status' => JobStatus::COMPLETED,
-                    'job_category_id' => 1,
-                    'client_username' => 'client.client',
-                    'worker_username' => $user->username,
-                    'validator_username' => 'validato.validato',
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => 'client.client',
+                        'name' => 'client',
+                        'surname' => 'client',
+                    ],
+                    'worker' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'validator' => [
+                        'username' => 'validato.validato',
+                        'name' => 'validator',
+                        'surname' => 'validator',
+                    ],
                 ]
             ]);
     }

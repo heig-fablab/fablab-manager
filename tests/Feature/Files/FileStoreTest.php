@@ -98,27 +98,41 @@ class FileStoreTest extends TestCase
                 'file' => $file,
                 'job_id' => $job->id
             ])
-            //->assertStatus(422); // True waited response, doesn't work for the moment
-            ->assertStatus(201);
+            ->assertStatus(422);
 
-        //TestHelpers::assert_file_missing_in_storage($file);
+        TestHelpers::assert_file_missing_in_storage($file);
     }
 
-    public function test_client_add_file_with_unaccepted_type_fail()
+    public function test_client_add_file_with_file_type_not_in_bd_fail()
     {
         $user = TestHelpers::create_test_user(array(Roles::CLIENT));
         $job = TestHelpers::create_assigned_test_job($user->username);
-        $file = TestHelpers::create_test_file('image.png', 'image/png');
+        $file = TestHelpers::create_test_file('test.gif', 'image/gif');
 
         $this->actingAs($user, 'api')
             ->postJson(self::ACTUAL_ROUTE, [
                 'file' => $file,
                 'job_id' => $job->id
             ])
-            //->assertStatus(422); // True waited response, doesn't work for the moment
-            ->assertStatus(404);
+            ->assertStatus(422);
 
-        //TestHelpers::assert_file_missing_in_storage($file);
+        TestHelpers::assert_file_missing_in_storage($file);
+    }
+
+    public function test_client_add_file_with_unaccepted_type_fail()
+    {
+        $user = TestHelpers::create_test_user(array(Roles::CLIENT));
+        $job = TestHelpers::create_assigned_test_job($user->username);
+        $file = TestHelpers::create_test_file('test.png', 'image/png');
+
+        $this->actingAs($user, 'api')
+            ->postJson(self::ACTUAL_ROUTE, [
+                'file' => $file,
+                'job_id' => $job->id
+            ])
+            ->assertStatus(422);
+
+        TestHelpers::assert_file_missing_in_storage($file);
     }
 
     public function test_client_add_file_too_big_fail()

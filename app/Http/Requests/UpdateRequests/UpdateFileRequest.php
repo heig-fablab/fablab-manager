@@ -14,18 +14,22 @@ class UpdateFileRequest extends FormRequest
         return true;
     }
 
-    // TODO
     public function rules()
     {
         return [
             'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:files,id'],
             'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
-            // 100Mo max
-            'file' => ['required', 'file', 'max:100000', function () {
-                return File::is_valid_file($this->file('file'),
-                    Job::findOrFail($this->job_id)
-                        ->job_category->file_types->pluck('mime_type')->toArray()
-                );
+            // 100Mo max // TODO: perhaps create a specific rule
+            'file' => ['required', 'file', 'max:100000', function ($attribute, $value, $fail) {
+                $accepted_file_types = Job::findOrFail($this->job_id)
+                    ->job_category->file_types->pluck('name')->toArray();
+                if ($accepted_file_types == null) {
+                    $fail('Job category related to job not found');
+                }
+                if (!File::is_valid_file($this->file('file'), $accepted_file_types)) {
+                    $fail($attribute . ' is not valid');
+                }
+                return true;
             }],
         ];
     }

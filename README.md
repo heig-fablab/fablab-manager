@@ -100,7 +100,7 @@ cp .env.example .env
 
 3. It use Laravel Sail, so go use the following command:
 ````
-./vendor/bin/sail up -d
+vendor/bin/sail up -d
 ````
 
 4. You can also create an alias for _sail_ like that:
@@ -110,17 +110,17 @@ alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 
 5. Generate your key for the first time:
 ````
-./vendor/bin/sail artisan key:generate
+vendor/bin/sail artisan key:generate
 ````
 
 6. Run the migrations and seeds:
 ````
-./vendor/bin/sail artisan migrate:fresh --seed
+vendor/bin/sail artisan migrate:fresh --seed
 ````
 
 7. Start websockets:
 ````
-./vendor/bin/sail artisan websockets:serve
+vendor/bin/sail artisan websockets:serve
 ````
 
 ### Default port
@@ -128,7 +128,7 @@ default developement server in on port 80
 
 ## Tests
 ````
-./vendor/bin/sail test
+vendor/bin/sail test
 ````
 
 ### Installation xdebug
@@ -171,7 +171,7 @@ vendor/bin/sail test --coverage
 
 On a specific file:
 ````
-vendor/bin/sail artisan test --filter FileName
+vendor/bin/sail test --filter FileName
 ````
 
 ### Access container

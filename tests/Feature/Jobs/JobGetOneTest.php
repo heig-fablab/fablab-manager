@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Jobs;
 
+use App\Constants\JobStatus;
+use App\Models\JobCategory;
 use Tests\TestCase;
 use App\Constants\Roles;
 use Tests\TestHelpers;
@@ -42,19 +44,25 @@ class JobGetOneTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test',
                     'description' => 'test',
                     'deadline' => '2022-09-20',
                     'rating' => null,
                     'working_hours' => null,
-                    'status' => 'new',
-                    'job_category_id' => 1,
-                    'client_username' => $user->username,
-                    'worker_username' => null,
-                    'validator_username' => null,
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
+                    'status' => JobStatus::NEW,
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'worker' => null,
+                    'validator' => null,
                 ]
             ]);
     }
@@ -69,19 +77,25 @@ class JobGetOneTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test',
                     'description' => 'test',
                     'deadline' => '2022-09-20',
                     'rating' => null,
                     'working_hours' => null,
-                    'status' => 'new',
-                    'job_category_id' => 1,
-                    'client_username' => $user->username,
-                    'worker_username' => null,
-                    'validator_username' => null,
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
+                    'status' => JobStatus::NEW,
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'worker' => null,
+                    'validator' => null,
                 ]
             ]);
     }
@@ -96,19 +110,25 @@ class JobGetOneTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test',
                     'description' => 'test',
                     'deadline' => '2022-09-20',
                     'rating' => null,
                     'working_hours' => null,
-                    'status' => 'new',
-                    'job_category_id' => 1,
-                    'client_username' => $user->username,
-                    'worker_username' => null,
-                    'validator_username' => null,
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
+                    'status' => JobStatus::NEW,
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'worker' => null,
+                    'validator' => null,
                 ]
             ]);
     }
@@ -123,19 +143,25 @@ class JobGetOneTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test',
                     'description' => 'test',
                     'deadline' => '2022-09-20',
                     'rating' => null,
                     'working_hours' => null,
-                    'status' => 'new',
-                    'job_category_id' => 1,
-                    'client_username' => $user->username,
-                    'worker_username' => null,
-                    'validator_username' => null,
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
+                    'status' => JobStatus::NEW,
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'worker' => null,
+                    'validator' => null,
                 ]
             ]);
     }
@@ -143,26 +169,32 @@ class JobGetOneTest extends TestCase
     public function test_admin_get_job_not_participate_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::ADMIN));
-        $job = TestHelpers::create_test_job('client.client');
+        $job = TestHelpers::create_test_job();
 
         $this->actingAs($user, 'api')
             ->get(self::ACTUAL_ROUTE . $job->id)
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test',
                     'description' => 'test',
                     'deadline' => '2022-09-20',
                     'rating' => null,
                     'working_hours' => null,
-                    'status' => 'new',
-                    'job_category_id' => 1,
-                    'client_username' => 'client.client',
-                    'worker_username' => null,
-                    'validator_username' => null,
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
+                    'status' => JobStatus::NEW,
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => 'client.client',
+                        'name' => 'client',
+                        'surname' => 'client',
+                    ],
+                    'worker' => null,
+                    'validator' => null,
                 ]
             ]);
     }

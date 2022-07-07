@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Jobs;
 
+use App\Models\JobCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -92,13 +93,20 @@ class JobStoreTest extends TestCase
                     'rating' => null,
                     'working_hours' => null,
                     'status' => JobStatus::NEW,
-                    'job_category_id' => 1,
-                    'client_username' => $user->username,
-                    'worker_username' => null,
-                    'validator_username' => null,
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'worker' => null,
+                    'validator' => null,
                     'files' => [],
                     'messages' => [],
-                    'events' => [],
                 ]
             ]);
     }
@@ -124,13 +132,20 @@ class JobStoreTest extends TestCase
                     'rating' => null,
                     'working_hours' => null,
                     'status' => JobStatus::NEW,
-                    'job_category_id' => 1,
-                    'client_username' => $user->username,
-                    'worker_username' => null,
-                    'validator_username' => null,
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'worker' => null,
+                    'validator' => null,
                     'files' => [],
                     'messages' => [],
-                    'events' => [],
                 ]
             ]);
     }
@@ -162,13 +177,20 @@ class JobStoreTest extends TestCase
                     'rating' => null,
                     'working_hours' => null,
                     'status' => JobStatus::NEW,
-                    'job_category_id' => 1,
-                    'client_username' => $user->username,
-                    'worker_username' => null,
-                    'validator_username' => null,
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'worker' => null,
+                    'validator' => null,
                     'files' => [],
                     'messages' => [],
-                    'events' => [],
                 ]
             ]);
 

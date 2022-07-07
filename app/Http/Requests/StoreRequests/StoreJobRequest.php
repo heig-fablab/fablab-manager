@@ -24,12 +24,14 @@ class StoreJobRequest extends FormRequest
             'description' => ['sometimes', 'filled', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION],
             'deadline' => ['required', 'date', 'date_format:"Y-m-d"', 'after:yesterday'],
             'job_category_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:job_categories,id'],
-            'files' => ['sometimes', 'filled', 'max:10', function () {
+            'files' => ['sometimes', 'filled', 'max:10', function ($attribute, $value, $fail) {
+                $accepted_file_types = JobCategory::find($this->job_category_id)->file_types->pluck('name')->toArray();
+                if ($accepted_file_types == null) {
+                    $fail('Job category related to job not found');
+                }
                 foreach ($this->file('files') as $file) {
-                    if (!File::is_valid_file($file,
-                        JobCategory::findOrFail($this->job_category_id)->file_types->pluck('mime_type')->toArray()
-                    )) {
-                        return false;
+                    if (!File::is_valid_file($file, $accepted_file_types)) {
+                        $fail($attribute . ' with name ' . $file->getClientOriginalName() . ' is not valid');
                     }
                 }
                 return true;

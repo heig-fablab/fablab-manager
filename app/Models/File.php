@@ -22,13 +22,12 @@ class File extends Model
         'job_category_id',
     ];
 
-    // Has one
+    // Belongs to
     public function job_category(): BelongsTo
     {
         return $this->belongsTo(JobCategory::class);
     }
 
-    // Belongs to
     public function file_type(): BelongsTo
     {
         return $this->belongsTo(FileType::class);
@@ -62,35 +61,50 @@ class File extends Model
         }
     }
 
-    public static function is_valid_file($file, $accepted_mime_types): bool
+    public static function is_valid_file($file, $accepted_file_types): bool
     {
+        log::Debug('File::is_valid_file');
+
         if ($file == null) {
+            Log::Info("File is null");
             return false;
         }
 
         // Size is in bytes 100'000'000 B
         if ($file->getSize() > 100000000) {
+            Log::Info("File is too big");
             return false;
         }
 
+        log::Debug("mime type extension detected: " . $file->extension());
+        log::Debug("original extension detected: " . $file->getClientOriginalExtension());
+
         if ($file->getClientOriginalExtension() != $file->extension()) {
+            log::Info("Original extension and extension detected by mime type mismatch");
             return false;
         }
 
         // Verify if file type exists in BD
         $file_type = FileType::where('name', '=', $file->getClientOriginalExtension())->first();
         if ($file_type == null) {
+            log::Info("File type not found in BD");
             return false;
         }
 
         // $file->extension() = Determine the file's extension based on the file's MIME type
         // Check matching file type with file extension
-        if ($file_type->mime_type != $file->extension()) {
+        if ($file_type->name != $file->extension()) {
+            log::Info("File type mismatch");
             return false;
         }
 
-        // Verify accepted types
-        return in_array($file->extension(), $accepted_mime_types);
+        // Verify if in accepted types
+        if (!in_array($file->extension(), $accepted_file_types)) {
+            log::Info("File type not accepted for this job category");
+            return false;
+        }
+
+        return true;
     }
 
     public static function download_file($file)
@@ -119,11 +133,6 @@ class File extends Model
         $hash = hash_file(File::HASH_ALGORITHME, $req_file);
         $dir = substr($hash, 0, 2);
         $file_type = FileType::where('name', '=', $req_file->getClientOriginalExtension())->firstOrFail();
-
-        Log::debug('File name: ' . $req_file->getClientOriginalName());
-        Log::debug('File extension: ' . $req_file->getClientOriginalExtension());
-        Log::debug('File hash: ' . $hash);
-        Log::debug('File directory: ' . $dir);
 
         // Create file for DB
         $file = File::create([

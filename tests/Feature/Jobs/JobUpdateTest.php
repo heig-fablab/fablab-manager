@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Jobs;
 
+use App\Models\JobCategory;
 use Tests\TestCase;
 use App\Constants\Roles;
 use Tests\TestHelpers;
@@ -109,10 +110,18 @@ class JobUpdateTest extends TestCase
                     'rating' => null,
                     'working_hours' => null,
                     'status' => 'new',
-                    'job_category_id' => 2,
-                    'client_username' => $user->username,
-                    'worker_username' => null,
-                    'validator_username' => null,
+                    'job_category' => [
+                        'id' => 2,
+                        'acronym' => JobCategory::find(2)->acronym,
+                        'name' => JobCategory::find(2)->name,
+                    ],
+                    'client' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'worker' => null,
+                    'validator' => null,
                     'files' => [],
                     'messages' => [],
                     'events' => [],
@@ -144,10 +153,18 @@ class JobUpdateTest extends TestCase
                     'rating' => null,
                     'working_hours' => null,
                     'status' => 'new',
-                    'job_category_id' => 2,
-                    'client_username' => $user->username,
-                    'worker_username' => null,
-                    'validator_username' => null,
+                    'job_category' => [
+                        'id' => 2,
+                        'acronym' => JobCategory::find(2)->acronym,
+                        'name' => JobCategory::find(2)->name,
+                    ],
+                    'client' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'worker' => null,
+                    'validator' => null,
                     'files' => [],
                     'messages' => [],
                     'events' => [],
@@ -158,7 +175,7 @@ class JobUpdateTest extends TestCase
     public function test_admin_update_job_not_participate_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::ADMIN));
-        $job = TestHelpers::create_test_job('client.client');
+        $job = TestHelpers::create_test_job();
 
         $payload = [
             'id' => $job->id,
@@ -173,16 +190,25 @@ class JobUpdateTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test2',
                     'description' => 'test2',
                     'deadline' => '2022-10-20',
                     'rating' => null,
                     'working_hours' => null,
                     'status' => 'new',
-                    'job_category_id' => 2,
-                    'client_username' => 'client.client',
-                    'worker_username' => null,
-                    'validator_username' => null,
+                    'job_category' => [
+                        'id' => 2,
+                        'acronym' => JobCategory::find(2)->acronym,
+                        'name' => JobCategory::find(2)->name,
+                    ],
+                    'client' => [
+                        'username' => 'client.client',
+                        'name' => 'client',
+                        'surname' => 'client',
+                    ],
+                    'worker' => null,
+                    'validator' => null,
                     'files' => [],
                     'messages' => [],
                     'events' => [],
