@@ -14,19 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
-//<test route>
-Route::any('/admin', function () {
     return view('app');
-})->where('all', '^(?!api).*$')->middleware('auth.basic');
-//</test route>
+});
 
 Route::name('app')->any('{all}', function () {
     return view('app');
 })->where('all', '^(?!api).*$'); //->middleware('auth');
-
-Route::name('welcome')->any('/welcome', function () {
-    return view('welcome');
-});
