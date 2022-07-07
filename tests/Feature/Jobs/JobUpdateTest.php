@@ -23,7 +23,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => '2022-10-20',
+            'deadline' => TestHelpers::deadline(),
             'job_category_id' => 2
         ];
 
@@ -41,7 +41,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => '2022-10-20',
+            'deadline' => TestHelpers::deadline(),
             'job_category_id' => 2
         ];
 
@@ -59,7 +59,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => '2022-10-20',
+            'deadline' => TestHelpers::deadline(),
             'job_category_id' => 2
         ];
 
@@ -71,19 +71,37 @@ class JobUpdateTest extends TestCase
     public function test_client_update_job_not_client_in_fail()
     {
         $user = TestHelpers::create_test_user(array(Roles::CLIENT));
-        $job = TestHelpers::create_test_job('client.client');
+        $job = TestHelpers::create_test_job();
 
         $payload = [
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => '2022-09-20',
+            'deadline' => TestHelpers::deadline(),
             'job_category_id' => 2
         ];
 
         $this->actingAs($user, 'api')
             ->json(self::METHOD, self::ACTUAL_ROUTE, $payload)
             ->assertStatus(403);
+    }
+
+    public function test_client_update_job_deadline_too_soon_fail()
+    {
+        $user = TestHelpers::create_test_user(array(Roles::CLIENT));
+        $job = TestHelpers::create_test_job($user->username);
+
+        $payload = [
+            'id' => $job->id,
+            'title' => 'test2',
+            'description' => 'test2',
+            'deadline' => TestHelpers::deadline(2),
+            'job_category_id' => 2
+        ];
+
+        $this->actingAs($user, 'api')
+            ->json(self::METHOD, self::ACTUAL_ROUTE, $payload)
+            ->assertStatus(422);
     }
 
     public function test_client_update_job_success()
@@ -95,7 +113,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => '2022-10-20',
+            'deadline' => TestHelpers::deadline(),
             'job_category_id' => 2
         ];
 
@@ -106,7 +124,7 @@ class JobUpdateTest extends TestCase
                 'data' => [
                     'title' => 'test2',
                     'description' => 'test2',
-                    'deadline' => '2022-10-20',
+                    'deadline' => TestHelpers::deadline(),
                     'rating' => null,
                     'working_hours' => null,
                     'status' => 'new',
@@ -122,9 +140,6 @@ class JobUpdateTest extends TestCase
                     ],
                     'worker' => null,
                     'validator' => null,
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
                 ]
             ]);
     }
@@ -138,7 +153,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => '2022-10-20',
+            'deadline' => TestHelpers::deadline(),
             'job_category_id' => 2
         ];
 
@@ -149,7 +164,7 @@ class JobUpdateTest extends TestCase
                 'data' => [
                     'title' => 'test2',
                     'description' => 'test2',
-                    'deadline' => '2022-10-20',
+                    'deadline' => TestHelpers::deadline(),
                     'rating' => null,
                     'working_hours' => null,
                     'status' => 'new',
@@ -165,9 +180,6 @@ class JobUpdateTest extends TestCase
                     ],
                     'worker' => null,
                     'validator' => null,
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
                 ]
             ]);
     }
@@ -181,7 +193,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => '2022-10-20',
+            'deadline' => TestHelpers::deadline(),
             'job_category_id' => 2
         ];
 
@@ -193,7 +205,7 @@ class JobUpdateTest extends TestCase
                     'id' => $job->id,
                     'title' => 'test2',
                     'description' => 'test2',
-                    'deadline' => '2022-10-20',
+                    'deadline' => TestHelpers::deadline(),
                     'rating' => null,
                     'working_hours' => null,
                     'status' => 'new',
@@ -209,9 +221,6 @@ class JobUpdateTest extends TestCase
                     ],
                     'worker' => null,
                     'validator' => null,
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
                 ]
             ]);
     }

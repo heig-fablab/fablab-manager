@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\StoreRequests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Constants\Regex;
 use App\Models\JobCategory;
@@ -22,7 +23,7 @@ class StoreJobRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:50', 'regex:' . Regex::TITLE],
             'description' => ['sometimes', 'filled', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION],
-            'deadline' => ['required', 'date', 'date_format:"Y-m-d"', 'after:yesterday'],
+            'deadline' => ['required', 'date', 'date_format:"Y-m-d"', 'after:' . Carbon::now()->addDays(5)->format('Y-m-d')],
             'job_category_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:job_categories,id'],
             'files' => ['sometimes', 'filled', 'max:10', function ($attribute, $value, $fail) {
                 $accepted_file_types = JobCategory::find($this->job_category_id)->file_types->pluck('name')->toArray();

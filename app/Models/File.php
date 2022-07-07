@@ -41,7 +41,8 @@ class File extends Model
     // File Storage Service
     public const PRIVATE_FILE_STORAGE_PATH = 'private/file-storage/';
     public const PUBLIC_FILE_STORAGE_PATH = 'public/file-storage/';
-    public const HASH_ALGORITHME = 'sha256';
+    public const HASH_ALGORITHM = 'sha256';
+    public const MAX_FILE_SIZE = 10_000_000; // Size is in bytes 10'000'000 B = 10 Mo
 
     private static function create_event_and_mail(int $job_id)
     {
@@ -70,8 +71,7 @@ class File extends Model
             return false;
         }
 
-        // Size is in bytes 10'000'000 B = 10 Mo
-        if ($file->getSize() > 10_000_000) {
+        if ($file->getSize() > File::MAX_FILE_SIZE) {
             Log::Info("File is too big");
             return false;
         }
@@ -130,7 +130,7 @@ class File extends Model
     public static function store_file($req_file, $job_id, bool $is_public = false): File
     {
         // File infos
-        $hash = hash_file(File::HASH_ALGORITHME, $req_file);
+        $hash = hash_file(File::HASH_ALGORITHM, $req_file);
         $dir = substr($hash, 0, 2);
         $file_type = FileType::where('name', '=', $req_file->getClientOriginalExtension())->firstOrFail();
 
@@ -158,7 +158,7 @@ class File extends Model
 
     public static function update_file(File $file, $req_file, $req_job_id, bool $is_public = false): File
     {
-        $hash = hash_file(File::HASH_ALGORITHME, $req_file);
+        $hash = hash_file(File::HASH_ALGORITHM, $req_file);
         $dir = substr($hash, 0, 2);
         $file_storage_path = $is_public ? File::PUBLIC_FILE_STORAGE_PATH : File::PRIVATE_FILE_STORAGE_PATH;
 

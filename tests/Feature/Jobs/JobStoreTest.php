@@ -37,7 +37,7 @@ class JobStoreTest extends TestCase
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
-                'deadline' => '2022-09-20',
+                'deadline' => TestHelpers::deadline(),
                 'client_username' => $user->username,
             ])
             ->assertStatus(403);
@@ -52,7 +52,7 @@ class JobStoreTest extends TestCase
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
-                'deadline' => '2022-09-20',
+                'deadline' => TestHelpers::deadline(),
                 'client_username' => $user->username,
             ])
             ->assertStatus(403);
@@ -67,7 +67,7 @@ class JobStoreTest extends TestCase
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
-                'deadline' => '2022-09-20',
+                'deadline' => TestHelpers::deadline(),
                 'client_username' => $user->username,
             ])
             ->assertStatus(403);
@@ -86,10 +86,29 @@ class JobStoreTest extends TestCase
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
-                'deadline' => '2022-09-20',
+                'deadline' => TestHelpers::deadline(),
                 'client_username' => $user->username,
             ])
             ->assertStatus(403);
+    }
+
+    public function test_client_add_job_with_deadline_too_soon_fail()
+    {
+        $user = TestHelpers::create_test_user(array(Roles::CLIENT));
+
+        for ($i = 0; $i < Job::JOBS_SUBMITTED_LIMIT; $i++) {
+            TestHelpers::create_test_job($user->username);
+        }
+
+        $this->actingAs($user, 'api')
+            ->postJson(self::ACTUAL_ROUTE, [
+                'title' => 'test',
+                'description' => 'test',
+                'job_category_id' => 1,
+                'deadline' => TestHelpers::deadline(2),
+                'client_username' => $user->username,
+            ])
+            ->assertStatus(422);
     }
 
     public function test_client_add_job_without_files_success()
@@ -101,7 +120,7 @@ class JobStoreTest extends TestCase
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
-                'deadline' => '2022-09-20',
+                'deadline' => TestHelpers::deadline(),
                 'client_username' => $user->username,
             ])
             ->assertStatus(201)
@@ -109,7 +128,7 @@ class JobStoreTest extends TestCase
                 'data' => [
                     'title' => 'test',
                     'description' => 'test',
-                    'deadline' => '2022-09-20',
+                    'deadline' => TestHelpers::deadline(),
                     'rating' => null,
                     'working_hours' => null,
                     'status' => JobStatus::NEW,
@@ -140,7 +159,7 @@ class JobStoreTest extends TestCase
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
-                'deadline' => '2022-09-20',
+                'deadline' => TestHelpers::deadline(),
                 'client_username' => $user->username,
             ])
             ->assertStatus(201)
@@ -148,7 +167,7 @@ class JobStoreTest extends TestCase
                 'data' => [
                     'title' => 'test',
                     'description' => 'test',
-                    'deadline' => '2022-09-20',
+                    'deadline' => TestHelpers::deadline(),
                     'rating' => null,
                     'working_hours' => null,
                     'status' => JobStatus::NEW,
@@ -184,7 +203,7 @@ class JobStoreTest extends TestCase
                 'title' => 'test',
                 'description' => 'test',
                 'job_category_id' => 1,
-                'deadline' => '2022-09-20',
+                'deadline' => TestHelpers::deadline(),
                 'client_username' => $user->username,
                 'files[]' => [$file],
             ])
@@ -193,7 +212,7 @@ class JobStoreTest extends TestCase
                 'data' => [
                     'title' => 'test',
                     'description' => 'test',
-                    'deadline' => '2022-09-20',
+                    'deadline' => TestHelpers::deadline(),
                     'rating' => null,
                     'working_hours' => null,
                     'status' => JobStatus::NEW,
