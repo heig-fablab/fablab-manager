@@ -70,8 +70,8 @@ class File extends Model
             return false;
         }
 
-        // Size is in bytes 100'000'000 B
-        if ($file->getSize() > 100000000) {
+        // Size is in bytes 10'000'000 B = 10 Mo
+        if ($file->getSize() > 10_000_000) {
             Log::Info("File is too big");
             return false;
         }

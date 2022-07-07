@@ -31,6 +31,9 @@ class Job extends Model
         'status' => JobStatus::NEW,
     ];
 
+    public const JOBS_SUBMITTED_LIMIT = 10;
+    public const JOBS_ASSIGNED_LIMIT = 10;
+
     // Service methods
     public static function get_unassigned_jobs()
     {
@@ -38,7 +41,7 @@ class Job extends Model
             ->get();
     }
 
-    public static function get_user_jobs($username)
+    public static function get_user_jobs(string $username)
     {
         return Job::where('client_username', $username)
             ->orWhere('worker_username', $username)
@@ -47,22 +50,22 @@ class Job extends Model
             ->get();
     }
 
-    public static function get_client_jobs($username)
+    public static function get_client_jobs(string $username)
     {
         return Job::get_role_jobs($username, Roles::CLIENT);
     }
 
-    public static function get_worker_jobs($username)
+    public static function get_worker_jobs(string $username)
     {
         return Job::get_role_jobs($username, Roles::WORKER);
     }
 
-    public static function get_validator_jobs($username)
+    public static function get_validator_jobs(string $username)
     {
         return Job::get_role_jobs($username, Roles::VALIDATOR);
     }
 
-    protected static function get_role_jobs($username, $role_user)
+    protected static function get_role_jobs(string $username, string $role_user)
     {
         return Job::where($role_user . '_username', $username)
             ->where('status', '!=', JobStatus::CLOSED)

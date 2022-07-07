@@ -3,6 +3,7 @@
 namespace Tests\Feature\Jobs;
 
 use App\Constants\JobStatus;
+use App\Models\Job;
 use App\Models\JobCategory;
 use Tests\TestCase;
 use App\Constants\Roles;
@@ -68,6 +69,25 @@ class JobAssignTest extends TestCase
         $payload = [
             'id' => $job->id,
             'worker_username' => 'worker.worker'
+        ];
+
+        $this->actingAs($user, 'api')
+            ->json(self::METHOD, self::ACTUAL_ROUTE, $payload)
+            ->assertStatus(403);
+    }
+
+    public function test_worker_assign_job_with_already_jobs_limit_fail()
+    {
+        $user = TestHelpers::create_test_user(array(Roles::CLIENT, Roles::WORKER));
+        $job = TestHelpers::create_test_job();
+
+        for ($i = 0; $i < Job::JOBS_ASSIGNED_LIMIT; $i++) {
+            TestHelpers::create_assigned_test_job('client.client', $user->username);
+        }
+
+        $payload = [
+            'id' => $job->id,
+            'worker_username' => $user->username
         ];
 
         $this->actingAs($user, 'api')
@@ -159,14 +179,15 @@ class JobAssignTest extends TestCase
             ]);
     }
 
-    public function test_admin_assign_job__other_worker_success()
+    public function test_admin_assign_job_other_worker_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::ADMIN));
+        $worker = TestHelpers::create_test_user(array(Roles::WORKER));
         $job = TestHelpers::create_test_job();
 
         $payload = [
             'id' => $job->id,
-            'worker_username' => 'worker.worker'
+            'worker_username' => $worker->username,
         ];
 
         $this->actingAs($user, 'api')
@@ -192,9 +213,9 @@ class JobAssignTest extends TestCase
                         'surname' => 'client',
                     ],
                     'worker' => [
-                        'username' => 'worker.worker',
-                        'name' => 'worker',
-                        'surname' => 'worker',
+                        'username' => $worker->username,
+                        'name' => $worker->name,
+                        'surname' => $worker->surname,
                     ],
                     'validator' => null,
                 ]

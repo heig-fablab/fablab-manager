@@ -139,7 +139,7 @@ class FileStoreTest extends TestCase
     {
         $user = TestHelpers::create_test_user(array(Roles::CLIENT));
         $job = TestHelpers::create_assigned_test_job($user->username);
-        $file = TestHelpers::create_test_file('document.pdf', 'application/pdf', 1000001);
+        $file = TestHelpers::create_test_file('document.pdf', 'application/pdf', 10_001);
 
         $this->actingAs($user, 'api')
             ->postJson(self::ACTUAL_ROUTE, [

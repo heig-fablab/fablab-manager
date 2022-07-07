@@ -29,7 +29,8 @@ class FileValidationTest extends TestCase
 
     public function test_is_valid_file_too_big_fail()
     {
-        $file = TestHelpers::create_test_file('document.pdf', 'application/pdf', 1000001);
+        // 1MB + 1 byte
+        $file = TestHelpers::create_test_file('document.pdf', 'application/pdf', 10_001);
         $this->assertFalse(File::is_valid_file($file, ['pdf']));
     }
 

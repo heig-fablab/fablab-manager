@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequests\StoreJobRequest;
 use App\Http\Requests\UpdateRequests\UpdateJobRequest;
@@ -19,6 +18,7 @@ use App\Events\JobStatusUpdatedEvent;
 use App\Events\JobTerminatedEvent;
 use App\Constants\EventTypes;
 use App\Constants\JobStatus;
+use App\Models\User;
 
 // php artisan websockets:serve --host=127.0.0.1
 // -> to communicate only on localhost that is possible, wait and see if it works
@@ -41,7 +41,16 @@ class JobController extends Controller
 
     public function store(StoreJobRequest $request)
     {
-        $job = Job::create($request->validated());
+        $req_validated = $request->validated();
+
+        // Verify if user has already max job submitted limit
+        if (Job::get_client_jobs($request->client_username)->count() >= Job::JOBS_SUBMITTED_LIMIT) {
+            return response()->json([
+                'message' => 'You have reached the maximum number of jobs you can submit',
+            ], 403);
+        }
+
+        $job = Job::create($req_validated);
 
         // Add files to job
         if ($request->has('files')) {
@@ -121,6 +130,13 @@ class JobController extends Controller
     public function assign_worker(UpdateJobAssignWorkerRequest $request)
     {
         $req_validated = $request->validated();
+
+        // Verify if user has already max job assigned limit
+        if (Job::get_worker_jobs($request->worker_username)->count() >= Job::JOBS_ASSIGNED_LIMIT) {
+            return response()->json([
+                'message' => 'You have reached the maximum number of jobs you can assigned to yourself',
+            ], 403);
+        }
 
         $job = Job::findOrFail($request->id);
 

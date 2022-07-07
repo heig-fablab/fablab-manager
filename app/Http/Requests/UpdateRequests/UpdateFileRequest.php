@@ -19,8 +19,8 @@ class UpdateFileRequest extends FormRequest
         return [
             'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:files,id'],
             'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
-            // 100Mo max // TODO: perhaps create a specific rule
-            'file' => ['required', 'file', 'max:100000', function ($attribute, $value, $fail) {
+            // 10Mo max // TODO: perhaps create a specific rule
+            'file' => ['required', 'file', 'max:10_000', function ($attribute, $value, $fail) {
                 $accepted_file_types = Job::findOrFail($this->job_id)
                     ->job_category->file_types->pluck('name')->toArray();
                 if ($accepted_file_types == null) {

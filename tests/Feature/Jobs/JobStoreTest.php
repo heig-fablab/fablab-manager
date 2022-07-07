@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Jobs;
 
+use App\Models\Job;
 use App\Models\JobCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -60,6 +61,25 @@ class JobStoreTest extends TestCase
     public function test_validator_add_job_without_files_fail()
     {
         $user = TestHelpers::create_test_user(array(Roles::VALIDATOR));
+
+        $this->actingAs($user, 'api')
+            ->postJson(self::ACTUAL_ROUTE, [
+                'title' => 'test',
+                'description' => 'test',
+                'job_category_id' => 1,
+                'deadline' => '2022-09-20',
+                'client_username' => $user->username,
+            ])
+            ->assertStatus(403);
+    }
+
+    public function test_client_add_job_with_already_jobs_limit_fail()
+    {
+        $user = TestHelpers::create_test_user(array(Roles::CLIENT));
+
+        for ($i = 0; $i < Job::JOBS_SUBMITTED_LIMIT; $i++) {
+            TestHelpers::create_test_job($user->username);
+        }
 
         $this->actingAs($user, 'api')
             ->postJson(self::ACTUAL_ROUTE, [
