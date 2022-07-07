@@ -3,12 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-//use App\Http\Resources\MessageResource;
-use App\Http\Resources\EventResource;
 
 class JobResource extends JsonResource
 {
-    //TODO: The timeline, files and messages must be attached to each job as additional properties
     public function toArray($request)
     {
         // Set up variable that can be null
@@ -16,6 +13,7 @@ class JobResource extends JsonResource
         $validator = null;
         $messages = null;
         $files = null;
+        $events = null;
 
         // Adding values to variable if not null
         if ($this->worker_username != null) {
@@ -36,11 +34,14 @@ class JobResource extends JsonResource
 
         if ($this->messages != null) {
             $messages = MessageResource::collection($this->messages);
-            ///$messages = $this->messages->pluck('id', 'text');
         }
 
         if ($this->files != null) {
-            $files = $this->files;
+            $files = FileResource::collection($this->files);
+        }
+
+        if ($this->events != null) {
+            $events = EventResource::collection($this->events);
         }
 
         return [
@@ -65,7 +66,7 @@ class JobResource extends JsonResource
             'validator' => $validator,
             'files' => $files,
             'messages' => $messages,
-            'events' => EventResource::collection($this->events),
+            'events' => $events,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
