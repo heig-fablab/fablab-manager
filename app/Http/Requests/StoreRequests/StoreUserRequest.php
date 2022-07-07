@@ -22,9 +22,6 @@ class StoreUserRequest extends FormRequest
             'email' => ['required', 'email', 'max:254', 'unique:users,email'],
             'name' => ['required', 'string', 'max:50', 'regex:' . Regex::NAME],
             'surname' => ['required', 'string', 'max:50', 'regex:' . Regex::NAME],
-            'password' => ['sometimes', 'filled', 'string', 'min:8', 'max:64', function () {
-                return Regex::is_valid_password($this->password);
-            }],
             'require_status_email' => ['sometimes', 'filled', 'boolean'],
             'require_files_email' => ['sometimes', 'filled', 'boolean'],
             'require_messages_email' => ['sometimes', 'filled', 'boolean'],

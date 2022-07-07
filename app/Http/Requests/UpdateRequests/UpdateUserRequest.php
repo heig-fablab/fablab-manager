@@ -21,9 +21,6 @@ class UpdateUserRequest extends FormRequest
             'email' => ['required', 'email', 'max:254'],
             'name' => ['required', 'string', 'max:50', 'regex:' . Regex::NAME],
             'surname' => ['required', 'string', 'max:50', 'regex:' . Regex::NAME],
-            /*'password' => ['sometimes', 'filled', 'string', 'min:8', 'max:64', function () {
-                return Regex::is_valid_password($this->password);
-            }],*/
             'roles' => ['required', 'array'],
             'roles.*' => ['required', 'string', 'regex:' . Regex::ROLE_NAME, 'exists:roles,name'],
             'roles.*.name' => ['distinct:ignore_case'],
