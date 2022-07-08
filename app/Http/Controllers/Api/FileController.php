@@ -33,10 +33,8 @@ class FileController extends Controller
     {
         $request->validated();
 
-        // Todo: perhaps not accept job id update?
-
         $file = File::findOrFail($request->id);
-        $file = File::update_file($file, $request->file('file'), $request->job_id);
+        $file = File::update_file($file, $request->file('file'));
         $file->save();
 
         // Notifications

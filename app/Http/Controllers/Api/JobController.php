@@ -13,9 +13,9 @@ use App\Models\Job;
 use App\Models\File;
 use App\Models\Event;
 use App\Events\JobAssignedEvent;
-use App\Events\JobCreatedEvent;
+use App\Events\JobUpdatedEvent;
 use App\Events\JobStatusUpdatedEvent;
-use App\Events\JobTerminatedEvent;
+use App\Events\JobClosedEvent;
 use App\Constants\EventTypes;
 use App\Constants\JobStatus;
 
@@ -60,7 +60,16 @@ class JobController extends Controller
         }
 
         // Notifications
-        broadcast(new JobCreatedEvent($job));
+        broadcast(new JobUpdatedEvent($job));
+
+        // Create and save Event for client timeline
+        Event::create([
+            'type' => EventTypes::STATUS,
+            'to_notify' => false,
+            'data' => JobStatus::NEW,
+            'user_username' => $job->client_username,
+            'job_id' => $job->id
+        ]);
 
         // Create and save Event (notify worker)
         if ($job->worker_username != null) {
@@ -82,12 +91,20 @@ class JobController extends Controller
     {
         $req_validated = $request->validated();
 
-        // Notifications
-        // TODO: ?
-        //broadcast(new JobCreatedEvent($job));
-        //broadcast(new JobCreatedEvent($job))->toOthers();
-
         $job = Job::findOrFail($request->id);
+
+        // Notifications
+        broadcast(new JobUpdatedEvent($job));
+
+        // Create and save Event for timeline
+        Event::create([
+            'type' => EventTypes::STATUS,
+            'to_notify' => false,
+            'data' => JobStatus::NEW,
+            'user_username' => $job->client_username,
+            'job_id' => $job->id
+        ]);
+
         $job->update($req_validated);
         return new JobResource($job);
     }
@@ -156,7 +173,7 @@ class JobController extends Controller
         broadcast(new JobAssignedEvent($job))->toOthers();
 
         // Create and save Event (notify client)
-        $event = Event::create([
+        Event::create([
             'type' => EventTypes::STATUS,
             'to_notify' => true,
             'data' => JobStatus::ASSIGNED,
@@ -231,10 +248,10 @@ class JobController extends Controller
         $job->save();
 
         // Notifications
-        broadcast(new JobTerminatedEvent($job)); //->toOthers();
+        broadcast(new JobClosedEvent($job)); //->toOthers();
 
         // Create and save Event (notify worker)
-        $event = Event::create([
+        Event::create([
             'type' => EventTypes::STATUS,
             'to_notify' => true,
             'data' => JobStatus::CLOSED,

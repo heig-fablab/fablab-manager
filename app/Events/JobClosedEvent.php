@@ -10,7 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Job;
 
-class JobTerminatedEvent implements ShouldBroadcast
+class JobClosedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -23,6 +23,6 @@ class JobTerminatedEvent implements ShouldBroadcast
 
     public function broadcastOn(): Channel
     {
-        return new PrivateChannel('job.' . $this->job->worker_switch_uuid);
+        return new PrivateChannel('job.' . $this->job->worker_usename);
     }
 }

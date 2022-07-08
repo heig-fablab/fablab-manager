@@ -35,7 +35,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 
@@ -58,7 +57,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 
@@ -81,7 +79,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 
@@ -104,7 +101,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 
@@ -127,7 +123,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 
@@ -150,7 +145,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 
@@ -188,7 +182,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 

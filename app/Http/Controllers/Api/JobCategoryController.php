@@ -57,7 +57,7 @@ class JobCategoryController extends Controller
         if ($job_category->file == null) {
             $file = File::store_file($request->file('image'), null, true);
         } else {
-            $file = File::update_file($job_category->file, $request->file('image'), null, true);
+            $file = File::update_file($job_category->file, $request->file('image'), true);
         }
         $file->job_category_id = $job_category->id;
         $file->save();

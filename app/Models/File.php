@@ -44,18 +44,18 @@ class File extends Model
     public const HASH_ALGORITHM = 'sha256';
     public const MAX_FILE_SIZE = 10_000_000; // Size is in bytes 10'000'000 B = 10 Mo
 
-    private static function create_event_and_mail(int $job_id)
+    private static function create_event_and_mail(int $job_id, File $file)
     {
         // Create and save Event (notify worker)
         $user_to_notify_switch_uuid = Job::findOrFail($job_id)->worker_switch_uuid;
 
-        // TODO: perhaps add file name into data
         if ($user_to_notify_switch_uuid != null) {
             Event::create([
                 'type' => EventTypes::FILE,
                 'to_notify' => true,
                 'user_switch_uuid' => $user_to_notify_switch_uuid,
-                'job_id' => $job_id
+                'job_id' => $job_id,
+                'data' => $file->name,
             ]);
 
             // Emails
@@ -145,7 +145,7 @@ class File extends Model
         ]);
 
         if ($job_id != null) {
-            File::create_event_and_mail($job_id);
+            File::create_event_and_mail($job_id, $file);
         }
 
         // Add to filestorage
@@ -157,7 +157,7 @@ class File extends Model
         return $file;
     }
 
-    public static function update_file(File $file, $req_file, $req_job_id, bool $is_public = false): File
+    public static function update_file(File $file, $req_file, bool $is_public = false): File
     {
         $hash = hash_file(File::HASH_ALGORITHM, $req_file);
         $dir = substr($hash, 0, 2);
@@ -176,14 +176,14 @@ class File extends Model
             $file->directory = $dir;
             $file->file_type_id = $file_type->id;
 
-            if ($req_job_id != null) {
-                File::create_event_and_mail($req_job_id);
+            if ($file->job->id != null) {
+                File::create_event_and_mail($file->job->id , $file);
             }
         }
 
         // Update file infos for BD
         $file->name = $req_file->getClientOriginalName();
-        $file->job_id = $req_job_id;
+        $file->save();
 
         return $file;
     }

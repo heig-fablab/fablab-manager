@@ -18,7 +18,6 @@ class UpdateFileRequest extends FormRequest
     {
         return [
             'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:files,id'],
-            'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
             // TODO: perhaps create a specific rule
             'file' => ['required', 'file', function ($attribute, $value, $fail) {
                 $accepted_file_types = Job::findOrFail($this->job_id)

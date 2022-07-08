@@ -10,7 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Job;
 
-class JobCreatedEvent implements ShouldBroadcast
+class JobUpdatedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -23,8 +23,10 @@ class JobCreatedEvent implements ShouldBroadcast
 
     public function broadcastOn(): Channel
     {
-        // TODO: perhaps not doing a chan but construct a chan per worker
-        //return new Channel('job.workers.'.$this->job->worker_switch_uuid);
-        return new PrivateChannel('job.workers');
+        if ($this->job->worker_username == null) {
+            return new PrivateChannel('job.workers');
+        } else {
+            return new PrivateChannel('job.' . $this->job->worker_username);
+        }
     }
 }
