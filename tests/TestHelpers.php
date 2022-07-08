@@ -42,7 +42,7 @@ class TestHelpers
             'title' => 'test',
             'description' => 'test',
             'job_category_id' => 1,
-            'deadline' => TestHelpers::deadline(6),
+            'deadline' => TestHelpers::deadline(),
             'client_username' => $client_username,
         ]);
     }
@@ -55,7 +55,7 @@ class TestHelpers
         return Job::create([
             'title' => 'test',
             'description' => 'test',
-            'deadline' => TestHelpers::deadline(6),
+            'deadline' => TestHelpers::deadline(),
             'status' => JobStatus::ASSIGNED,
             'job_category_id' => 1,
             'client_username' => $client_username,
@@ -69,7 +69,7 @@ class TestHelpers
         return Job::create([
             'title' => 'test',
             'description' => 'test',
-            'deadline' => TestHelpers::deadline(6),
+            'deadline' => TestHelpers::deadline(),
             'working_hours' => 2,
             'status' => JobStatus::COMPLETED,
             'job_category_id' => 1,

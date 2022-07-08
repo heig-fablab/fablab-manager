@@ -37,7 +37,6 @@ class StoreJobRequest extends FormRequest
                 }
                 return true;
             }],
-            'files.*' => ['file', 'max:10_000_000'], // 10Mo max
             'client_username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
             'worker_username' => ['sometimes', 'nullable', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
             'validator_username' => ['sometimes', 'nullable', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],

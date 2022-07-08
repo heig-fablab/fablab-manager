@@ -38,15 +38,16 @@ class Job extends Model
     public static function get_unassigned_jobs()
     {
         return Job::where('worker_username', null)
+            ->where('status', JobStatus::NEW)
             ->get();
     }
 
     public static function get_user_jobs(string $username)
     {
-        return Job::where('client_username', $username)
-            ->orWhere('worker_username', $username)
-            ->orWhere('validator_username', $username)
-            ->where('status', '!=', JobStatus::CLOSED)
+        $non_closed_jobs = Job::where('status', '<>', JobStatus::CLOSED)->get();
+        return $non_closed_jobs->where('client_username', '=', $username)
+            ->orWhere('worker_username', '=', $username)
+            ->orWhere('validator_username', '=', $username)
             ->get();
     }
 
@@ -67,8 +68,8 @@ class Job extends Model
 
     protected static function get_role_jobs(string $username, string $role_user)
     {
-        return Job::where($role_user . '_username', $username)
-            ->where('status', '!=', JobStatus::CLOSED)
+        return Job::where($role_user . '_username', '=', $username)
+            ->where('status', '<>', JobStatus::CLOSED)
             ->get();
     }
 

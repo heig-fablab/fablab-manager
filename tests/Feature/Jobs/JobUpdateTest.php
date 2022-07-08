@@ -23,7 +23,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => TestHelpers::deadline(),
+            'deadline' => TestHelpers::deadline(7),
             'job_category_id' => 2
         ];
 
@@ -41,7 +41,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => TestHelpers::deadline(),
+            'deadline' => TestHelpers::deadline(7),
             'job_category_id' => 2
         ];
 
@@ -59,7 +59,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => TestHelpers::deadline(),
+            'deadline' => TestHelpers::deadline(7),
             'job_category_id' => 2
         ];
 
@@ -77,7 +77,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => TestHelpers::deadline(),
+            'deadline' => TestHelpers::deadline(7),
             'job_category_id' => 2
         ];
 
@@ -113,7 +113,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => TestHelpers::deadline(),
+            'deadline' => TestHelpers::deadline(7),
             'job_category_id' => 2
         ];
 
@@ -124,7 +124,7 @@ class JobUpdateTest extends TestCase
                 'data' => [
                     'title' => 'test2',
                     'description' => 'test2',
-                    'deadline' => TestHelpers::deadline(),
+                    'deadline' => TestHelpers::deadline(7),
                     'rating' => null,
                     'working_hours' => null,
                     'status' => 'new',
@@ -153,7 +153,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => TestHelpers::deadline(),
+            'deadline' => TestHelpers::deadline(7),
             'job_category_id' => 2
         ];
 
@@ -164,7 +164,7 @@ class JobUpdateTest extends TestCase
                 'data' => [
                     'title' => 'test2',
                     'description' => 'test2',
-                    'deadline' => TestHelpers::deadline(),
+                    'deadline' => TestHelpers::deadline(7),
                     'rating' => null,
                     'working_hours' => null,
                     'status' => 'new',
@@ -193,7 +193,7 @@ class JobUpdateTest extends TestCase
             'id' => $job->id,
             'title' => 'test2',
             'description' => 'test2',
-            'deadline' => TestHelpers::deadline(),
+            'deadline' => TestHelpers::deadline(7),
             'job_category_id' => 2
         ];
 
@@ -205,7 +205,7 @@ class JobUpdateTest extends TestCase
                     'id' => $job->id,
                     'title' => 'test2',
                     'description' => 'test2',
-                    'deadline' => TestHelpers::deadline(),
+                    'deadline' => TestHelpers::deadline(7),
                     'rating' => null,
                     'working_hours' => null,
                     'status' => 'new',

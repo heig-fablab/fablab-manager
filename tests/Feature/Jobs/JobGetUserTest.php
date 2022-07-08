@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Jobs;
 
+use App\Constants\JobStatus;
 use Tests\TestCase;
 use App\Constants\Roles;
 use Tests\TestHelpers;
@@ -64,5 +65,28 @@ class JobGetUserTest extends TestCase
         $this->actingAs($user, 'api')
             ->get(self::ACTUAL_ROUTE . $user->username)
             ->assertStatus(200);
+    }
+
+    public function test_admin_get_user_jobs_from_other_success()
+    {
+        $admin = TestHelpers::create_test_user(array(Roles::ADMIN));
+        $client = TestHelpers::create_test_user(array(Roles::CLIENT));
+
+        $this->actingAs($admin, 'api')
+            ->get(self::ACTUAL_ROUTE . $client->username)
+            ->assertStatus(200);
+    }
+
+    public function test_client_get_user_jobs_without_closed_jobs_success()
+    {
+        $user = TestHelpers::create_test_user(array(Roles::CLIENT));
+        $job = TestHelpers::create_assigned_test_job($user->username);
+        $job->status = JobStatus::CLOSED;
+        $job->save();
+
+        $this->actingAs($user, 'api')
+            ->get(self::ACTUAL_ROUTE . $user->username)
+            ->assertStatus(200)
+            ->assertjson([]);
     }
 }

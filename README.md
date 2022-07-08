@@ -98,7 +98,7 @@ composer install
 cp .env.example .env
 ````
 
-3. It use Laravel Sail, so go use the following command:
+3. Project use Laravel Sail, to start it, run the following command:
 ````
 vendor/bin/sail up -d
 ````

@@ -18,7 +18,6 @@ use App\Events\JobStatusUpdatedEvent;
 use App\Events\JobTerminatedEvent;
 use App\Constants\EventTypes;
 use App\Constants\JobStatus;
-use App\Models\User;
 
 // php artisan websockets:serve --host=127.0.0.1
 // -> to communicate only on localhost that is possible, wait and see if it works
