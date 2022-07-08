@@ -45,10 +45,11 @@ class Job extends Model
     public static function get_user_jobs(string $username)
     {
         $non_closed_jobs = Job::where('status', '<>', JobStatus::CLOSED)->get();
-        return $non_closed_jobs->where('client_username', '=', $username)
-            ->orWhere('worker_username', '=', $username)
-            ->orWhere('validator_username', '=', $username)
-            ->get();
+        return $non_closed_jobs->filter(function ($job) use ($username) {
+            return $job->client_username == $username
+                || $job->worker_username == $username
+                || $job->validator_username == $username;
+        });
     }
 
     public static function get_client_jobs(string $username)

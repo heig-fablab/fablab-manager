@@ -87,6 +87,7 @@ class JobGetUserTest extends TestCase
         $this->actingAs($user, 'api')
             ->get(self::ACTUAL_ROUTE . $user->username)
             ->assertStatus(200)
-            ->assertjson([]);
+            ->assertjson([])
+            ->assertJsonMissing(['id' => $job->id]);
     }
 }
