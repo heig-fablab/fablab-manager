@@ -76,10 +76,18 @@ class JobController extends Controller
             Event::create([
                 'type' => EventTypes::STATUS,
                 'to_notify' => true,
-                'data' => JobStatus::NEW,
+                'data' => JobStatus::ASSIGNED,
                 'user_username' => $job->worker_username,
                 'job_id' => $job->id
             ]);
+
+            $job->status = JobStatus::ASSIGNED;
+            $job->save();
+        }
+
+        if ($job->validator_username != null) {
+            $job->status = JobStatus::VALIDATED;
+            $job->save();
         }
 
         return new JobResource($job);
@@ -279,7 +287,7 @@ class JobController extends Controller
         foreach ($events as $event) {
             $event->to_notify = false;
             $event->save();
-            $event->delete();
+            //$event->delete();
         }
 
         return $job;
