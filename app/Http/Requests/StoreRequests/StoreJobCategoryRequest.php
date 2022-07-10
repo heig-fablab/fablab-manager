@@ -21,7 +21,7 @@ class StoreJobCategoryRequest extends FormRequest
         return [
             'acronym' => ['required', 'string', 'max:3', 'regex:' . Regex::ACRONYM, 'unique:job_categories,acronym'],
             'name' => ['required', 'string', 'max:50', 'regex:' . Regex::JOB_CATEGORY_NAME],
-            'description' => ['sometimes', 'filled', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION],
+            'description' => ['sometimes', 'filled', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION_TEXT],
             'file_types' => ['required', 'array'],
             'file_types.*' => ['required', 'string', 'regex:' . Regex::FILE_TYPE_NAME, 'exists:file_types,name'],
             'image' => ['required', 'file', 'max:100000', function () {

@@ -21,7 +21,7 @@ class UpdateJobRequest extends FormRequest
         return [
             'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
             'title' => ['required', 'string', 'max:50', 'regex:' . Regex::TITLE],
-            'description' => ['sometimes', 'filled', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION],
+            'description' => ['sometimes', 'filled', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION_TEXT],
             'deadline' => ['required', 'date_format:"Y-m-d"', 'after:' . Carbon::now()->addDays(5)->format('Y-m-d')],
             'job_category_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:job_categories,id'],
         ];
