@@ -8,6 +8,7 @@ use App\Http\Requests\StoreRequests\StoreFileRequest;
 use App\Http\Requests\UpdateRequests\UpdateFileRequest;
 use App\Models\File;
 use App\Events\JobFileUpdatedEvent;
+use Illuminate\Support\Facades\Log;
 
 class FileController extends Controller
 {
@@ -32,6 +33,8 @@ class FileController extends Controller
     public function update(UpdateFileRequest $request)
     {
         $request->validated();
+
+        log::Debug('Update file request');
 
         $file = File::findOrFail($request->id);
         $file = File::update_file($file, $request->file('file'));

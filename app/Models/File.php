@@ -65,8 +65,6 @@ class File extends Model
 
     public static function is_valid_file($file, $accepted_file_types): bool
     {
-        log::Debug('File::is_valid_file');
-
         if ($file == null) {
             Log::Info("File is null");
             return false;

@@ -19,7 +19,7 @@ class StoreFileRequest extends FormRequest
         return [
             'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
             'file' => ['required', 'file', function ($attribute, $value, $fail) {
-                $accepted_file_types = Job::findOrFail($this->job_id)
+                $accepted_file_types = Job::find($this->job_id)
                     ->job_category->file_types->pluck('name')->toArray();
                 if ($accepted_file_types == null) {
                     $fail('Job category related to job not found');
