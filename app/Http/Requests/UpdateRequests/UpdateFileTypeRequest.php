@@ -19,7 +19,7 @@ class UpdateFileTypeRequest extends FormRequest
     {
         return [
             'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:file_types,id'],
-            'name' => ['required', 'string', 'max:10', 'regex:' . Regex::FILE_TYPE_NAME],
+            'name' => ['required', 'string', 'regex:' . Regex::FILE_TYPE_NAME],
             'mime_type' => ['required', 'string', 'max:255', 'regex:' . Regex::MIME_TYPE],
         ];
     }

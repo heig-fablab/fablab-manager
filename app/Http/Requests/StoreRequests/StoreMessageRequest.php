@@ -18,10 +18,10 @@ class StoreMessageRequest extends FormRequest
     public function rules()
     {
         return [
-            'text' => ['required', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION_TEXT],
+            'text' => ['required', 'string', 'regex:' . Regex::DESCRIPTION_TEXT],
             'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
-            'sender_username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
-            'receiver_username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username']
+            'sender_username' => ['required', 'string', 'regex:' . Regex::USERNAME, 'exists:users,username'],
+            'receiver_username' => ['required', 'string', 'regex:' . Regex::USERNAME, 'exists:users,username']
         ];
     }
 }

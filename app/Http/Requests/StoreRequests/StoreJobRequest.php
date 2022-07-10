@@ -21,8 +21,8 @@ class StoreJobRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'string', 'max:50', 'regex:' . Regex::TITLE],
-            'description' => ['sometimes', 'filled', 'string', 'max:65535', 'regex:' . Regex::DESCRIPTION_TEXT],
+            'title' => ['required', 'string', 'regex:' . Regex::TITLE],
+            'description' => ['sometimes', 'filled', 'string', 'regex:' . Regex::DESCRIPTION_TEXT],
             'deadline' => ['required', 'date', 'date_format:"Y-m-d"', 'after:' . Carbon::now()->addDays(5)->format('Y-m-d')],
             'job_category_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:job_categories,id'],
             'files' => ['sometimes', 'filled', 'max:10', function ($attribute, $value, $fail) {
@@ -37,9 +37,9 @@ class StoreJobRequest extends FormRequest
                 }
                 return true;
             }],
-            'client_username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
-            'worker_username' => ['sometimes', 'nullable', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
-            'validator_username' => ['sometimes', 'nullable', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
+            'client_username' => ['required', 'string', 'regex:' . Regex::USERNAME, 'exists:users,username'],
+            'worker_username' => ['sometimes', 'nullable', 'string', 'regex:' . Regex::USERNAME, 'exists:users,username'],
+            'validator_username' => ['sometimes', 'nullable', 'string', 'regex:' . Regex::USERNAME, 'exists:users,username'],
         ];
     }
 }

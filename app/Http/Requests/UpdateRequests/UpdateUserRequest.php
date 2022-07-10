@@ -17,10 +17,10 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
+            'username' => ['required', 'string', 'regex:' . Regex::USERNAME, 'exists:users,username'],
             'email' => ['required', 'email', 'max:254'],
-            'name' => ['required', 'string', 'max:50', 'regex:' . Regex::NAME],
-            'surname' => ['required', 'string', 'max:50', 'regex:' . Regex::NAME],
+            'name' => ['required', 'string', 'regex:' . Regex::NAME],
+            'surname' => ['required', 'string', 'regex:' . Regex::NAME],
             'roles' => ['required', 'array'],
             'roles.*' => ['required', 'string', 'regex:' . Regex::ROLE_NAME, 'exists:roles,name'],
             'roles.*.name' => ['distinct:ignore_case'],
