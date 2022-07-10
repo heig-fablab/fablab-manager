@@ -20,7 +20,7 @@ class UpdateJobStatusRequest extends FormRequest
         return [
             'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
             'status' => ['required', 'in:ongoing,on-hold,completed'],
-            'worker_username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
+            'worker_username' => ['required', 'string', 'regex:' . Regex::USERNAME, 'exists:users,username'],
             'working_hours' => ['required_if:status,completed', 'numeric', 'min:0', 'max:99'],
         ];
     }

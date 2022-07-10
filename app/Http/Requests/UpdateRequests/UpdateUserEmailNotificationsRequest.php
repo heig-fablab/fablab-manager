@@ -18,7 +18,7 @@ class UpdateUserEmailNotificationsRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
+            'username' => ['required', 'string', 'regex:' . Regex::USERNAME, 'exists:users,username'],
             'require_status_email' => ['required', 'boolean'],
             'require_files_email' => ['required', 'boolean'],
             'require_messages_email' => ['required', 'boolean'],

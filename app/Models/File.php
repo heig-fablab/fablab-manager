@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Constants\EventTypes;
@@ -17,25 +18,33 @@ class File extends Model
         'hash',
         'directory',
         'file_type_id',
-        'job_id'
+        'job_id',
+        'job_category_id',
     ];
 
     // Belongs to
-    public function file_type()
+    public function job_category(): BelongsTo
+    {
+        return $this->belongsTo(JobCategory::class);
+    }
+
+    public function file_type(): BelongsTo
     {
         return $this->belongsTo(FileType::class);
     }
 
-    public function job()
+    public function job(): BelongsTo
     {
         return $this->belongsTo(Job::class);
     }
 
     // File Storage Service
-    public const FILE_STORAGE_PATH = 'FileStorage/';
-    public const HASH_ALGORITHME = 'sha256';
+    public const PRIVATE_FILE_STORAGE_PATH = 'private/file-storage/';
+    public const PUBLIC_FILE_STORAGE_PATH = 'public/file-storage/';
+    public const HASH_ALGORITHM = 'sha256';
+    public const MAX_FILE_SIZE = 10_000_000; // Size is in bytes 10'000'000 B = 10 Mo
 
-    private static function create_event_and_mail(int $job_id)
+    private static function create_event_and_mail(int $job_id, File $file)
     {
         // Create and save Event (notify worker)
         $user_to_notify_switch_uuid = Job::findOrFail($job_id)->worker_switch_uuid;
@@ -45,7 +54,8 @@ class File extends Model
                 'type' => EventTypes::FILE,
                 'to_notify' => true,
                 'user_switch_uuid' => $user_to_notify_switch_uuid,
-                'job_id' => $job_id
+                'job_id' => $job_id,
+                'data' => $file->name,
             ]);
 
             // Emails
@@ -53,68 +63,75 @@ class File extends Model
         }
     }
 
-    public static function is_valid_file($file, int $job_category_id, int $job_id): bool
+    public static function is_valid_file($file, $accepted_file_types): bool
     {
         if ($file == null) {
+            Log::Info("File is null");
             return false;
         }
 
-        // Size is in bytes 100'000'000 B
-        if ($file->getSize() > 100000000) {
+        if ($file->getSize() > File::MAX_FILE_SIZE) {
+            Log::Info("File is too big");
             return false;
         }
+
+        log::Debug("mime type extension detected: " . $file->extension());
+        log::Debug("original extension detected: " . $file->getClientOriginalExtension());
 
         if ($file->getClientOriginalExtension() != $file->extension()) {
+            log::Info("Original extension and extension detected by mime type mismatch");
             return false;
-        }
-
-        // Verify category to get accepted types
-        $job = Job::find($job_id);
-        $job_category = JobCategory::find($job_category_id);
-
-        if ($job == null && $job_category == null) {
-            return false;
-        }
-
-        if ($job_category == null) {
-            $job_category = $job->job_category;
         }
 
         // Verify if file type exists in BD
         $file_type = FileType::where('name', '=', $file->getClientOriginalExtension())->first();
         if ($file_type == null) {
+            log::Info("File type not found in BD");
             return false;
         }
 
         // $file->extension() = Determine the file's extension based on the file's MIME type
         // Check matching file type with file extension
-        if ($file_type->mime_type != $file->extension()) {
+        if ($file_type->name != $file->extension()) {
+            log::Info("File type mismatch");
             return false;
         }
 
-        // Verify accepted types
-        return in_array(
-            $file->extension(),
-            $job_category->file_types->pluck('mime_type')->toArray()
-        );
+        // Verify if in accepted types
+        if (!in_array($file->extension(), $accepted_file_types)) {
+            log::Info("File type not accepted for this job category");
+            return false;
+        }
+
+        return true;
     }
 
-    public static function get_file(File $file)
+    public static function download_file($file)
     {
-        return Storage::download(File::FILE_STORAGE_PATH . $file->directory . '/' . $file->hash, $file->name);
+        if ($file != null) {
+            return Storage::download(File::PRIVATE_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash, $file->name);
+        } else {
+            return null;
+        }
     }
 
-    public static function store_file($req_file, int $job_id)
+    public static function get_file_url($file)
+    {
+        if ($file != null) {
+            return Storage::url(File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash);
+            /*return env('APP_FILE_STORAGE_FULL_PATH', '/www/var/')
+                . File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash;*/
+        } else {
+            return null;
+        }
+    }
+
+    public static function store_file($req_file, $job_id, bool $is_public = false): File
     {
         // File infos
-        $hash = hash_file(File::HASH_ALGORITHME, $req_file);
+        $hash = hash_file(File::HASH_ALGORITHM, $req_file);
         $dir = substr($hash, 0, 2);
         $file_type = FileType::where('name', '=', $req_file->getClientOriginalExtension())->firstOrFail();
-
-        Log::debug('File name: ' . $req_file->getClientOriginalName());
-        Log::debug('File extension: ' . $req_file->getClientOriginalExtension());
-        Log::debug('File hash: ' . $hash);
-        Log::debug('File directory: ' . $dir);
 
         // Create file for DB
         $file = File::create([
@@ -125,27 +142,31 @@ class File extends Model
             'job_id' => $job_id,
         ]);
 
-        File::create_event_and_mail($job_id);
+        if ($job_id != null) {
+            File::create_event_and_mail($job_id, $file);
+        }
 
         // Add to filestorage
         // Create a directory with 2 first letter of hashed_name
         // It's a Laravel trick to not be stopped after x files in directory
-        $req_file->storeAs(File::FILE_STORAGE_PATH . $dir, $hash);
+        $file_storage_path = $is_public ? File::PUBLIC_FILE_STORAGE_PATH : File::PRIVATE_FILE_STORAGE_PATH;
+        $req_file->storeAs($file_storage_path . $dir, $hash);
 
         return $file;
     }
 
-    public static function update_file(File $file, $req_file, int $req_job_id)
+    public static function update_file(File $file, $req_file, bool $is_public = false): File
     {
-        $hash = hash_file(File::HASH_ALGORITHME, $req_file);
+        $hash = hash_file(File::HASH_ALGORITHM, $req_file);
         $dir = substr($hash, 0, 2);
+        $file_storage_path = $is_public ? File::PUBLIC_FILE_STORAGE_PATH : File::PRIVATE_FILE_STORAGE_PATH;
 
         if ($hash != $file->hash || $dir != $file->directory) {
             // Delete old file
-            File::delete_file($file);
+            File::delete_file($file, true);
 
             // Create new file
-            $req_file->storeAs(File::FILE_STORAGE_PATH . $dir, $hash);
+            $req_file->storeAs($file_storage_path . $dir, $hash);
 
             // Update file infos linked to physic file content for BD
             $file_type = FileType::where('name', '=', $req_file->getClientOriginalExtension())->firstOrFail();
@@ -153,23 +174,27 @@ class File extends Model
             $file->directory = $dir;
             $file->file_type_id = $file_type->id;
 
-            File::create_event_and_mail($req_job_id);
+            if ($file->job->id != null) {
+                File::create_event_and_mail($file->job->id , $file);
+            }
         }
 
         // Update file infos for BD
         $file->name = $req_file->getClientOriginalName();
-        $file->job_id = $req_job_id;
+        $file->save();
 
         return $file;
     }
 
-    public static function delete_file(File $file)
+    public static function delete_file(File $file, bool $is_public = false)
     {
-        Storage::delete(File::FILE_STORAGE_PATH . $file->directory . '/' . $file->hash);
+        $file_storage_path = $is_public ? File::PUBLIC_FILE_STORAGE_PATH : File::PRIVATE_FILE_STORAGE_PATH;
+
+        Storage::delete($file_storage_path . $file->directory . '/' . $file->hash);
 
         // Delete only empty folder
-        if (Storage::exists(File::FILE_STORAGE_PATH . $file->directory)) {
-            Storage::deleteDirectory(File::FILE_STORAGE_PATH . $file->directory);
+        if (Storage::exists($file_storage_path. $file->directory)) {
+            Storage::deleteDirectory($file_storage_path . $file->directory);
         }
     }
 }

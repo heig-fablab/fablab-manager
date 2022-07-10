@@ -3,10 +3,13 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Device;
 use App\Models\File;
 use App\Models\JobCategory;
+use App\Models\FileType;
+use App\Models\Job;
+use App\Models\Message;
+use App\Models\User;
 use App\Policies\DevicePolicy;
 use App\Policies\FilePolicy;
 use App\Policies\FileTypePolicy;
@@ -14,8 +17,6 @@ use App\Policies\JobCategoryPolicy;
 use App\Policies\JobPolicy;
 use App\Policies\MessagePolicy;
 use App\Policies\UserPolicy;
-
-use function Ramsey\Uuid\v1;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,7 +26,6 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Device::class => DevicePolicy::class,
         File::class => FilePolicy::class,
         FileType::class => FileTypePolicy::class,

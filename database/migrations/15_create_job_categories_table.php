@@ -19,6 +19,7 @@ return new class extends Migration
             // Fields
             $table->string('acronym', 3)->unique();
             $table->string('name', 50);
+            $table->text('description');
         });
     }
 

@@ -4,6 +4,8 @@ namespace App\Http\Requests\UpdateRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\File;
+use App\Models\Job;
+use Illuminate\Support\Facades\Log;
 
 class UpdateFileRequest extends FormRequest
 {
@@ -13,16 +15,26 @@ class UpdateFileRequest extends FormRequest
         return true;
     }
 
-    // TODO
     public function rules()
     {
         return [
             'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:files,id'],
-            // 100Mo max
-            'file' => ['required', 'file', 'max:100000', function () {
-                return File::is_valid_file($this->file('file'), -1, $this->job_id);
+            // TODO: perhaps create a specific rule
+            'file' => ['required', 'file', function ($attribute, $value, $fail) {
+                $file = File::find($this->id);
+                $accepted_file_types = Job::find($file->job_id)
+                    ->job_category
+                    ->file_types
+                    ->pluck('name')
+                    ->toArray();
+                if ($accepted_file_types == null) {
+                    $fail('Job category related to job not found');
+                }
+                if (!File::is_valid_file($this->file('file'), $accepted_file_types)) {
+                    $fail($attribute . ' is not valid');
+                }
+                return true;
             }],
-            'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
         ];
     }
 }

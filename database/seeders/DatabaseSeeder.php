@@ -8,17 +8,21 @@ class DatabaseSeeder extends Seeder
 {
   public function run()
   {
-    $this->call([
-      DeviceSeeder::class,
-      FileTypeSeeder::class,
-      JobCategorySeeder::class,
-      RoleSeeder::class,
-      UserSeeder::class,
-      DeviceJobCategorySeeder::class,
-      FileTypeJobCategorySeeder::class,
-      RoleUserSeeder::class,
-      JobSeeder::class,
-      MessageSeeder::class,
-    ]);
+      $this->call([
+          FileTypeSeeder::class,
+          JobCategorySeeder::class,
+          FileTypeJobCategorySeeder::class,
+          RoleSeeder::class,
+          FileSeeder::class,
+      ]);
+
+      if (env('APP_ENV') != 'production') {
+          $this->call([
+              UserSeeder::class,
+              RoleUserSeeder::class,
+              JobSeeder::class,
+              MessageSeeder::class,
+          ]);
+      }
   }
 }

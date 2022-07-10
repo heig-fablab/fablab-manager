@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\DeviceController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\FileTypeController;
 use App\Http\Controllers\Api\JobCategoryController;
@@ -51,6 +50,7 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('/files')->controller(FileController::class)->group(function () {
         //Route::get('', 'index')->can('viewAny', File::class);
         Route::get('/{id}', 'show')->can('view', [File::class, 'id']);
+        Route::get('/{id}/download', 'download')->can('download', [File::class, 'id']);
         Route::post('', 'store')->can('create', File::class);
         //Route::post('/job/{id}', 'job_files')->can('job_files', [File::class, 'id']);
         Route::put('', 'update')->can('update', File::class);
@@ -61,7 +61,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('', 'index')->can('viewAny', Message::class);
         Route::get('/{id}', 'show')->can('view', [Message::class, 'id']);
         Route::post('', 'store')->can('create', Message::class);
-        // TODO: perhaps a route to get all messages for a job
     });
 
     Route::prefix('/users')->controller(UserController::class)->group(function () {
@@ -74,17 +73,6 @@ Route::middleware('auth:api')->group(function () {
     });
 
     // Admin routes
-    Route::prefix('/devices')
-        ->controller(DeviceController::class)
-        ->middleware('can:before,App\Models\Device')
-        ->group(function () {
-            Route::get('', 'index');
-            Route::get('/{id}', 'show');
-            Route::post('', 'store');
-            Route::put('', 'update');
-            Route::delete('/{id}', 'destroy');
-        });
-
     Route::prefix('/file_types')
         ->controller(FileTypeController::class)
         ->middleware('can:before,App\Models\FileType')

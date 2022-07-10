@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('email', 254)->unique();
             $table->string('name', 50);
             $table->string('surname', 50);
-            $table->string('password', 64)->nullable();
             $table->boolean('require_status_email')->default(true);
             $table->boolean('require_files_email')->default(true);
             $table->boolean('require_messages_email')->default(true);

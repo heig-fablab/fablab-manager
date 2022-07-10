@@ -17,6 +17,7 @@ class MessageResource extends JsonResource
                 'id' => $this->job->id,
                 'title' => $this->job->title,
             ),
+            'created_at' => $this->created_at,
         ];
     }
 }

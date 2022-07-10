@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequests\StoreJobCategoryRequest;
 use App\Http\Requests\UpdateRequests\UpdateJobCategoryRequest;
 use App\Http\Resources\JobCategoryResource;
+use App\Models\File;
 use App\Models\JobCategory;
 use App\Models\FileType;
 
@@ -27,11 +28,14 @@ class JobCategoryController extends Controller
     {
         $job_category = JobCategory::create($request->validated());
 
-        $job_category->devices()->attach($request->devices);
-
         foreach ($request->file_types as $file_type_name) {
             $job_category->file_types()->attach(FileType::where('name', $file_type_name)->first()->id);
         }
+
+        // Add image of the job category
+        $file = File::store_file($request->file('image'), null, true);
+        $file->job_category_id = $job_category->id;
+        $file->save();
 
         return new JobCategoryResource($job_category);
     }
@@ -49,11 +53,17 @@ class JobCategoryController extends Controller
             ], 400);
         }
 
-        $job_category->devices()->detach();
+        // Update image of the job category
+        if ($job_category->file == null) {
+            $file = File::store_file($request->file('image'), null, true);
+        } else {
+            $file = File::update_file($job_category->file, $request->file('image'), true);
+        }
+        $file->job_category_id = $job_category->id;
+        $file->save();
+
+        // Update job file types accepted for the job category
         $job_category->file_types()->detach();
-
-        $job_category->devices()->attach($request->devices);
-
         foreach ($request->file_types as $file_type_name) {
             $job_category->file_types()->attach(FileType::where('name', $file_type_name)->first()->id);
         }
@@ -64,7 +74,9 @@ class JobCategoryController extends Controller
 
     public function destroy(int $id)
     {
-        JobCategory::find($id)->delete();
+        $job_category = JobCategory::findOrFail($id);
+        File::delete_file($job_category->file);
+        $job_category->delete();
         return response()->json([
             'message' => "Job category deleted successfully!"
         ], 200);

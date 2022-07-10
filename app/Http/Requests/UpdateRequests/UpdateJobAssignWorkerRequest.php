@@ -19,7 +19,7 @@ class UpdateJobAssignWorkerRequest extends FormRequest
     {
         return [
             'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
-            'worker_username' => ['required', 'string', 'max:17', 'regex:' . Regex::USERNAME, 'exists:users,username'],
+            'worker_username' => ['required', 'string', 'regex:' . Regex::USERNAME, 'exists:users,username'],
         ];
     }
 }

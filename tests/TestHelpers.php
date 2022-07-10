@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\Job;
 use App\Models\Message;
 use App\Constants\JobStatus;
+use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -41,7 +42,7 @@ class TestHelpers
             'title' => 'test',
             'description' => 'test',
             'job_category_id' => 1,
-            'deadline' => '2022-09-20',
+            'deadline' => TestHelpers::deadline(),
             'client_username' => $client_username,
         ]);
     }
@@ -54,7 +55,7 @@ class TestHelpers
         return Job::create([
             'title' => 'test',
             'description' => 'test',
-            'deadline' => '2022-09-20',
+            'deadline' => TestHelpers::deadline(),
             'status' => JobStatus::ASSIGNED,
             'job_category_id' => 1,
             'client_username' => $client_username,
@@ -68,7 +69,7 @@ class TestHelpers
         return Job::create([
             'title' => 'test',
             'description' => 'test',
-            'deadline' => '2022-09-20',
+            'deadline' => TestHelpers::deadline(),
             'working_hours' => 2,
             'status' => JobStatus::COMPLETED,
             'job_category_id' => 1,
@@ -76,6 +77,10 @@ class TestHelpers
             'worker_username' => 'worker.worker',
             'validator_username' => 'validato.validato',
         ]);
+    }
+
+    public static function deadline(int $day = 10) {
+        return Carbon::now()->addDays($day)->format('Y-m-d');
     }
 
     // Message methods
@@ -95,9 +100,9 @@ class TestHelpers
     // File methods
     private static function get_test_file_path(object $file): string
     {
-        $hash = hash_file(File::HASH_ALGORITHME, $file);
+        $hash = hash_file(File::HASH_ALGORITHM, $file);
         $dir = substr($hash, 0, 2);
-        return File::FILE_STORAGE_PATH . $dir . '/' . $hash;
+        return File::PRIVATE_FILE_STORAGE_PATH . $dir . '/' . $hash;
     }
 
     public static function create_test_file(
@@ -105,7 +110,7 @@ class TestHelpers
         string $mime_type = 'application/pdf',
         int $size = 100
     ): object {
-        Storage::fake(File::FILE_STORAGE_PATH);
+        Storage::fake(File::PRIVATE_FILE_STORAGE_PATH);
         return UploadedFile::fake()->create(
             $name,
             $size,

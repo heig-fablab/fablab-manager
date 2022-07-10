@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class JobCategory extends Model
 {
@@ -13,25 +16,26 @@ class JobCategory extends Model
 
     protected $fillable = [
         'acronym',
-        'name'
+        'name',
+        'description'
     ];
 
     // Options
     public $timestamps = false;
 
+    // Has one
+    public function file(): HasOne
+    {
+        return $this->hasOne(File::class);
+    }
+
     // Has many
-    public function jobs()
+    public function jobs(): HasMany
     {
         return $this->hasMany(Job::class);
     }
 
-    // Belongs to many
-    public function devices()
-    {
-        return $this->belongsToMany(Device::class);
-    }
-
-    public function file_types()
+    public function file_types(): BelongsToMany
     {
         return $this->belongsToMany(FileType::class);
     }

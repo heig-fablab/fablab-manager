@@ -2,9 +2,6 @@
 
 use Illuminate\Support\Facades\Broadcast;
 
-use App\Models\Job;
-use App\Models\Message;
-
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
