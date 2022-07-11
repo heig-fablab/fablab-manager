@@ -27,7 +27,7 @@ class JobUpdateNotificationsTest extends TestCase
     public function test_client_update_notifications_job_not_client_in_fail()
     {
         $user = TestHelpers::create_test_user(array(Roles::CLIENT));
-        $job = TestHelpers::create_assigned_test_job('client.client', 'worker.worker');
+        $job = TestHelpers::create_assigned_test_job();
 
         $this->actingAs($user, 'api')
             ->json(self::METHOD, self::ACTUAL_ROUTE_START . $job->id . self::ACTUAL_ROUTE_END . 'client.client')
@@ -67,7 +67,7 @@ class JobUpdateNotificationsTest extends TestCase
     public function test_admin_update_notifications_job_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::ADMIN));
-        $job = TestHelpers::create_assigned_test_job($user->username, 'worker.worker');
+        $job = TestHelpers::create_assigned_test_job($user->username);
 
         $this->actingAs($user, 'api')
             ->json(self::METHOD, self::ACTUAL_ROUTE_START . $job->id . self::ACTUAL_ROUTE_END . $user->username)
@@ -77,7 +77,7 @@ class JobUpdateNotificationsTest extends TestCase
     public function test_admin_update_notifications_job_not_participate_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::ADMIN));
-        $job = TestHelpers::create_test_job('client.client', 'worker.worker', 'validato.validato');
+        $job = TestHelpers::create_test_job();
 
         $this->actingAs($user, 'api')
             ->json(self::METHOD, self::ACTUAL_ROUTE_START . $job->id . self::ACTUAL_ROUTE_END . 'client.client')

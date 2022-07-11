@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Jobs;
 
+use App\Models\JobCategory;
 use Tests\TestCase;
 use Tests\TestHelpers;
 use App\Constants\Roles;
@@ -123,19 +124,33 @@ class JobAddRatingTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test',
                     'description' => 'test',
-                    'deadline' => '2022-09-20',
+                    'deadline' => TestHelpers::deadline(),
                     'rating' => 5,
                     'working_hours' => 2,
                     'status' => JobStatus::CLOSED,
-                    'job_category_id' => 1,
-                    'client_username' => $user->username,
-                    'worker_username' => 'worker.worker',
-                    'validator_username' => 'validato.validato',
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'worker' => [
+                        'username' => 'worker.worker',
+                        'name' => 'worker',
+                        'surname' => 'worker',
+                    ],
+                    'validator' => [
+                        'username' => 'validato.validato',
+                        'name' => 'validator',
+                        'surname' => 'validator',
+                    ],
                 ]
             ]);
     }
@@ -155,19 +170,33 @@ class JobAddRatingTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test',
                     'description' => 'test',
-                    'deadline' => '2022-09-20',
+                    'deadline' => TestHelpers::deadline(),
                     'rating' => 5,
                     'working_hours' => 2,
                     'status' => JobStatus::CLOSED,
-                    'job_category_id' => 1,
-                    'client_username' => $user->username,
-                    'worker_username' => 'worker.worker',
-                    'validator_username' => 'validato.validato',
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                        'surname' => $user->surname,
+                    ],
+                    'worker' => [
+                        'username' => 'worker.worker',
+                        'name' => 'worker',
+                        'surname' => 'worker',
+                    ],
+                    'validator' => [
+                        'username' => 'validato.validato',
+                        'name' => 'validator',
+                        'surname' => 'validator',
+                    ],
                 ]
             ]);
     }
@@ -175,7 +204,7 @@ class JobAddRatingTest extends TestCase
     public function test_admin_get_rating_not_participate_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::ADMIN));
-        $job = TestHelpers::create_completed_test_job('client.client');
+        $job = TestHelpers::create_completed_test_job();
 
         $payload = [
             'id' => $job->id,
@@ -187,19 +216,33 @@ class JobAddRatingTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
+                    'id' => $job->id,
                     'title' => 'test',
                     'description' => 'test',
-                    'deadline' => '2022-09-20',
+                    'deadline' => TestHelpers::deadline(),
                     'rating' => 5,
                     'working_hours' => 2,
                     'status' => JobStatus::CLOSED,
-                    'job_category_id' => 1,
-                    'client_username' => 'client.client',
-                    'worker_username' => 'worker.worker',
-                    'validator_username' => 'validato.validato',
-                    'files' => [],
-                    'messages' => [],
-                    'events' => [],
+                    'job_category' => [
+                        'id' => 1,
+                        'acronym' => JobCategory::find(1)->acronym,
+                        'name' => JobCategory::find(1)->name,
+                    ],
+                    'client' => [
+                        'username' => 'client.client',
+                        'name' => 'client',
+                        'surname' => 'client',
+                    ],
+                    'worker' => [
+                        'username' => 'worker.worker',
+                        'name' => 'worker',
+                        'surname' => 'worker',
+                    ],
+                    'validator' => [
+                        'username' => 'validato.validato',
+                        'name' => 'validator',
+                        'surname' => 'validator',
+                    ],
                 ]
             ]);
     }

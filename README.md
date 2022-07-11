@@ -73,9 +73,9 @@ Pour intégrer la SPA du frontend dans le code du backend, il faut d’abord com
 projet. Lors de la compilation, les pages et composants Vue sont traduits en HTML,
 CSS et JavaScript. Une fois terminé, le dossier "dist" est rempli avec deux fichiers
 et un dossier :
-— Le dossier "assets", qui contient les images, les logos, et le code JS et CSS.
-— Le fichier "favicon.ico", qui est l’icône qui apparait dans le navigateur.
-— Le fichier "index.html", qui contient la page HTML de lancement.
+* Le dossier "assets", qui contient les images, les logos, et le code JS et CSS.
+* Le fichier "favicon.ico", qui est l’icône qui apparait dans le navigateur.
+* Le fichier "index.html", qui contient la page HTML de lancement.
 Ces trois éléments du dossier "dist" doivent ensuite être déposés dans le dossier
 "public" du backend. Il faut aussi impérativement copier le contenu de "index.html"
 pour le mettre dans "resources/views/app.blade.php".
@@ -98,9 +98,9 @@ composer install
 cp .env.example .env
 ````
 
-3. It use Laravel Sail, so go use the following command:
+3. Project use Laravel Sail, to start it, run the following command:
 ````
-./vendor/bin/sail up -d
+vendor/bin/sail up -d
 ````
 
 4. You can also create an alias for _sail_ like that:
@@ -110,17 +110,17 @@ alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 
 5. Generate your key for the first time:
 ````
-./vendor/bin/sail artisan key:generate
+vendor/bin/sail artisan key:generate
 ````
 
 6. Run the migrations and seeds:
 ````
-./vendor/bin/sail artisan migrate:fresh --seed
+vendor/bin/sail artisan migrate:fresh --seed
 ````
 
 7. Start websockets:
 ````
-./vendor/bin/sail artisan websockets:serve
+vendor/bin/sail artisan websockets:serve
 ````
 
 ### Default port
@@ -128,7 +128,7 @@ default developement server in on port 80
 
 ## Tests
 ````
-./vendor/bin/sail test
+vendor/bin/sail test
 ````
 
 ### Installation xdebug
@@ -171,7 +171,7 @@ vendor/bin/sail test --coverage
 
 On a specific file:
 ````
-vendor/bin/sail artisan test --filter FileName
+vendor/bin/sail test --filter FileName
 ````
 
 ### Access container
@@ -198,6 +198,12 @@ https://laravel.com/docs/9.x/sail
 
 ## Keycloak package
 The keycloak package is modified in packages folder, when you want to run the program, after ran composer install, just copy the keycloak modified package to the vendor one.
+
+## Job Category images
+Seeders already creates all data necessary to make work the program. \
+You just need to add the job category images in the folder "storage/public/file-storage/cat". \
+They must be named: "cat_id.png". \
+Job Category has actually 9 entries, so you need to add 9 images.
 
 ## Support
 

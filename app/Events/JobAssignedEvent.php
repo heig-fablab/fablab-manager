@@ -23,7 +23,7 @@ class JobAssignedEvent implements ShouldBroadcast
 
     public function broadcastOn(): Channel
     {
-        //return new Channel('job.workers.'.$this->job->worker_switch_uuid);
+        //return new Channel('job.workers.'.$this->job->worker_username);
         return new PrivateChannel('job.workers');
     }
 }

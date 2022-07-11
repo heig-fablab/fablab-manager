@@ -23,8 +23,6 @@ class MessageCreatedEvent implements ShouldBroadcast
 
     public function broadcastOn(): Channel
     {
-        return new PrivateChannel('message.' . $this->message->receiver_switch_uuid);
-        // OLD code
-        //return new Channel('message.channel.'.$this->message->recipient_id);
+        return new PrivateChannel('message.' . $this->message->receiver_username);
     }
 }

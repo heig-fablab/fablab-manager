@@ -2,27 +2,25 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRequests\StoreJobRequest;
-use App\Http\Requests\UpdateRequests\UpdateJobRequest;
-use App\Http\Requests\UpdateRequests\UpdateJobAssignWorkerRequest;
-use App\Http\Requests\UpdateRequests\UpdateJobStatusRequest;
-use App\Http\Requests\UpdateRequests\UpdateJobRatingRequest;
-use App\Http\Resources\JobResource;
-use App\Models\Job;
-use App\Models\File;
-use App\Models\Event;
-use App\Events\JobAssignedEvent;
-use App\Events\JobCreatedEvent;
-use App\Events\JobStatusUpdatedEvent;
-use App\Events\JobTerminatedEvent;
 use App\Constants\EventTypes;
 use App\Constants\JobStatus;
+use App\Events\JobAssignedEvent;
+use App\Events\JobClosedEvent;
+use App\Events\JobStatusUpdatedEvent;
+use App\Events\JobUpdatedEvent;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\JobAssignWorkerRequest;
+use App\Http\Requests\JobRatingRequest;
+use App\Http\Requests\JobRequest;
+use App\Http\Requests\JobStatusRequest;
+use App\Http\Resources\JobResource;
+use App\Models\Event;
+use App\Models\File;
+use App\Models\Job;
 
 // php artisan websockets:serve --host=127.0.0.1
 // -> to communicate only on localhost that is possible, wait and see if it works
-// php artisan websockets:serve --port=3030 
+// php artisan websockets:serve --port=3030
 // -> TODO: define an port for websockets 80 or 443 -> perhaps 8000
 
 class JobController extends Controller
@@ -39,9 +37,18 @@ class JobController extends Controller
         return new JobResource($job);
     }
 
-    public function store(StoreJobRequest $request)
+    public function store(JobRequest $request)
     {
-        $job = Job::create($request->validated());
+        $req_validated = $request->validated();
+
+        // Verify if user has already max job submitted limit
+        if (Job::get_client_jobs($request->client_username)->count() >= Job::JOBS_SUBMITTED_LIMIT) {
+            return response()->json([
+                'message' => 'You have reached the maximum number of jobs you can submit',
+            ], 403);
+        }
+
+        $job = Job::create($req_validated);
 
         // Add files to job
         if ($request->has('files')) {
@@ -52,17 +59,34 @@ class JobController extends Controller
         }
 
         // Notifications
-        broadcast(new JobCreatedEvent($job));
+        broadcast(new JobUpdatedEvent($job));
+
+        // Create and save Event for client timeline
+        Event::create([
+            'type' => EventTypes::STATUS,
+            'to_notify' => false,
+            'data' => JobStatus::NEW,
+            'user_username' => $job->client_username,
+            'job_id' => $job->id
+        ]);
 
         // Create and save Event (notify worker)
         if ($job->worker_username != null) {
             Event::create([
                 'type' => EventTypes::STATUS,
                 'to_notify' => true,
-                'data' => JobStatus::NEW,
+                'data' => JobStatus::ASSIGNED,
                 'user_username' => $job->worker_username,
                 'job_id' => $job->id
             ]);
+
+            $job->status = JobStatus::ASSIGNED;
+            $job->save();
+        }
+
+        if ($job->validator_username != null) {
+            $job->status = JobStatus::VALIDATED;
+            $job->save();
         }
 
         return new JobResource($job);
@@ -70,16 +94,24 @@ class JobController extends Controller
 
     // Manage files update only via files route
     // Here only job info are updated
-    public function update(UpdateJobRequest $request)
+    public function update(JobRequest $request)
     {
         $req_validated = $request->validated();
 
-        // Notifications
-        // TODO: ?
-        //broadcast(new JobCreatedEvent($job));
-        //broadcast(new JobCreatedEvent($job))->toOthers();
-
         $job = Job::findOrFail($request->id);
+
+        // Notifications
+        broadcast(new JobUpdatedEvent($job));
+
+        // Create and save Event for timeline
+        Event::create([
+            'type' => EventTypes::STATUS,
+            'to_notify' => false,
+            'data' => JobStatus::NEW,
+            'user_username' => $job->client_username,
+            'job_id' => $job->id
+        ]);
+
         $job->update($req_validated);
         return new JobResource($job);
     }
@@ -92,7 +124,7 @@ class JobController extends Controller
         ], 200);
     }
 
-    // Others function
+    // Other functions
     public function unassigned_jobs()
     {
         return JobResource::collection(Job::get_unassigned_jobs());
@@ -118,9 +150,16 @@ class JobController extends Controller
         return JobResource::collection(Job::get_validator_jobs($username));
     }
 
-    public function assign_worker(UpdateJobAssignWorkerRequest $request)
+    public function assign(JobAssignWorkerRequest $request)
     {
         $req_validated = $request->validated();
+
+        // Verify if user has already max job assigned limit
+        if (Job::get_worker_jobs($request->worker_username)->count() >= Job::JOBS_ASSIGNED_LIMIT) {
+            return response()->json([
+                'message' => 'You have reached the maximum number of jobs you can assigned to yourself',
+            ], 403);
+        }
 
         $job = Job::findOrFail($request->id);
 
@@ -141,7 +180,7 @@ class JobController extends Controller
         broadcast(new JobAssignedEvent($job))->toOthers();
 
         // Create and save Event (notify client)
-        $event = Event::create([
+        Event::create([
             'type' => EventTypes::STATUS,
             'to_notify' => true,
             'data' => JobStatus::ASSIGNED,
@@ -155,7 +194,7 @@ class JobController extends Controller
         return new JobResource($job);
     }
 
-    public function update_status(UpdateJobStatusRequest $request)
+    public function update_status(JobStatusRequest $request)
     {
         $req_validated = $request->validated();
 
@@ -187,7 +226,7 @@ class JobController extends Controller
         return new JobResource($job);
     }
 
-    public function update_rating(UpdateJobRatingRequest $request)
+    public function update_rating(JobRatingRequest $request)
     {
         $req_validated = $request->validated();
 
@@ -216,10 +255,10 @@ class JobController extends Controller
         $job->save();
 
         // Notifications
-        broadcast(new JobTerminatedEvent($job)); //->toOthers();
+        broadcast(new JobClosedEvent($job)); //->toOthers();
 
         // Create and save Event (notify worker)
-        $event = Event::create([
+        Event::create([
             'type' => EventTypes::STATUS,
             'to_notify' => true,
             'data' => JobStatus::CLOSED,
@@ -247,7 +286,7 @@ class JobController extends Controller
         foreach ($events as $event) {
             $event->to_notify = false;
             $event->save();
-            $event->delete();
+            //$event->delete();
         }
 
         return $job;

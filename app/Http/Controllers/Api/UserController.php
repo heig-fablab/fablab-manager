@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Support\Facades\Log;
-//use Illuminate\Http\Request;
-//use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRequests\StoreUserRequest;
-use App\Http\Requests\UpdateRequests\UpdateUserRequest;
-use App\Http\Requests\UpdateRequests\UpdateUserEmailNotificationsRequest;
-use App\Http\Resources\UserResource;
-use App\Models\User;
-use App\Models\Role;
 use App\Constants\Roles;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\UserEmailNotificationsRequest;
+use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -26,11 +23,10 @@ class UserController extends Controller
     public function show($username)
     {
         $user = User::findOrFail($username);
-        $user->roles = $user->roles;
         return new UserResource($user);
     }
 
-    public function store(StoreUserRequest $request)
+    public function store(UserRequest $request)
     {
         $user = User::create($request->validated());
 
@@ -38,16 +34,14 @@ class UserController extends Controller
         $user->roles()->attach(Role::where('name', Roles::CLIENT)->first()->id);
 
         // Add other roles
-        // For the moment not active, to see which right we gives to this route
-        // Perhaps only update or a specific route will accept roles to be sure that admin can access
-        /*foreach ($request->roles as $role_name) {
+        foreach ($request->roles as $role_name) {
             $user->roles()->attach(Role::where('name', $role_name)->first()->id);
-        }*/
+        }
 
         return new UserResource($user);
     }
 
-    public function update(UpdateUserRequest $request)
+    public function update(UserRequest $request)
     {
         $req_validated = $request->validated();
         $user = User::findOrFail($request->username);
@@ -81,18 +75,13 @@ class UserController extends Controller
     }
 
     // Others functions
-    /*public function logout(Request $request) //Called when the user wants to disconnect
-    {
-        return redirect("shibboleth-logout");
-    } //return : route to shibboleth logout handler*/
-
-    public function update_email_notifications(UpdateUserEmailNotificationsRequest $request)
+    public function update_email_notifications(UserEmailNotificationsRequest $request)
     {
         $req_validated = $request->validated();
         $user = User::findOrFail($request->username);
         $user->update($req_validated);
 
-        Log::debug('user updated');
+        Log::debug('user notifications updated');
         Log::debug('require_status_email:' . $user->require_status_email);
         Log::debug('require_files_email: ' . $user->require_files_email);
         Log::debug('require_messages_email: ' . $user->require_messages_email);

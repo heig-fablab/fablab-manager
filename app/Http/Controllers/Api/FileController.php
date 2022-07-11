@@ -2,23 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\FileResource;
-use App\Http\Requests\StoreRequests\StoreFileRequest;
-use App\Http\Requests\UpdateRequests\UpdateFileRequest;
-use App\Models\File;
 use App\Events\JobFileUpdatedEvent;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\FileRequest;
+use App\Http\Resources\FileResource;
+use App\Models\File;
+use Illuminate\Support\Facades\Log;
 
 class FileController extends Controller
 {
+    // API Standard function
     public function show(int $id)
     {
-        $file = File::findOrFail($id);
-        $file->file = File::get_file($file);
-        return new FileResource($file);
+        return new FileResource(File::findOrFail($id));
     }
 
-    public function store(StoreFileRequest $request)
+    public function store(FileRequest $request)
     {
         $request->validated();
 
@@ -30,12 +29,14 @@ class FileController extends Controller
         return new FileResource($file);
     }
 
-    public function update(UpdateFileRequest $request)
+    public function update(FileRequest $request)
     {
         $request->validated();
 
+        log::Debug('Update file request');
+
         $file = File::findOrFail($request->id);
-        $file = File::update_file($file, $request->file('file'), $request->job_id);
+        $file = File::update_file($file, $request->file('file'));
         $file->save();
 
         // Notifications
@@ -59,5 +60,11 @@ class FileController extends Controller
         return response()->json([
             'message' => "File deleted successfully!"
         ], 200);
+    }
+
+    // Other functions
+    public function download(int $id)
+    {
+        return File::download_file(File::findOrFail($id));
     }
 }

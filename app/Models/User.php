@@ -3,10 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -23,7 +21,6 @@ class User extends Authenticatable
         'email',
         'name',
         'surname',
-        'password',
         'require_status_email',
         'require_files_email',
         'require_messages_email',
@@ -38,8 +35,7 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'password',
-        'remember_token',
+        //'remember_token',
         'last_email_sent'
     ];
 

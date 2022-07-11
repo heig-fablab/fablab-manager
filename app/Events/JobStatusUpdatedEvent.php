@@ -23,6 +23,6 @@ class JobStatusUpdatedEvent implements ShouldBroadcast
 
     public function broadcastOn(): Channel
     {
-        return new PrivateChannel('job.' . $this->job->client_switch_uuid);
+        return new PrivateChannel('job.' . $this->job->client_username);
     }
 }

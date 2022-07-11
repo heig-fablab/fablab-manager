@@ -18,7 +18,7 @@ class FileUpdateTest extends TestCase
 
     public function tearDown(): void
     {
-        Storage::deleteDirectory(File::FILE_STORAGE_PATH);
+        Storage::deleteDirectory(File::PRIVATE_FILE_STORAGE_PATH);
         parent::tearDown();
     }
 
@@ -35,7 +35,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 
@@ -58,7 +57,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 
@@ -81,7 +79,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 
@@ -104,7 +101,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 
@@ -122,12 +118,11 @@ class FileUpdateTest extends TestCase
         $job = TestHelpers::create_assigned_test_job($user->username);
 
         $real_file = TestHelpers::create_test_file();
-        $update_file = TestHelpers::create_test_file('document2.pdf', 'application/pdf', 1000001);
+        $update_file = TestHelpers::create_test_file('document2.pdf', 'application/pdf', 10_001);
         $bd_file = File::store_file($real_file, $job->id);
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 
@@ -150,7 +145,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 
@@ -188,7 +182,6 @@ class FileUpdateTest extends TestCase
 
         $payload = [
             'id' => $bd_file->id,
-            'job_id' => $job->id,
             'file' => $update_file
         ];
 

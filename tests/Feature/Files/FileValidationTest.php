@@ -11,50 +11,37 @@ class FileValidationTest extends TestCase
 {
     public function tearDown(): void
     {
-        Storage::deleteDirectory(File::FILE_STORAGE_PATH);
+        Storage::deleteDirectory(File::PRIVATE_FILE_STORAGE_PATH);
         parent::tearDown();
     }
 
     public function test_is_valid_file_not_in_job_category_accepted_types_fail()
     {
         $file = TestHelpers::create_test_file('image.png', 'image/png');
-        $this->assertFalse(File::is_valid_file($file, 1, 1));
+        $this->assertFalse(File::is_valid_file($file, ['pdf']));
     }
 
     public function test_is_valid_file_with_different_extension_mime_type_fail()
     {
         $file = TestHelpers::create_test_file('image.pdf', 'image/png');
-        $this->assertFalse(File::is_valid_file($file, 1, 1));
+        $this->assertFalse(File::is_valid_file($file, ['pdf']));
     }
 
     public function test_is_valid_file_too_big_fail()
     {
-        $file = TestHelpers::create_test_file('document.pdf', 'application/pdf', 1000001);
-        $this->assertFalse(File::is_valid_file($file, 1, 1));
+        // 1MB + 1 byte
+        $file = TestHelpers::create_test_file('document.pdf', 'application/pdf', 10_001);
+        $this->assertFalse(File::is_valid_file($file, ['pdf']));
     }
 
-    public function test_is_valid_file_with_null_file_success()
+    public function test_is_valid_file_with_null_file_fail()
     {
-        $this->assertFalse(File::is_valid_file(null, 1, 1));
+        $this->assertFalse(File::is_valid_file(null, ['pdf']));
     }
 
-    public function test_is_valid_file_with_bad_job_id_and_job_category_id_fail()
+    public function test_is_valid_file_success()
     {
         $file = TestHelpers::create_test_file();
-        $this->assertFalse(File::is_valid_file($file, -1, -1));
+        $this->assertTrue(File::is_valid_file($file, ['pdf']));
     }
-
-    /*public function test_is_valid_file_with_job_id_success()
-    {
-        $job = TestHelpers::create_assigned_test_job();
-        $file = TestHelpers::create_test_file();
-        $this->assertTrue(File::is_valid_file($file, -1, $job->id));
-    }
-
-    public function test_is_valid_file_with_job_category_id_success()
-    {
-        $job = TestHelpers::create_assigned_test_job();
-        $file = TestHelpers::create_test_file();
-        $this->assertTrue(File::is_valid_file($file, $job->job_category->id, -1));
-    }*/
 }
