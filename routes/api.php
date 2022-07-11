@@ -39,8 +39,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}', 'show')->can('view', [Job::class, 'id']);
         Route::post('', 'store')->can('create', Job::class);
         Route::put('', 'update')->can('update', Job::class);
-        //Route::patch('/{id}/validator/{username}', 'assign_validator')->can('assign_validator', Job::class);
-        Route::patch('/worker/assign', 'assign_worker')->can('assign_worker', Job::class);
+        Route::patch('/assign', 'assign')->can('assign', Job::class);
         Route::patch('/status', 'update_status')->can('update_status', Job::class);
         Route::patch('/rating', 'update_rating')->can('update_rating', Job::class);
         Route::patch('{id}/notifications/user/{username}', 'update_notifications')->can('update_notifications', [Job::class, 'id', 'username']);

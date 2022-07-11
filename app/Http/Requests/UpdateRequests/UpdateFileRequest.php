@@ -5,7 +5,6 @@ namespace App\Http\Requests\UpdateRequests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\File;
 use App\Models\Job;
-use Illuminate\Support\Facades\Log;
 
 class UpdateFileRequest extends FormRequest
 {

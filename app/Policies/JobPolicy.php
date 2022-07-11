@@ -81,7 +81,7 @@ class JobPolicy
             && $user->username == $username;
     }
 
-    public function assign_worker(User $user)
+    public function assign(User $user)
     {
         return $user->has_given_role(Roles::WORKER)
             && app('request')->get('worker_username') == $user->username;

@@ -18,6 +18,8 @@ use App\Events\JobStatusUpdatedEvent;
 use App\Events\JobClosedEvent;
 use App\Constants\EventTypes;
 use App\Constants\JobStatus;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 // php artisan websockets:serve --host=127.0.0.1
 // -> to communicate only on localhost that is possible, wait and see if it works
@@ -151,7 +153,7 @@ class JobController extends Controller
         return JobResource::collection(Job::get_validator_jobs($username));
     }
 
-    public function assign_worker(UpdateJobAssignWorkerRequest $request)
+    public function assign(UpdateJobAssignWorkerRequest $request)
     {
         $req_validated = $request->validated();
 
