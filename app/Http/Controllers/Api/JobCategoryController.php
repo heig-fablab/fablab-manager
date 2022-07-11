@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRequests\StoreJobCategoryRequest;
-use App\Http\Requests\UpdateRequests\UpdateJobCategoryRequest;
+use App\Http\Requests\JobCategoryRequest;
 use App\Http\Resources\JobCategoryResource;
 use App\Models\File;
-use App\Models\JobCategory;
 use App\Models\FileType;
+use App\Models\JobCategory;
 
 class JobCategoryController extends Controller
 {
@@ -24,7 +23,7 @@ class JobCategoryController extends Controller
         return new JobCategoryResource(JobCategory::findOrFail($id));
     }
 
-    public function store(StoreJobCategoryRequest $request)
+    public function store(JobCategoryRequest $request)
     {
         $job_category = JobCategory::create($request->validated());
 
@@ -40,7 +39,7 @@ class JobCategoryController extends Controller
         return new JobCategoryResource($job_category);
     }
 
-    public function update(UpdateJobCategoryRequest $request)
+    public function update(JobCategoryRequest $request)
     {
         $req_validated = $request->validated();
         $job_category = JobCategory::findOrFail($request->id);

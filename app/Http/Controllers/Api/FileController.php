@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\FileResource;
-use App\Http\Requests\StoreRequests\StoreFileRequest;
-use App\Http\Requests\UpdateRequests\UpdateFileRequest;
-use App\Models\File;
 use App\Events\JobFileUpdatedEvent;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\FileRequest;
+use App\Http\Resources\FileResource;
+use App\Models\File;
 use Illuminate\Support\Facades\Log;
 
 class FileController extends Controller
@@ -18,7 +17,7 @@ class FileController extends Controller
         return new FileResource(File::findOrFail($id));
     }
 
-    public function store(StoreFileRequest $request)
+    public function store(FileRequest $request)
     {
         $request->validated();
 
@@ -30,7 +29,7 @@ class FileController extends Controller
         return new FileResource($file);
     }
 
-    public function update(UpdateFileRequest $request)
+    public function update(FileRequest $request)
     {
         $request->validated();
 

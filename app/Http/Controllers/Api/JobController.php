@@ -2,24 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRequests\StoreJobRequest;
-use App\Http\Requests\UpdateRequests\UpdateJobRequest;
-use App\Http\Requests\UpdateRequests\UpdateJobAssignWorkerRequest;
-use App\Http\Requests\UpdateRequests\UpdateJobStatusRequest;
-use App\Http\Requests\UpdateRequests\UpdateJobRatingRequest;
-use App\Http\Resources\JobResource;
-use App\Models\Job;
-use App\Models\File;
-use App\Models\Event;
-use App\Events\JobAssignedEvent;
-use App\Events\JobUpdatedEvent;
-use App\Events\JobStatusUpdatedEvent;
-use App\Events\JobClosedEvent;
 use App\Constants\EventTypes;
 use App\Constants\JobStatus;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Events\JobAssignedEvent;
+use App\Events\JobClosedEvent;
+use App\Events\JobStatusUpdatedEvent;
+use App\Events\JobUpdatedEvent;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\JobAssignWorkerRequest;
+use App\Http\Requests\JobRatingRequest;
+use App\Http\Requests\JobRequest;
+use App\Http\Requests\JobStatusRequest;
+use App\Http\Resources\JobResource;
+use App\Models\Event;
+use App\Models\File;
+use App\Models\Job;
 
 // php artisan websockets:serve --host=127.0.0.1
 // -> to communicate only on localhost that is possible, wait and see if it works
@@ -40,7 +37,7 @@ class JobController extends Controller
         return new JobResource($job);
     }
 
-    public function store(StoreJobRequest $request)
+    public function store(JobRequest $request)
     {
         $req_validated = $request->validated();
 
@@ -97,7 +94,7 @@ class JobController extends Controller
 
     // Manage files update only via files route
     // Here only job info are updated
-    public function update(UpdateJobRequest $request)
+    public function update(JobRequest $request)
     {
         $req_validated = $request->validated();
 
@@ -153,7 +150,7 @@ class JobController extends Controller
         return JobResource::collection(Job::get_validator_jobs($username));
     }
 
-    public function assign(UpdateJobAssignWorkerRequest $request)
+    public function assign(JobAssignWorkerRequest $request)
     {
         $req_validated = $request->validated();
 
@@ -197,7 +194,7 @@ class JobController extends Controller
         return new JobResource($job);
     }
 
-    public function update_status(UpdateJobStatusRequest $request)
+    public function update_status(JobStatusRequest $request)
     {
         $req_validated = $request->validated();
 
@@ -229,7 +226,7 @@ class JobController extends Controller
         return new JobResource($job);
     }
 
-    public function update_rating(UpdateJobRatingRequest $request)
+    public function update_rating(JobRatingRequest $request)
     {
         $req_validated = $request->validated();
 

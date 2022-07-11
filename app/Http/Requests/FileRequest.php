@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\StoreRequests;
+namespace App\Http\Requests;
 
+use App\Models\File;
 use App\Models\Job;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\File;
 
-class StoreFileRequest extends FormRequest
+class FileRequest extends FormRequest
 {
     public function authorize()
     {
@@ -16,11 +16,27 @@ class StoreFileRequest extends FormRequest
 
     public function rules()
     {
-        return [
-            'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
+        $rules = [];
+
+        if ($this->isMethod('post')) {
+            $rules = array_merge($rules, [
+                'job_id' => ['required', 'integer', 'numeric', 'min:1', 'exists:jobs,id'],
+            ]);
+        } else if ($this->isMethod('put')) {
+            $rules = array_merge($rules, [
+                'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:files,id'],
+            ]);
+        }
+
+        $rules = array_merge($rules, [
             'file' => ['required', 'file', function ($attribute, $value, $fail) {
+                if ($this->job_id == null) {
+                    $this->job_id = File::find($this->id)->job->id;
+                }
+
                 $accepted_file_types = Job::find($this->job_id)
                     ->job_category->file_types->pluck('name')->toArray();
+
                 if ($accepted_file_types == null) {
                     $fail('Job category related to job not found');
                 }
@@ -29,6 +45,8 @@ class StoreFileRequest extends FormRequest
                 }
                 return true;
             }],
-        ];
+        ]);
+
+        return $rules;
     }
 }

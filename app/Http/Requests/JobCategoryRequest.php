@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\StoreRequests;
+namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use App\Models\File;
 use App\Constants\Regex;
+use App\Models\File;
+use Illuminate\Foundation\Http\FormRequest;
 
-class StoreJobCategoryRequest extends FormRequest
+class JobCategoryRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
 
@@ -18,8 +18,8 @@ class StoreJobCategoryRequest extends FormRequest
 
     public function rules()
     {
-        return [
-            'acronym' => ['required', 'string', 'regex:' . Regex::ACRONYM, 'unique:job_categories,acronym'],
+        $rules = [
+            'acronym' => ['required', 'string', 'regex:' . Regex::ACRONYM],
             'name' => ['required', 'string', 'regex:' . Regex::JOB_CATEGORY_NAME],
             'description' => ['sometimes', 'filled', 'string', 'regex:' . Regex::DESCRIPTION_TEXT],
             'file_types' => ['required', 'array'],
@@ -30,5 +30,17 @@ class StoreJobCategoryRequest extends FormRequest
                 );
             }],
         ];
+
+        if ($this->isMethod('put')) {
+            $rules = array_merge($rules, [
+                'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:job_categories,id'],
+            ]);
+        } else if ($this->isMethod('post')) {
+            $rules['acronym'] = array_merge($rules['acronym'], [
+                'unique:job_categories,acronym'
+            ]);
+        }
+
+        return $rules;
     }
 }

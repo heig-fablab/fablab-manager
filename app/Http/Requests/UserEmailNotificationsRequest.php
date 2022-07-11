@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\UpdateRequests;
+namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Constants\Regex;
+use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserEmailNotificationsRequest extends FormRequest
+class UserEmailNotificationsRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
 

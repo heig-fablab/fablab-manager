@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\UpdateRequests;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateJobRatingRequest extends FormRequest
+class JobRatingRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
 

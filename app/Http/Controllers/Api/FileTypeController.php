@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRequests\StoreFileTypeRequest;
-use App\Http\Requests\UpdateRequests\UpdateFileTypeRequest;
+use App\Http\Requests\FileTypeRequest;
 use App\Http\Resources\FileTypeResource;
 use App\Models\FileType;
 
@@ -22,13 +21,13 @@ class FileTypeController extends Controller
         return new FileTypeResource(FileType::findOrFail($id));
     }
 
-    public function store(StoreFileTypeRequest $request)
+    public function store(FileTypeRequest $request)
     {
         $file_type = FileType::create($request->validated());
         return new FileTypeResource($file_type);
     }
 
-    public function update(UpdateFileTypeRequest $request)
+    public function update(FileTypeRequest $request)
     {
         $req_validated = $request->validated();
         $file_type = FileType::findOrFail($request->id);

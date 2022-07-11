@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\StoreRequests;
+namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Constants\Regex;
+use Illuminate\Foundation\Http\FormRequest;
 
-class StoreFileTypeRequest extends FormRequest
+class FileTypeRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
 
@@ -17,9 +17,17 @@ class StoreFileTypeRequest extends FormRequest
 
     public function rules()
     {
-        return [
+        $rules = [
             'name' => ['required', 'string', 'regex:' . Regex::FILE_TYPE_NAME],
             'mime_type' => ['required', 'string', 'max:255', 'regex:' . Regex::MIME_TYPE],
         ];
+
+        if ($this->isMethod('put')) {
+            $rules = array_merge($rules, [
+                'id' => ['required', 'integer', 'numeric', 'min:1', 'exists:file_types,id'],
+            ]);
+        }
+
+        return $rules;
     }
 }

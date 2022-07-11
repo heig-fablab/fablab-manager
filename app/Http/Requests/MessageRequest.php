@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\StoreRequests;
+namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Constants\Regex;
+use Illuminate\Foundation\Http\FormRequest;
 
-class StoreMessageRequest extends FormRequest
+class MessageRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
 
