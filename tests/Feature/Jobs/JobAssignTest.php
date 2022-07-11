@@ -11,7 +11,7 @@ use Tests\TestHelpers;
 
 class JobAssignTest extends TestCase
 {
-    private const ACTUAL_ROUTE = '/api/jobs/worker/assign';
+    private const ACTUAL_ROUTE = '/api/jobs/assign';
     private const METHOD = 'patch';
 
     //-------------------------

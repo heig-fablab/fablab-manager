@@ -21,7 +21,8 @@ class UserStoreTest extends TestCase
                 'username' => 'test.test',
                 'email' => 'test' . $user->name . '@test.test',
                 'name' => 'test',
-                'surname' => 'test'
+                'surname' => 'test',
+                'roles' => [Roles::ADMIN]
             ])
             ->assertStatus(403);
     }
@@ -35,7 +36,8 @@ class UserStoreTest extends TestCase
                 'username' => 'test.test',
                 'email' => 'test' . $user->name . '@test.test',
                 'name' => 'test',
-                'surname' => 'test'
+                'surname' => 'test',
+                'roles' => [Roles::ADMIN]
             ])
             ->assertStatus(403);
     }
@@ -49,7 +51,8 @@ class UserStoreTest extends TestCase
                 'username' => 'test.test',
                 'email' => 'test' . $user->name . '@test.test',
                 'name' => 'test',
-                'surname' => 'test'
+                'surname' => 'test',
+                'roles' => [Roles::ADMIN]
             ])
             ->assertStatus(403);
     }
@@ -63,7 +66,8 @@ class UserStoreTest extends TestCase
                 'username' => 'test.test',
                 'email' => 'test' . $user->name . '@test.test',
                 'name' => 'test',
-                'surname' => 'test'
+                'surname' => 'test',
+                'roles' => [Roles::ADMIN]
             ])
             ->assertStatus(403);
     }
@@ -78,7 +82,8 @@ class UserStoreTest extends TestCase
                 'username' => 'test' . $random_str . '.test',
                 'email' => 'test' . $user->name . '@test.test',
                 'name' => 'test',
-                'surname' => 'test'
+                'surname' => 'test',
+                'roles' => [Roles::ADMIN]
             ])
             ->assertStatus(201)
             ->assertJson([
@@ -91,7 +96,7 @@ class UserStoreTest extends TestCase
                     'require_files_email' => true,
                     'require_messages_email' => true,
                     "roles" => [
-                        "client"
+                        "client", "admin"
                     ]
                 ]
             ]);

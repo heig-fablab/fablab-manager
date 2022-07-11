@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Constants\EventTypes;
+use App\Events\MessageCreatedEvent;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRequests\StoreMessageRequest;
+use App\Http\Requests\MessageRequest;
 use App\Http\Resources\MessageResource;
-use App\Models\Message;
 use App\Models\Event;
 use App\Models\Job;
-use App\Events\MessageCreatedEvent;
-use App\Constants\EventTypes;
+use App\Models\Message;
 
 class MessageController extends Controller
 {
@@ -25,7 +25,7 @@ class MessageController extends Controller
         return new MessageResource($message);
     }
 
-    public function store(StoreMessageRequest $request)
+    public function store(MessageRequest $request)
     {
         $req_validated = $request->validated();
 
