@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+    db:
+        image: mysql:latest
+        ports:
+            - "${DB_PORT:-3306}:3306"
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+            MYSQL_DATABASE: "${DB_DATABASE}"
+            MYSQL_USER: "${DB_USERNAME}"
+            MYSQL_PASSWORD: "${DB_PASSWORD}"
+        volumes:
+            - "${DB_VOLUME_PATH}"
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - "${DB_ADMINER_PORT:-8080}:8080"
+
+    backup:
+        image: databack/mysql-backup
+        restart: always
+        environment:
+            DB_SERVER: mysql
+            DB_PORT: "${DB_PORT}:3306"
+            DB_USER: "${DB_USERNAME}"
+            DB_PASS: "${DB_PASSWORD}"
+            DB_DUMP_FREQ: 1440
+            DB_DUMP_BEGIN: 2330
+            DB_DUMP_TARGRET: "${DB_DUMP_TARGET}"
+        volumes:
+            - "${DB_VOLUME_PATH}"
