@@ -20,3 +20,17 @@ services:
         restart: always
         ports:
             - "${DB_ADMINER_PORT:-8080}:8080"
+
+    backup:
+        image: databack/mysql-backup
+        restart: always
+        environment:
+            DB_SERVER: mysql
+            DB_PORT: "${DB_PORT}:3306"
+            DB_USER: "${DB_USERNAME}"
+            DB_PASS: "${DB_PASSWORD}"
+            DB_DUMP_FREQ: 1440
+            DB_DUMP_BEGIN: 2330
+            DB_DUMP_TARGRET: "${DB_DUMP_TARGET}"
+        volumes:
+            - "${DB_VOLUME_PATH}"
