@@ -145,6 +145,11 @@ cd ..
 vendor/bin/sail artisan migrate:fresh --seed
 ````
 
+9. Create the link for public storage:
+````
+vendor/bin/sail artisan storage:link
+````
+
 You have now the Laravel backend running!
 
 ### Tests
