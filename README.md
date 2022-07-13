@@ -86,7 +86,7 @@ You can also run this command:
 curl -sS https://getcomposer.org/installer | php
 ````
 
-You'll perhaps need to add some permissions (you are in project):
+You'll perhaps need to add some permissions (you are in project folder):
 ````
 sudo chmod 777 /home/<username>/tb/fablab-manager/
 sudo chmod -R 777 storage
@@ -160,6 +160,9 @@ If you have a problem with websockets, you can try to run sail like this:
 vendor/bin/sail up -d --build
 ````
 
+You can see all websockets movement here: \
+http://localhost/laravel-websockets
+
 ### Seeders
 Seeders already creates all data necessary to make work the program.\
 They also create some fake data when you aren't in production environment.
@@ -168,9 +171,6 @@ They also create some fake data when you aren't in production environment.
 You just need to add the job category images in the folder "storage/public/file-storage/cat". \
 They must be named: "cat_id.png". \
 Job Category has actually 9 entries, so you need to add 9 images.
-
-You can see all websockets movement here: \
-http://localhost/laravel-websockets
 
 ### Other usefully things
 
