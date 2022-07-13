@@ -3,6 +3,7 @@
 namespace App\Providers\Keycloak;
 
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 /**
  * source: https://github.com/robsontenorio/laravel-keycloak-guard
@@ -11,6 +12,10 @@ use Firebase\JWT\JWT;
  */
 class Token
 {
+    const JWT_ALGORITHM = 'RS256';
+    const BEGIN_KEY_TEXT = "-----BEGIN PUBLIC KEY-----\n";
+    const END_KEY_TEXT = "\n-----END PUBLIC KEY-----";
+
     /**
      * Decode a JWT token
      *
@@ -18,10 +23,10 @@ class Token
      * @param  string  $publicKey
      * @return mixed|null
      */
-    public static function decode(string $token = null, string $publicKey)
+    public static function decode(string $publicKey, string $token = null)
     {
         $publicKey = self::buildPublicKey($publicKey);
-        return $token ? JWT::decode($token, $publicKey, ['RS256']) : null;
+        return $token ? JWT::decode($token, new Key($publicKey, self::JWT_ALGORITHM)) : null;
     }
 
     /**
@@ -32,6 +37,8 @@ class Token
      */
     private static function buildPublicKey(string $key)
     {
-        return "-----BEGIN PUBLIC KEY-----\n" . wordwrap($key, 64, "\n", true) . "\n-----END PUBLIC KEY-----";
+        return self::BEGIN_KEY_TEXT
+            . wordwrap($key, 64, "\n", true)
+            . self::END_KEY_TEXT;
     }
 }

@@ -118,6 +118,8 @@ vendor/bin/sail artisan key:generate
 vendor/bin/sail artisan migrate:fresh --seed
 ````
 
+Already set up to start directly
+
 7. Start websockets:
 ````
 vendor/bin/sail artisan websockets:serve

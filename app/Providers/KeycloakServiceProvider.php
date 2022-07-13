@@ -8,24 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * source: https://github.com/robsontenorio/laravel-keycloak-guard
+ * author: Robson Tenório https://github.com/robsontenorio
+ * author: adapted by Alec Berney https://github.com/alecberney
  */
 class KeycloakServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        // Adding our custom guard
         Auth::extend('keycloak', function ($app, $name, array $config) {
             return new KeycloakGuard(Auth::createUserProvider($config['provider']), $app->request);
         });
-    }
-
-    public function boot()
-    {
-        // Already published by my own
-
-        /*$this->publishes([
-            __DIR__ . '/../config/keycloak.php' => app()->configPath('keycloak.php'),
-        ], 'config');
-
-        $this->mergeConfigFrom(__DIR__ . '/../config/keycloak.php', 'keycloak');*/
     }
 }
