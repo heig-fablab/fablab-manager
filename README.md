@@ -118,9 +118,10 @@ vendor/bin/sail artisan key:generate
 vendor/bin/sail artisan migrate:fresh --seed
 ````
 
-7. Start websockets:
+## Websockets:
+If you have a probleme with websockets, you can try to run sail like this:
 ````
-vendor/bin/sail artisan websockets:serve
+vendor/bin/sail up -d --build
 ````
 
 ### Default port
