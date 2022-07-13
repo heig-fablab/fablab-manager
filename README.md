@@ -1,136 +1,272 @@
-# Logiciel de gestion des commandes pour le Fablab
+# Software about order management for the HEIG-VD Fablab
 
 ## Description
+The Fablab is a laboratory of the HEIG-VD school where mainly students can realize
+all kinds of works with the help of machines / devices or others. 
+These works are generally requested by students to technicians / experts. 
+The management of these requests does not suit the fablab managers and a dedicated web platform to manage these requests has already been the subject of a previous Bachelor thesis.
+As the application is not totally finished and deployed, a fresh Bachelor thesis has been proposed in order to improve and complete it.
 
-TODO
+The final web platform will allow a better management of exchanges and orders.
+It will also provide a new dimension to the tracking and administration of the laboratory.
 
-## Installation
+A clear procedure from the request to the realization of the requested work will also be implemented through this application.
 
-### Laravel framework installation
+To facilitate the follow-up of customer requests, the platform will set up a notification system by email and on the application itself.
 
-#### Versions utilisées
+As the web tool is intended to reach school users, authentication via a school authentication (HEIG or Switch edu-id) tool will be provided.
 
-| Tool | Version |
-|-------|---------|
-| PHP | 8.1.3 |
-| Composer | 2.2.6 |
-| Laravel | 9.3 |
-| MySQL | 8.0.22 | 
+## Installation & Use
 
-#### PHP Installation
+No installation is needed, you just need to run your favorite browser and go to the following link:\
+http://tb22-berney.einet.ch/
 
-https://thishosting.rocks/install-php-on-ubuntu/
+## Contribute
+To contribute to this project, you need to install a few dependencies that we will explain later.
 
-php.ini
+### Dev environment installation
+
+#### Dependencies
+
+| Tool           | Version |
+|----------------|---------|
+| PHP            | 8.1.8   |
+| Composer       | 2.3.9   |
+| Laravel        | 9.2     |
+| Laravel Sail   | 1.0.1   |
+| Docker Desktop | 4.10.1  |
+| WSL Ubuntu     | 20.04   |
+
+
+#### Docker / Docker desktop / Docker compose
+First thing to do is to install Docker on Linux or Docker Desktop on Windows.
+
+##### WSL 2.0
+If you are running Windows as OS, you need to install WSL 2.0. \
+Here is a link to the documentation: https://docs.microsoft.com/en-us/windows/wsl/install
+
+Here is how you can use Docker and WSL 2 together:
+https://docs.docker.com/desktop/windows/wsl/
+
+If you want to not use sudo to use Docker commands: https://docs.docker.com/engine/install/linux-postinstall/
+
+###### WSL Possible problems
+You'll perhaps have CRLF / LF problems. To avoid them you can use the following commands:
 ````
-sudo apt install openssl php-common php-curl php-json php-mbstring php-mysql php-xml php-zip
+sudo git config core.autocrlf false 
+git rm --cached -r .
+git config --global --add safe.directory /home/<username>/<path>/fablab-manager
+git reset --hard
+sudo chown -R <username> fablab-manager/
 ````
 
-#### Composer installation
-https://getcomposer.org/doc/00-intro.md
+#### PHP
+Now you have Docker installed and have a Linux or WSL running, you need to install PHP on your Linux or WSL.
 
-Under Windows part:
-https://getcomposer.org/Composer-Setup.exe
+Here is a nice link to help you: https://computingforgeeks.com/how-to-install-php-on-ubuntu-linux-system/
 
+You need to care to have the following extensions installed:
+* BCMath
+* Ctype
+* Fileinfo
+* JSON
+* Mbstring
+* OpenSSL
+* PDO
+* Tokenizer
+* XML
 
-````
-sudo apt-get upgrade
-````
+#### Composer
+Now you've installed php, you need to install Composer on your Linux or WSL.
 
-````	
-sudo apt-get install php
-````
+Here is a link to install it: https://getcomposer.org/doc/00-intro.md
 
-````
-php --version
-````
-
-Under Linux part:
+You can also run this command:
 ````
 curl -sS https://getcomposer.org/installer | php
 ````
 
-#### Laravel configuration
+You'll perhaps need to add some permissions (you are in project):
+````
+sudo chmod 777 /home/<username>/tb/fablab-manager/
+sudo chmod -R 777 storage
+sudo chmod -R 777 bootstrap/
+````
 
-##### File _php.ini_ configuration
+### Run Laravel project
 
-uncomment line `;extension=php_fileinfo.dll` from file php.ini
+1. Be sure you are in the project freshly cloned.
+````
+cd fablab-manager
+````
 
-Found where extensions are indicated
-
-##### Installation de dépendances via composer et packagist
-
-Dépendances à installer via la commande `composer require [packageName]`:
-* composer require league/mime-type-detection
-* composer require league/flysystem
-* composer require laravel/framework
-
-##### Commande Laravel pour créer un projet
-* composer create-project laravel/laravel nomprojet
-
-#### Ajout du projet Vue.js compilé à Laravel pour réaliser un SPA
-Pour intégrer la SPA du frontend dans le code du backend, il faut d’abord compiler le
-projet. Lors de la compilation, les pages et composants Vue sont traduits en HTML,
-CSS et JavaScript. Une fois terminé, le dossier "dist" est rempli avec deux fichiers
-et un dossier :
-* Le dossier "assets", qui contient les images, les logos, et le code JS et CSS.
-* Le fichier "favicon.ico", qui est l’icône qui apparait dans le navigateur.
-* Le fichier "index.html", qui contient la page HTML de lancement.
-Ces trois éléments du dossier "dist" doivent ensuite être déposés dans le dossier
-"public" du backend. Il faut aussi impérativement copier le contenu de "index.html"
-pour le mettre dans "resources/views/app.blade.php".
-
-### IDE
-If you use visual studio, don't forget to install the extension for:
-* Vue.js
-* Laravel
-* PHP
-
-## Use
-
-1. Start by running this command to install dependencies:
+2. Start by running this command to install dependencies:
 ````
 composer install
 ````
 
-2. Get the sail environment ready:
+3. Get the sail environment ready:
 ````
 cp .env.example .env
 ````
 
-3. Project use Laravel Sail, to start it, run the following command:
+4. Add public key given by manager **Yves Chevallier** to the .env variable:
+````
+KEYCLOAK_REALM_PUBLIC_KEY=
+````
+
+5. Project use Laravel Sail, to start it, run the following command:
 ````
 vendor/bin/sail up -d
 ````
-
-4. You can also create an alias for _sail_ like that:
+or
 ````
-alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
+./vendor/bin/sail up -d
 ````
 
-5. Generate your key for the first time:
+6. Generate your key for the first time:
 ````
 vendor/bin/sail artisan key:generate
 ````
 
-6. Run the migrations and seeds:
+7. Run the migrations and seeds:
 ````
 vendor/bin/sail artisan migrate:fresh --seed
 ````
 
-## Websockets:
-If you have a probleme with websockets, you can try to run sail like this:
+You have now the Laravel backend running!
+
+### Tests
+To run all tests you can run the following command:
+````
+vendor/bin/sail test
+````
+
+To run a specific test you can run the following command:
+````
+vendor/bin/sail test --filter FileName
+````
+
+### Mail testing
+As we develop with Laravel Sail, the library [MailHog](https://github.com/mailhog/MailHog) is available, 
+watch the test mail send at this address: \
+http://localhost:8025/
+
+### Websockets
+Websockets are used in this project.
+
+If you have a problem with websockets, you can try to run sail like this:
 ````
 vendor/bin/sail up -d --build
 ````
 
-### Default port
+### Seeders
+Seeders already creates all data necessary to make work the program.\
+They also create some fake data when you aren't in production environment.
+
+#### Job Category images
+You just need to add the job category images in the folder "storage/public/file-storage/cat". \
+They must be named: "cat_id.png". \
+Job Category has actually 9 entries, so you need to add 9 images.
+
+You can see all websockets movement here: \
+http://localhost/laravel-websockets
+
+### Other usefully things
+
+### IDE Recommendations
+I recommend you to use PHP Storm from JetBrains: https://www.jetbrains.com/fr-fr/phpstorm/
+
+Second choice is Visual studio, if it is your case, don't forget to install the extension for:
+* Laravel
+* PHP
+
+#### Default port
 default developement server in on port 80
 
-## Tests
+#### Sail things
+
+##### Sail alias command
+You can also create an alias for **sail** command like that:
 ````
-vendor/bin/sail test
+alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 ````
+
+#### Access container
+If you want to access to your running container, use following command:
+````
+vendor/bin/sail root-shell
+````
+
+### Postman
+To help at testing API, a collaborative [Postman](https://www.postman.com/) exists,
+ask **Yves Chevallier** for the link.
+
+
+## Deployement
+Here is what you need to do to deploy the application.
+
+### Add frontend Vue.js compiled to the Laravel one
+To do this, first go on the frontend project, and run this command:
+````
+npm run build
+````
+
+Then you'll see a dist folder appears at the top of the project files, this one contains the compiled files.\
+Then you'll need to copy the files in the dist folder to the Laravel project.
+Here are the files and folder in dist folder:
+* Folder **assets**, that contains images, logos and JS + CSS code.
+* File **favicon.ico**, that is browser icon.
+* File **index.html**, that containe HTML page.
+
+Now you need to copy these files to the **public** folder of the Laravel project.
+
+You also need to copy the content of the **index.html** file into the **resources/views/app.blade.php** file.
+
+### Create release on Github
+Create a new branch from develop.\
+Then, you'll need to push the branch to Github with all the modifications done before.
+Create a PR from the release branch to the main and merge it after CI finished.
+
+### Update prod
+
+#### Connect to prod
+Connect to the prod using HEIG-VD VPN if you are not in their network. \
+Then use the following ssh command replacing the <values>.
+````
+ssh <user>@<machine>
+````
+
+Ask **Yves Chevallier** for the credentials.
+
+#### Update the prod repository
+go to :
+````
+cd /var/www/fablab-manager
+````
+
+pull new content:
+````
+git pull
+````
+
+if you have some migrations, execute them:
+````
+php artisan migrate --path=/database/migrations/full_migration_file_name_migration.php
+````
+
+## Support
+For support, send an email at this address:
+[fablab-manager-support](mailto:yves,chevallier@heig-vd.ch)
+
+## Authors
+
+* Chevallier Yves
+* Berney Alec
+* Lieberherr Tristan
+
+
+## Currently writing
 
 ### Installation xdebug
 
@@ -138,7 +274,7 @@ vendor/bin/sail test
 sudo apt-get install php8.1-xdebug
 ````
 
-path php.ini wsl 2:
+Path php.ini wsl 2:
 ````
 \\wsl.localhost\Ubuntu\etc\php\8.1\cli
 ````
@@ -165,19 +301,9 @@ xdebug.mode=coverage
 https://laracasts.com/discuss/channels/laravel/laravel-9-code-coverage
 https://stackoverflow.com/questions/66876314/laravel-not-generating-code-coverage-report
 
-All tests:
+To run tests with coverage, use this command:
 ````
 vendor/bin/sail test --coverage
-````
-
-On a specific file:
-````
-vendor/bin/sail test --filter FileName
-````
-
-### Access container
-````
-vendor/bin/sail root-shell
 ````
 
 ### Debugging:
@@ -189,33 +315,3 @@ Start a debug session:
 ````
 vendor/bin/sail debug
 ````
-
-### Mail testing
-As we develop with Laravel Sail, the libraire [MailHog](https://github.com/mailhog/MailHog) is available, watch the test mail send at this address: \
-http://localhost:8025/
-
-### All about sail
-https://laravel.com/docs/9.x/sail
-
-## Keycloak package
-The keycloak package is modified in packages folder, when you want to run the program, after ran composer install, just copy the keycloak modified package to the vendor one.
-
-## Job Category images
-Seeders already creates all data necessary to make work the program. \
-You just need to add the job category images in the folder "storage/public/file-storage/cat". \
-They must be named: "cat_id.png". \
-Job Category has actually 9 entries, so you need to add 9 images.
-
-## Support
-
-## Contribute
-
-### Postman
-To help at testing API, a Postman exists:
-[fablab-manager-postman](https://go.postman.co/workspace/fablab-manager~549aafa9-4f89-47c7-838a-ef74a6d1f398/collection/15807442-1ea77052-bd3c-4f9b-b806-25e11d878c0e?action=share&creator=15807442)
-
-## Authors
-
-* Chevallier Yves
-* Berney Alec
-* Lieberherr Tristan
