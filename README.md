@@ -19,7 +19,7 @@ As the web tool is intended to reach school users, authentication via a school a
 ## Installation & Use
 
 No installation is needed, you just need to run your favorite browser and go to the following link:\
-http://tb22-berney.einet.ch/
+http://tb22-berney.heig-vd.ch/
 
 ## Contribute
 To contribute to this project, you need to install a few dependencies that we will explain later.
