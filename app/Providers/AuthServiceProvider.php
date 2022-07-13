@@ -3,14 +3,12 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Models\Device;
 use App\Models\File;
 use App\Models\JobCategory;
 use App\Models\FileType;
 use App\Models\Job;
 use App\Models\Message;
 use App\Models\User;
-use App\Policies\DevicePolicy;
 use App\Policies\FilePolicy;
 use App\Policies\FileTypePolicy;
 use App\Policies\JobCategoryPolicy;
@@ -26,7 +24,6 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        Device::class => DevicePolicy::class,
         File::class => FilePolicy::class,
         FileType::class => FileTypePolicy::class,
         JobCategory::class => JobCategoryPolicy::class,
