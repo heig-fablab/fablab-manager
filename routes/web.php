@@ -19,4 +19,4 @@ Route::get('/', function () {
 
 Route::name('app')->any('{all}', function () {
     return view('app');
-})->where('all', '^(?!api).*$'); //->middleware('auth');
+})->where('all', '^(?!api).*$');

@@ -129,7 +129,18 @@ or
 vendor/bin/sail artisan key:generate
 ````
 
-7. Run the migrations and seeds:
+7. Add category images to storage for seeding:
+````
+cd job-categories-images
+````
+````
+cp cat1.jpg cat2.jpg cat3.jpg cat4.jpg cat5.jpg cat6.jpg cat7.jpg cat8.jpg cat9.jpg cat10.jpg ../storage/app/public/images
+````
+````
+cd ..
+````
+
+8. Run the migrations and seeds:
 ````
 vendor/bin/sail artisan migrate:fresh --seed
 ````
@@ -171,6 +182,12 @@ They also create some fake data when you aren't in production environment.
 You just need to add the job category images in the folder "storage/public/file-storage/cat". \
 They must be named: "cat_id.png". \
 Job Category has actually 9 entries, so you need to add 9 images.
+````
+cd job-categories-images
+````
+````
+cp cat1.jpg cat2.jpg cat3.jpg cat4.jpg cat5.jpg cat6.jpg cat7.jpg cat8.jpg cat9.jpg cat10.jpg ../storage/app/public/images
+````
 
 ### Other usefully things
 

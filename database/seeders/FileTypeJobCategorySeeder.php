@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class FileTypeJobCategorySeeder extends Seeder
 {
+    // TODO: adapt with given file types by m. Chevallier
     public function run()
     {
         DB::table('file_type_job_category')->insert([

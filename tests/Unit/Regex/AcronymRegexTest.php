@@ -18,7 +18,7 @@ class AcronymRegexTest extends TestCase
 
         // Corner cases
         $this->assertFalse(Regex::is_valid('T', Regex::ACRONYM));
-        $this->assertFalse(Regex::is_valid('TEST', Regex::ACRONYM));
+        $this->assertFalse(Regex::is_valid('TEEST', Regex::ACRONYM));
     }
 
     public function test_is_valid_acronym_characters()

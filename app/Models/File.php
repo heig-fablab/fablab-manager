@@ -40,7 +40,7 @@ class File extends Model
 
     // File Storage Service
     public const PRIVATE_FILE_STORAGE_PATH = 'private/file-storage/';
-    public const PUBLIC_FILE_STORAGE_PATH = 'public/file-storage/';
+    public const PUBLIC_FILE_STORAGE_PATH = 'public/';
     public const HASH_ALGORITHM = 'sha256';
     public const MAX_FILE_SIZE = 10_000_000; // Size is in bytes 10'000'000 B = 10 Mo
 
@@ -118,7 +118,8 @@ class File extends Model
     public static function get_file_url($file)
     {
         if ($file != null) {
-            return Storage::url(File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash);
+            return asset(Storage::url(File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash));
+            //return Storage::url(File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash);
             /*return env('APP_FILE_STORAGE_FULL_PATH', '/www/var/')
                 . File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash;*/
         } else {
