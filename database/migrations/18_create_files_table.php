@@ -14,7 +14,7 @@ return new class extends Migration
             // Fields
             $table->string('name', 255);
             $table->string('hash', 64);
-            $table->string('directory', 2);
+            $table->string('directory', 10);
             // Options
             $table->timestamps();
             // Foreign keys

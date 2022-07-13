@@ -6,19 +6,16 @@ use Illuminate\Support\Facades\Log;
 
 final class Regex
 {
-    public const ACRONYM = '/^[A-Z0-9]{2,3}$/';
+    public const ACRONYM = '/^[A-Z0-9]{2,4}$/';
     public const DESCRIPTION_TEXT = '/^[\w .,\-_:()\/\?\!]{1,65535}$/';
     public const FILE_TYPE_NAME = '/^[a-z0-9]{2,10}$/';
     public const JOB_CATEGORY_NAME = '/^[\w .,\-_:()\/]{3,50}$/';
-    public const MIME_TYPE = '/^\w+\/[\-.\w]+$/';
+    public const MIME_TYPE = '/^\w+\/[\-.\w]+$/'; // source: https://stackoverflow.com/questions/25201083/regex-to-match-and-validate-internet-media-type
     public const NAME = '/^[\w\- ]{3,50}$/';
     public const ROLE_NAME = '/^[a-z]{3,12}$/';
     public const USERNAME = '/^[a-z]{2,7}[a-z0-9]?\.[a-z]{2,8}$/';
     public const TITLE = '/^[\w \-_\/]{2,50}$/';
 
-    //src: https://stackoverflow.com/questions/25201083/regex-to-match-and-validate-internet-media-type
-
-    // TODO: perhaps creates a rule
     private const PASSWORD_UPPER_CASE = '/[A-Z]/';
     private const PASSWORD_LOWER_CASE = '/[a-z]/';
     private const PASSWORD_DIGIT = '/[0-9]/';
