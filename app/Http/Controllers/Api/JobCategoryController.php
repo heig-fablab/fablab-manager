@@ -80,4 +80,11 @@ class JobCategoryController extends Controller
             'message' => "Job category deleted successfully!"
         ], 200);
     }
+
+    // Other functions
+    public function image(int $id)
+    {
+        $job_category = JobCategory::findOrFail($id);
+        return File::get_file_url($job_category->file);
+    }
 }

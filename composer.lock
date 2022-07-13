@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fa566cd0acf65a5e9128e06d2e921c0",
+    "content-hash": "139ca4ab227eb766d63e12aee6f63cfd",
     "packages": [
         {
             "name": "beyondcode/laravel-websockets",
@@ -740,23 +740,28 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v5.5.1",
+            "version": "v6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "83b609028194aa042ea33b5af2d41a7427de80e6"
+                "reference": "d28e6df83830252650da4623c78aaaf98fb385f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/83b609028194aa042ea33b5af2d41a7427de80e6",
-                "reference": "83b609028194aa042ea33b5af2d41a7427de80e6",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/d28e6df83830252650da4623c78aaaf98fb385f3",
+                "reference": "d28e6df83830252650da4623c78aaaf98fb385f3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": "^7.1||^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=4.8 <=9"
+                "guzzlehttp/guzzle": "^6.5||^7.4",
+                "phpspec/prophecy-phpunit": "^1.1",
+                "phpunit/phpunit": "^7.5||^9.5",
+                "psr/cache": "^1.0||^2.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0"
             },
             "suggest": {
                 "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
@@ -791,9 +796,9 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v5.5.1"
+                "source": "https://github.com/firebase/php-jwt/tree/v6.2.0"
             },
-            "time": "2021-11-08T20:18:51+00:00"
+            "time": "2022-05-13T20:54:50+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -4142,61 +4147,6 @@
                 "source": "https://github.com/ringcentral/psr7/tree/master"
             },
             "time": "2018-05-29T20:21:04+00:00"
-        },
-        {
-            "name": "robsontenorio/laravel-keycloak-guard",
-            "version": "1.3.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/robsontenorio/laravel-keycloak-guard.git",
-                "reference": "fe6b9c597dd195012cdef226e605cae6bcbc4ad4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/robsontenorio/laravel-keycloak-guard/zipball/fe6b9c597dd195012cdef226e605cae6bcbc4ad4",
-                "reference": "fe6b9c597dd195012cdef226e605cae6bcbc4ad4",
-                "shasum": ""
-            },
-            "require": {
-                "firebase/php-jwt": "^5.0"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^3.7@dev",
-                "phpunit/phpunit": "^7.3@dev"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "KeycloakGuard\\KeycloakGuardServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "KeycloakGuard\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Robson Tenório"
-                }
-            ],
-            "description": "🔑 Simple Keycloak Guard for Laravel",
-            "homepage": "https://github.com/robsontenorio/laravel-keycloak-guard",
-            "keywords": [
-                "keycloak",
-                "laravel"
-            ],
-            "support": {
-                "issues": "https://github.com/robsontenorio/laravel-keycloak-guard/issues",
-                "source": "https://github.com/robsontenorio/laravel-keycloak-guard/tree/1.3.5"
-            },
-            "time": "2022-03-25T09:48:30+00:00"
         },
         {
             "name": "symfony/console",
@@ -9269,5 +9219,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

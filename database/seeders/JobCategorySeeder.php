@@ -10,14 +10,14 @@ class JobCategorySeeder extends Seeder
     public function run()
     {
         DB::table('job_categories')->insert([
-            'acronym' => 'REI',
-            'name' => 'routage électronique / electrical-routing',
+            'acronym' => 'PCBR',
+            'name' => 'pcb routing / routage électronique',
             'description' => '',
         ]);
 
         DB::table('job_categories')->insert([
-            'acronym' => 'AEI',
-            'name' => 'assemblage électronique',
+            'acronym' => 'PCBA',
+            'name' => 'pcb assembly / assemblage électronique',
             'description' => '',
         ]);
 
@@ -52,7 +52,13 @@ class JobCategorySeeder extends Seeder
         ]);
 
         DB::table('job_categories')->insert([
-            'acronym' => 'OTH',
+            'acronym' => 'GPCB',
+            'name' => 'gravure pcb',
+            'description' => ''
+        ]);
+
+        DB::table('job_categories')->insert([
+            'acronym' => 'AUT',
             'name' => 'autre',
             'description' => '',
         ]);
