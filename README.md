@@ -1,5 +1,7 @@
 # Software about order management for the HEIG-VD Fablab
 
+[![Test Coverage](https://raw.githubusercontent.com/heig-fablab/fablab-manager/main/badge-coverage.svg)](https://packagist.org/packages/heig-fablab/fablab-manager)
+
 ## Description
 The Fablab is a laboratory of the HEIG-VD school where mainly students can realize
 all kinds of works with the help of machines / devices or others. 
