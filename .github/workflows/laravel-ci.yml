@@ -70,7 +70,7 @@ jobs:
         KEYCLOAK_APPEND_DECODED_TOKEN: false
         KEYCLOAK_ALLOWED_RESOURCES: ""
         KEYCLOAK_IGNORE_VALIDATE_RESOURCES: true
-      run: vendor/bin/phpunit --coverage-clover
+      run: vendor/bin/phpunit --coverage-clover clover.xml
 
     - name: Generate test coverage badge
       uses: timkrase/phpunit-coverage-badge@v1.2.0
