@@ -6,6 +6,9 @@
 .env
 .env.backup
 .phpunit.result.cache
+**/*.cache
+**/.phpunit.cache
+.phpunit.cache/
 Homestead.json
 Homestead.yaml
 npm-debug.log
@@ -15,3 +18,4 @@ yarn-error.log
 /database/migrations/old
 /app/Http/Controllers/old
 /app/Models/old
+
