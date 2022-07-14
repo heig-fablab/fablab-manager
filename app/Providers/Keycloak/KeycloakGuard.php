@@ -2,6 +2,8 @@
 
 namespace App\Providers\Keycloak;
 
+use App\Constants\Roles;
+use App\Models\Role;
 use App\Models\User;
 use App\Providers\Keycloak\Exceptions\TokenException;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -97,12 +99,16 @@ class KeycloakGuard implements Guard
         if (!$user) {
             // Create user in BD if not exists
             log::Info("User not found. create a new one with credentials: " . json_encode($credentials));
-            User::create([
-                'username' => $this->decodedToken['preferred_username'],
-                'name' => $this->decodedToken['given_name'],
-                'surname' => $this->decodedToken['family_name'],
-                'email' => $this->decodedToken['email'],
+            $user = User::create([
+                'username' => $this->decodedToken->preferred_username,
+                'name' => $this->decodedToken->given_name,
+                'surname' => $this->decodedToken->family_name,
+                'email' => $this->decodedToken->email,
             ]);
+
+            // Add client role by default
+            $user->roles()->attach(Role::where('name', Roles::CLIENT)->first()->id);
+            $user->save();
         }
 
         $this->setUser($user);
