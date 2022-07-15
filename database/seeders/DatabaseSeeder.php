@@ -14,12 +14,13 @@ class DatabaseSeeder extends Seeder
           FileTypeJobCategorySeeder::class,
           RoleSeeder::class,
           FileSeeder::class,
+          // Creating admin users
+          UserSeeder::class,
+          RoleUserSeeder::class,
       ]);
 
       if (env('APP_ENV') != 'production') {
           $this->call([
-              UserSeeder::class,
-              RoleUserSeeder::class,
               JobSeeder::class,
               MessageSeeder::class,
           ]);
