@@ -132,9 +132,9 @@ class JobAddRatingTest extends TestCase
                     'working_hours' => 2,
                     'status' => JobStatus::CLOSED,
                     'job_category' => [
-                        'id' => 1,
-                        'acronym' => JobCategory::find(1)->acronym,
-                        'name' => JobCategory::find(1)->name,
+                        'id' => 3,
+                        'acronym' => JobCategory::find(3)->acronym,
+                        'name' => JobCategory::find(3)->name,
                     ],
                     'client' => [
                         'username' => $user->username,
@@ -178,9 +178,9 @@ class JobAddRatingTest extends TestCase
                     'working_hours' => 2,
                     'status' => JobStatus::CLOSED,
                     'job_category' => [
-                        'id' => 1,
-                        'acronym' => JobCategory::find(1)->acronym,
-                        'name' => JobCategory::find(1)->name,
+                        'id' => 3,
+                        'acronym' => JobCategory::find(3)->acronym,
+                        'name' => JobCategory::find(3)->name,
                     ],
                     'client' => [
                         'username' => $user->username,
@@ -224,9 +224,9 @@ class JobAddRatingTest extends TestCase
                     'working_hours' => 2,
                     'status' => JobStatus::CLOSED,
                     'job_category' => [
-                        'id' => 1,
-                        'acronym' => JobCategory::find(1)->acronym,
-                        'name' => JobCategory::find(1)->name,
+                        'id' => 3,
+                        'acronym' => JobCategory::find(3)->acronym,
+                        'name' => JobCategory::find(3)->name,
                     ],
                     'client' => [
                         'username' => 'client.client',

@@ -103,9 +103,9 @@ class JobUpdateStatusTest extends TestCase
                     'working_hours' => null,
                     'status' => JobStatus::ONGOING,
                     'job_category' => [
-                        'id' => 1,
-                        'acronym' => JobCategory::find(1)->acronym,
-                        'name' => JobCategory::find(1)->name,
+                        'id' => 3,
+                        'acronym' => JobCategory::find(3)->acronym,
+                        'name' => JobCategory::find(3)->name,
                     ],
                     'client' => [
                         'username' => 'client.client',
@@ -150,9 +150,9 @@ class JobUpdateStatusTest extends TestCase
                     'working_hours' => null,
                     'status' => JobStatus::ONGOING,
                     'job_category' => [
-                        'id' => 1,
-                        'acronym' => JobCategory::find(1)->acronym,
-                        'name' => JobCategory::find(1)->name,
+                        'id' => 3,
+                        'acronym' => JobCategory::find(3)->acronym,
+                        'name' => JobCategory::find(3)->name,
                     ],
                     'client' => [
                         'username' => 'client.client',
@@ -197,9 +197,9 @@ class JobUpdateStatusTest extends TestCase
                     'working_hours' => null,
                     'status' => JobStatus::ONGOING,
                     'job_category' => [
-                        'id' => 1,
-                        'acronym' => JobCategory::find(1)->acronym,
-                        'name' => JobCategory::find(1)->name,
+                        'id' => 3,
+                        'acronym' => JobCategory::find(3)->acronym,
+                        'name' => JobCategory::find(3)->name,
                     ],
                     'client' => [
                         'username' => 'client.client',
@@ -261,9 +261,9 @@ class JobUpdateStatusTest extends TestCase
                     'working_hours' => 1.5,
                     'status' => JobStatus::COMPLETED,
                     'job_category' => [
-                        'id' => 1,
-                        'acronym' => JobCategory::find(1)->acronym,
-                        'name' => JobCategory::find(1)->name,
+                        'id' => 3,
+                        'acronym' => JobCategory::find(3)->acronym,
+                        'name' => JobCategory::find(3)->name,
                     ],
                     'client' => [
                         'username' => 'client.client',
