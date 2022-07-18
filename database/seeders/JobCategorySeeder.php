@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class JobCategorySeeder extends Seeder
 {
+    // TODO: ask for description of each job category from m. Chevallier
+
     public function run()
     {
         DB::table('job_categories')->insert([
@@ -57,15 +59,10 @@ class JobCategorySeeder extends Seeder
             'description' => ''
         ]);
 
+        // TODO: accept all file types
         DB::table('job_categories')->insert([
             'acronym' => 'AUT',
             'name' => 'autre',
-            'description' => '',
-        ]);
-
-        DB::table('job_categories')->insert([
-            'acronym' => 'TES',
-            'name' => 'test',
             'description' => '',
         ]);
     }

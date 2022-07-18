@@ -40,9 +40,9 @@ return [
                 //'useTLS' => true,
                 'encrypted' => true,
                 //'host' => '127.0.0.1',
-                'host' => 'https://tb22-berney.heig-vd.ch',
-                'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001),
-                'scheme' => 'https',
+                'host' => 'https://tb22-berney.heig-vd.ch', // TODO: in env file
+                'port' => 443,//env('LARAVEL_WEBSOCKETS_PORT', 6001), // TODO: in env file
+                'scheme' => 'https', //env('PUSHER_APP_SCHEME'), // TODO: in env file
                 'curl_options' => [
                     CURLOPT_SSL_VERIFYHOST => 0,
                     CURLOPT_SSL_VERIFYPEER => 0,
