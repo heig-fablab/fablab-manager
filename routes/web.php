@@ -17,6 +17,6 @@ Route::get('/', function () {
     return view('app');
 });
 
-Route::name('app')->any('{all}', function () {
+Route::name('')->any('{all}', function () {
     return view('app');
 })->where('all', '^(?!api).*$');
