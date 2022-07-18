@@ -52,9 +52,9 @@ class JobGetOneTest extends TestCase
                     'working_hours' => null,
                     'status' => JobStatus::NEW,
                     'job_category' => [
-                        'id' => 1,
-                        'acronym' => JobCategory::find(1)->acronym,
-                        'name' => JobCategory::find(1)->name,
+                        'id' => 3,
+                        'acronym' => JobCategory::find(3)->acronym,
+                        'name' => JobCategory::find(3)->name,
                     ],
                     'client' => [
                         'username' => $user->username,
@@ -85,9 +85,9 @@ class JobGetOneTest extends TestCase
                     'working_hours' => null,
                     'status' => JobStatus::NEW,
                     'job_category' => [
-                        'id' => 1,
-                        'acronym' => JobCategory::find(1)->acronym,
-                        'name' => JobCategory::find(1)->name,
+                        'id' => 3,
+                        'acronym' => JobCategory::find(3)->acronym,
+                        'name' => JobCategory::find(3)->name,
                     ],
                     'client' => [
                         'username' => $user->username,
@@ -118,9 +118,9 @@ class JobGetOneTest extends TestCase
                     'working_hours' => null,
                     'status' => JobStatus::NEW,
                     'job_category' => [
-                        'id' => 1,
-                        'acronym' => JobCategory::find(1)->acronym,
-                        'name' => JobCategory::find(1)->name,
+                        'id' => 3,
+                        'acronym' => JobCategory::find(3)->acronym,
+                        'name' => JobCategory::find(3)->name,
                     ],
                     'client' => [
                         'username' => $user->username,
@@ -151,9 +151,9 @@ class JobGetOneTest extends TestCase
                     'working_hours' => null,
                     'status' => JobStatus::NEW,
                     'job_category' => [
-                        'id' => 1,
-                        'acronym' => JobCategory::find(1)->acronym,
-                        'name' => JobCategory::find(1)->name,
+                        'id' => 3,
+                        'acronym' => JobCategory::find(3)->acronym,
+                        'name' => JobCategory::find(3)->name,
                     ],
                     'client' => [
                         'username' => $user->username,
@@ -184,9 +184,9 @@ class JobGetOneTest extends TestCase
                     'working_hours' => null,
                     'status' => JobStatus::NEW,
                     'job_category' => [
-                        'id' => 1,
-                        'acronym' => JobCategory::find(1)->acronym,
-                        'name' => JobCategory::find(1)->name,
+                        'id' => 3,
+                        'acronym' => JobCategory::find(3)->acronym,
+                        'name' => JobCategory::find(3)->name,
                     ],
                     'client' => [
                         'username' => 'client.client',

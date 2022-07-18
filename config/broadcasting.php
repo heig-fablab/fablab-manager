@@ -38,11 +38,10 @@ return [
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 //'useTLS' => true,
-                'encrypted' => true,
-                //'host' => '127.0.0.1',
-                'host' => 'https://tb22-berney.heig-vd.ch', // TODO: in env file
-                'port' => 443,//env('LARAVEL_WEBSOCKETS_PORT', 6001), // TODO: in env file
-                'scheme' => 'https', //env('PUSHER_APP_SCHEME'), // TODO: in env file
+                'encrypted' => env('LARAVEL_WEBSOCKETS_ENCRYPTED', false),
+                'host' => env('LARAVEL_WEBSOCKETS_HOST', '127.0.0.1'),
+                'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001),
+                'scheme' => env('LARAVEL_WEBSOCKETS_SCHEME', 'http'),
                 'curl_options' => [
                     CURLOPT_SSL_VERIFYHOST => 0,
                     CURLOPT_SSL_VERIFYPEER => 0,

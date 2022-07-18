@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class FileTypeJobCategorySeeder extends Seeder
 {
-    // TODO: adapt with given file types by m. Chevallier
     public function run()
     {
         // pcb routing
