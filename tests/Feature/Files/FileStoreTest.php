@@ -3,6 +3,7 @@
 namespace Tests\Feature\Files;
 
 use App\Models\File;
+use App\Models\FileType;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Tests\TestHelpers;
@@ -167,7 +168,7 @@ class FileStoreTest extends TestCase
                 'data' => [
                     'name' => 'document.pdf',
                     'file_type' => [
-                        'id' => 4,
+                        'id' => FileType::where('name', 'pdf')->first()->id,
                         'name' => 'pdf',
                         'mime_type' => 'application/pdf'
                     ],
@@ -197,7 +198,7 @@ class FileStoreTest extends TestCase
                 'data' => [
                     'name' => 'document.pdf',
                     'file_type' => [
-                        'id' => 4,
+                        'id' => FileType::where('name', 'pdf')->first()->id,
                         'name' => 'pdf',
                         'mime_type' => 'application/pdf'
                     ],

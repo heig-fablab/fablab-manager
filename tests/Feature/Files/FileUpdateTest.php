@@ -3,6 +3,7 @@
 namespace Tests\Feature\Files;
 
 use App\Models\File;
+use App\Models\FileType;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Tests\TestHelpers;
@@ -156,7 +157,7 @@ class FileUpdateTest extends TestCase
                     'id' => $bd_file->id,
                     'name' => $update_file->name,
                     'file_type' => [
-                        'id' => 4,
+                        'id' => FileType::where('name', 'pdf')->first()->id,
                         'name' => 'pdf',
                         'mime_type' => 'application/pdf'
                     ],
@@ -193,7 +194,7 @@ class FileUpdateTest extends TestCase
                     'id' => $bd_file->id,
                     'name' => $update_file->name,
                     'file_type' => [
-                        'id' => 4,
+                        'id' => FileType::where('name', 'pdf')->first()->id,
                         'name' => 'pdf',
                         'mime_type' => 'application/pdf'
                     ],

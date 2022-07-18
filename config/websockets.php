@@ -8,7 +8,7 @@ return [
      * Set a custom dashboard configuration
      */
     'dashboard' => [
-        'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001),
+        'port' => env('LARAVEL_WEBSOCKETS_DASHBOARD_PORT', 6001),
     ],
 
     /*
@@ -29,9 +29,9 @@ return [
             'secret' => env('PUSHER_APP_SECRET'),
             'path' => env('PUSHER_APP_PATH'),
             'capacity' => null,
-            'enable_client_messages' => true, //false
+            'enable_client_messages' => false,
             'enable_statistics' => false,
-            'encrypted' => true,
+            //'encrypted' => true,
         ],
     ],
 
@@ -50,6 +50,7 @@ return [
      */
     'allowed_origins' => [
         //
+        // TODO: Add allowed origins here.
     ],
 
     /*
@@ -69,6 +70,7 @@ return [
      * the chance to add your own middleware to this list or change any of
      * the existing middleware. Or, you can simply stick with this list.
      */
+    // TODO: Add a gate to Dashboard or do it manually
     'middleware' => [
         'web',
         Authorize::class,
@@ -130,7 +132,7 @@ return [
          */
         'passphrase' => env('LARAVEL_WEBSOCKETS_SSL_PASSPHRASE', null),
 
-        'verify_peer' => false,
+        //'verify_peer' => false,
     ],
 
     /*

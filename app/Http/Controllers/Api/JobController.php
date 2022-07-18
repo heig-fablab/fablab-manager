@@ -6,6 +6,7 @@ use App\Constants\EventTypes;
 use App\Constants\JobStatus;
 use App\Events\JobAssignedEvent;
 use App\Events\JobClosedEvent;
+use App\Events\JobCreatedEvent;
 use App\Events\JobStatusUpdatedEvent;
 use App\Events\JobUpdatedEvent;
 use App\Http\Controllers\Controller;
@@ -58,9 +59,6 @@ class JobController extends Controller
             }
         }
 
-        // Notifications
-        broadcast(new JobUpdatedEvent($job));
-
         // Create and save Event for client timeline
         Event::create([
             'type' => EventTypes::STATUS,
@@ -82,6 +80,12 @@ class JobController extends Controller
 
             $job->status = JobStatus::ASSIGNED;
             $job->save();
+
+            // Notifications
+            broadcast(new JobAssignedEvent($job));
+        } else {
+            // Notifications
+            broadcast(new JobCreatedEvent($job));
         }
 
         if ($job->validator_username != null) {

@@ -7,6 +7,7 @@ use App\Models\File;
 use App\Models\User;
 use App\Models\Job;
 use App\Constants\Roles;
+use Illuminate\Support\Facades\Log;
 
 class FilePolicy
 {
@@ -19,6 +20,7 @@ class FilePolicy
         }
 
         if (!$user->has_given_role(Roles::CLIENT)) {
+            Log::Warning("An non client user tried to access file route");
             return false;
         }
     }

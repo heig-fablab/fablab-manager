@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             // Fields
             $table->string('name', 10);
-            $table->string('mime_type', 255);
+            $table->string('mime_type', 255)->nullable();
         });
     }
 
