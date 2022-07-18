@@ -234,7 +234,12 @@ ask **Yves Chevallier** for the link.
 Here is what you need to do to deploy the application.
 
 ### Add frontend Vue.js compiled to the Laravel one
-To do this, first go on the frontend project, and run this command:
+Go on your frontend project, replace the .env by copying the .env.prod.example:
+````
+rm .env
+cp .env.prod.example .env
+````
+Build for production with following command:
 ````
 npm run build
 ````
