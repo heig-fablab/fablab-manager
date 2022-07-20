@@ -1,4 +1,4 @@
-# Software about order management for the HEIG-VD Fablab
+# HEIG-VD fablab-manager backend
 
 [![Test Coverage](https://raw.githubusercontent.com/heig-fablab/fablab-manager/main/badge-coverage.svg)](https://packagist.org/packages/heig-fablab/fablab-manager)
 
@@ -90,7 +90,7 @@ sudo apt-get install composer
 
 You'll perhaps need to add some permissions (you are in project folder):
 ````
-sudo chmod 777 /home/<username>/tb/fablab-manager/
+sudo chmod 777 /home/<username>/<path>/fablab-manager/
 sudo chmod -R 777 storage
 sudo chmod -R 777 bootstrap/
 ````
@@ -208,6 +208,12 @@ cp cat1.jpg cat2.jpg cat3.jpg cat4.jpg cat5.jpg cat6.jpg cat7.jpg cat8.jpg cat9.
 I cropped every image in square with this online free editor: \
 https://pixlr.com/fr/x/
 
+#### User Accounts
+To develop backend the best thing is to add yourself as a user in the User seeder 
+and at to yourself the roles that you want to test. \
+To just test some routes without any problem, just add yourself admin role. \
+Be carefull about the thing that you always need to have client role to perform any actions.
+
 ### Other usefully things
 
 ### IDE Recommendations
@@ -235,7 +241,11 @@ vendor/bin/sail root-shell
 ````
 
 ### Keycloak
-TODO
+As we use HEIG-VD authentication system based on Keycloak, a vue project that will help you in backend development 
+by giving always giving you an available token. To use it, clone the following project and run it: \
+https://github.com/heig-fablab/heig-keycloak-auth-token
+
+Just follow the instructions indicated on the repo.
 
 ### Postman
 To help at testing API, a collaborative [Postman](https://www.postman.com/) exists,
@@ -244,117 +254,64 @@ ask **Yves Chevallier** for the link.
 ## Deployement
 Here is what you need to do to deploy the application.
 
-### Add frontend Vue.js compiled to the Laravel one
-Go on your frontend project, replace the .env by copying the .env.prod.example:
+1. Go on the [frontend project](https://github.com/heig-fablab/fablab-manager-frontend), replace the .env by copying the .env.prod.example:
 ````
+cp .env .env.save
 rm .env
 cp .env.prod.example .env
 ````
-Build for production with following command:
+2. Build the project for production with following command:
 ````
 npm run build
 ````
 
-Then you'll see a dist folder appears at the top of the project files, this one contains the compiled files.\
-Then you'll need to copy the files in the dist folder to the Laravel project.
-Here are the files and folder in dist folder:
+3. Copy the **dist** folder of Vue.js project to the **public** folder of Laravel. **dist** folder contains:
 * Folder **assets**, that contains images, logos and JS + CSS code.
 * File **favicon.ico**, that is browser icon.
 * File **index.html**, that containe HTML page.
 
-Now you need to copy these files to the **public** folder of the Laravel project.
+4. Copy the content of the **index.html** file into the **resources/views/app.blade.php** file.
 
-You also need to copy the content of the **index.html** file into the **resources/views/app.blade.php** file.
+5. Create a new branch from develop.
+6. Push the branch to Github with all the modifications done before.
+7. Create a **PR** from the release branch to the **main** and merge it after CI finished.
 
-### Create release on Github
-Create a new branch from develop.\
-Then, you'll need to push the branch to Github with all the modifications done before.
-Create a PR from the release branch to the main and merge it after CI finished.
-
-### Update prod
-
-#### Connect to prod
-Connect to the prod using HEIG-VD VPN if you are not in their network. \
-Then use the following ssh command replacing the <values>.
+8. Connect to HEIG-VD VPN if you are not in HEIG-VD network.
+9. Connect in ssh to the machine, use the following ssh command replacing the <values>. (Ask **Yves Chevallier** for the credentials.)
 ````
 ssh <user>@<machine>
 ````
-
-Ask **Yves Chevallier** for the credentials.
-
-#### Update the prod repository
-go to :
+10. Go to project folder:
 ````
-cd /var/www/fablab-manager
+cd /srv/apache2/fablab-manager
 ````
 
-pull new content:
+11. Turn off server:
+````
+sudo php artisan down
+````
+
+12. Pull new content:
 ````
 git pull
 ````
 
-if you have some migrations, execute them:
+13. If you have some migrations, execute them:
 ````
 php artisan migrate --path=/database/migrations/full_migration_file_name_migration.php
 ````
 
+14. Turn on server:
+````
+sudo php artisan up
+````
+
 ## Support
 For support, send an email at this address:
-[fablab-manager-support](mailto:yves,chevallier@heig-vd.ch)
+[fablab-manager-support](mailto:yves.chevallier@heig-vd.ch)
 
 ## Authors
 
-* Chevallier Yves
-* Berney Alec
-* Lieberherr Tristan
-
-
-## Currently writing
-
-### Installation xdebug
-
-````
-sudo apt-get install php8.1-xdebug
-````
-
-Path php.ini wsl 2:
-````
-\\wsl.localhost\Ubuntu\etc\php\8.1\cli
-````
-
-Add:
-````
-[xdebug]
-zend_extension="<path to xdebug extension>"
-xdebug.mode=debug
-xdebug.client_host=127.0.0.1
-xdebug.client_port="<the port (9003 by default) to which Xdebug connects>"
-````
-
-### Test coverage
-Not unable yet!
-
-https://laravel.com/docs/9.x/sail#debugging-with-xdebug
-(not with sail)
-Add the following line to your php.ini file:
-````
-xdebug.mode=coverage
-````
-
-https://laracasts.com/discuss/channels/laravel/laravel-9-code-coverage
-https://stackoverflow.com/questions/66876314/laravel-not-generating-code-coverage-report
-
-To run tests with coverage, use this command:
-````
-vendor/bin/sail test --coverage
-````
-
-### Debugging:
-https://laravel.com/docs/9.x/sail#xdebug-browser-usage
-https://blog.devgenius.io/how-to-enable-xdebug-on-laravel-sail-and-debugging-code-with-vs-code-872fd750b340
-https://www.youtube.com/watch?v=Xgn0EtB4chc
-
-Start a debug session:
-````
-vendor/bin/sail debug
-````
+* Chevallier Yves: [yves.chevallier@heig-vd.ch](mailto:yves.chevallier@heig-vd.ch)
+* Berney Alec: [alec.berney@heig-vd.ch](mailto:alec.berney@heig-vd.ch)
+* Lieberherr Tristan: [tristan.lieberherr@heig-vd.ch](mailto:tristan.lieberherr@heig-vd.ch)
