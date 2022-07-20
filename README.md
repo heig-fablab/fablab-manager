@@ -205,6 +205,9 @@ cd job-categories-images
 cp cat1.jpg cat2.jpg cat3.jpg cat4.jpg cat5.jpg cat6.jpg cat7.jpg cat8.jpg cat9.jpg cat10.jpg ../storage/app/public/images
 ````
 
+I cropped every image in square with this online free editor: \
+https://pixlr.com/fr/x/
+
 ### Other usefully things
 
 ### IDE Recommendations
