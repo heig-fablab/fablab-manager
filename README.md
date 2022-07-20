@@ -85,7 +85,7 @@ Here is a link to install it: https://getcomposer.org/doc/00-intro.md
 
 You can also run this command:
 ````
-curl -sS https://getcomposer.org/installer | php
+sudo apt-get install composer
 ````
 
 You'll perhaps need to add some permissions (you are in project folder):
@@ -109,7 +109,7 @@ composer install
 
 3. Get the sail environment ready:
 ````
-cp .env.example .env
+cp .env.dev.example .env
 ````
 
 4. Add public key given by manager **Yves Chevallier** to the .env variable:
@@ -156,6 +156,12 @@ vendor/bin/sail artisan storage:link
 ````
 
 You have now the Laravel backend running!
+
+### Workflow / Git flow
+We are using the classic git flow, so if you don't know what i'm speaking about, check the wiki:\
+https://github.com/heig-fablab/fablab-manager/wiki/Git-flow \
+or in the internet:\
+https://blog.bespinian.io/posts/git-the-important-parts/gitflow.png
 
 ### Tests
 To run all tests you can run the following command:
@@ -225,10 +231,12 @@ If you want to access to your running container, use following command:
 vendor/bin/sail root-shell
 ````
 
+### Keycloak
+TODO
+
 ### Postman
 To help at testing API, a collaborative [Postman](https://www.postman.com/) exists,
 ask **Yves Chevallier** for the link.
-
 
 ## Deployement
 Here is what you need to do to deploy the application.

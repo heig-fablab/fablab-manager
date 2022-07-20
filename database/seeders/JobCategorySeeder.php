@@ -59,7 +59,6 @@ class JobCategorySeeder extends Seeder
             'description' => ''
         ]);
 
-        // TODO: accept all file types
         DB::table('job_categories')->insert([
             'acronym' => 'AUT',
             'name' => 'autre',

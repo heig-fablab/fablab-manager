@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Constants\EventTypes;
+use RarArchive;
+use ZipArchive;
 
 class File extends Model
 {
@@ -44,6 +46,12 @@ class File extends Model
     public const HASH_ALGORITHM = 'sha256';
     public const MAX_FILE_SIZE = 10_000_000; // Size is in bytes 10'000'000 B = 10 Mo
 
+    // File Type not corrected detected by function ->extension() given by Laravel
+    public const FILE_TYPES_NOT_DETECTED = [
+        'ai',
+        'dxf',
+    ];
+
     private static function create_event_and_mail(int $job_id, File $file)
     {
         // Create and save Event (notify worker)
@@ -63,6 +71,69 @@ class File extends Model
         }
     }
 
+    private static function is_file_type_detected(string $file_type) {
+        return !in_array($file_type, self::FILE_TYPES_NOT_DETECTED);
+    }
+
+    // TODO: try to validate files in rar
+    private static function validate_rar_files($file): bool {
+        // open the archive file
+        $archive = RarArchive::open($file);
+        // make sure it's valid
+        if ($archive === false) return false;
+
+        // retrieve a list of entries in the archive
+        $entries = $archive->getEntries();
+        // make sure the entry list is valid
+        if ($entries === false) return false;
+
+        // loop over entries
+        foreach ($entries as $e) {
+            Log::Debug($e);
+        }
+        // close the archive file
+        $archive->close();
+
+        return true;
+    }
+
+    // TODO: try to validate files in zip
+    private static function validate_zip_files($file): bool {
+        // open the archive file
+        $archive = new ZipArchive;
+        $valid = $archive->open($file);
+        // make sure it's valid (if not ZipArchive::open() returns various error codes)
+        if ($valid !== true) return false;
+
+        // make sure the entry list is valid
+        if ($archive->numFiles === 0) return false;
+        // example output of entry count
+
+        // loop over entries
+        for ($i = 0; $i < $archive->numFiles; $i++) {
+            $e = $archive->statIndex($i);
+            Log::Debug( $e['name']);
+        }
+        // close the archive file (redundant as called automatically at the end of the script)
+        $archive->close();
+
+        return true;
+    }
+
+    // TODO: Validate file type with mime type
+    // We can't validate some file type because they don't have one known.
+    // https://www.php.net/manual/fr/function.mime-content-type.php
+    // Doesn't work cause we need to give a path and not directly the file
+    private static function is_valid_file_mime_type($file, string $mime_type_waited): bool {
+        log::Debug("File mime type detected: " . mime_content_type($file->getClientOriginalName()));
+
+        if ($mime_type_waited == null) {
+            return true;
+        } else {
+            return mime_content_type($file->getClientOriginalName()) == $mime_type_waited;
+        }
+    }
+
     public static function is_valid_file($file, $accepted_file_types): bool
     {
         if ($file == null) {
@@ -78,7 +149,23 @@ class File extends Model
         log::Debug("mime type extension detected: " . $file->extension());
         log::Debug("original extension detected: " . $file->getClientOriginalExtension());
 
-        if ($file->getClientOriginalExtension() != $file->extension()) {
+        // TODO: try to validate files in rar and zip
+        /*if ($file->getClientOriginalExtension() == 'rar') {
+            if (!self::validate_rar_files($file)) {
+                log::Info("Invalid files in rar");
+                return false;
+            }
+        }
+
+        if ($file->getClientOriginalExtension() == 'zip') {
+            if (!self::validate_zip_files($file)) {
+                log::Info("Invalid files in zip");
+                return false;
+            }
+        }*/
+
+        if (self::is_file_type_detected($file->getClientOriginalExtension())
+            && $file->getClientOriginalExtension() != $file->extension()) {
             log::Info("Original extension and extension detected by mime type mismatch");
             return false;
         }
@@ -90,15 +177,22 @@ class File extends Model
             return false;
         }
 
+        // Validate file type with mime type
+        /*if (!self::is_valid_file_mime_type($file, $file_type->mime_type)) {
+            log::Info("Invalid file mime type");
+            return false;
+        }*/
+
         // $file->extension() = Determine the file's extension based on the file's MIME type
         // Check matching file type with file extension
-        if ($file_type->name != $file->extension()) {
+        if (self::is_file_type_detected($file->getClientOriginalExtension())
+            && $file_type->name != $file->extension()) {
             log::Info("File type mismatch");
             return false;
         }
 
         // Verify if in accepted types
-        if (!in_array($file->extension(), $accepted_file_types)) {
+        if (!in_array($file->getClientOriginalExtension(), $accepted_file_types)) {
             log::Info("File type not accepted for this job category");
             return false;
         }

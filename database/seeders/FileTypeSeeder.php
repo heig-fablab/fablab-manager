@@ -111,5 +111,17 @@ class FileTypeSeeder extends Seeder
             'name' => 'jpeg',
             'mime_type' => 'image/jpeg',
         ]);
+
+        // For other
+        // Add types you want that are not in the list above
+        DB::table('file_types')->insert([
+            'name' => 'md',
+            'mime_type' => 'text/markdown',
+        ]);
+
+        DB::table('file_types')->insert([
+            'name' => 'txt',
+            'mime_type' => 'text/plain',
+        ]);
     }
 }
