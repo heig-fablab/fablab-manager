@@ -45,7 +45,8 @@ First thing to do is to install Docker on Linux or Docker Desktop on Windows.
 
 ##### WSL 2.0
 If you are running Windows as OS, you need to install WSL 2.0. \
-Here is a link to the documentation: https://docs.microsoft.com/en-us/windows/wsl/install
+Here is a link to the documentation: \
+https://docs.microsoft.com/en-us/windows/wsl/install
 
 Here is how you can use Docker and WSL 2 together:
 https://docs.docker.com/desktop/windows/wsl/
@@ -279,7 +280,7 @@ npm run build
 8. Connect to HEIG-VD VPN if you are not in HEIG-VD network.
 9. Connect in ssh to the machine, use the following ssh command replacing the <values>. (Ask **Yves Chevallier** for the credentials.)
 ````
-ssh <user>@<machine>
+ssh <user>@<hostname>
 ````
 10. Go to project folder:
 ````
