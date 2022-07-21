@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-/*Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});*/
-
 Broadcast::channel('message.{username}', function ($user, $username) {
     return $user->username === $username;
 });
@@ -25,10 +21,6 @@ Broadcast::channel('job.{username}', function ($user, $username) {
     return $user->username === $username;
 });
 
-/*Broadcast::channel('job.workers.{username}', function ($user, $username) {
-    return $user->username === $username;
-});*/
-
 Broadcast::channel('job.workers', function ($user, $username) {
-    return $user->roles->contains('name', 'worker');
+    return $user->has_given_role(\App\Constants\Roles::WORKER);
 });

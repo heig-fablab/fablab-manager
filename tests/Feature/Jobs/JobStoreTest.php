@@ -89,7 +89,7 @@ class JobStoreTest extends TestCase
                 'deadline' => TestHelpers::deadline(),
                 'client_username' => $user->username,
             ])
-            ->assertStatus(403);
+            ->assertStatus(400);
     }
 
     public function test_client_add_job_with_deadline_too_soon_fail()

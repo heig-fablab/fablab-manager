@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\FileType;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -107,8 +108,13 @@ class FileTypeJobCategorySeeder extends Seeder
             'file_type_id' => 15,
         ]);
 
-        // test
-
         // autre
+        // Accept all types of files present in DB
+        for ($i = 1; $i <= FileType::all()->count(); $i++) {
+            DB::table('file_type_job_category')->insert([
+                'job_category_id' => 9,
+                'file_type_id' => $i,
+            ]);
+        }
     }
 }

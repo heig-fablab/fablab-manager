@@ -10,19 +10,21 @@ use App\Http\Resources\MessageResource;
 use App\Models\Event;
 use App\Models\Job;
 use App\Models\Message;
+use Illuminate\Support\Facades\Log;
 
 class MessageController extends Controller
 {
     // API Standard function
     public function index()
     {
+        Log::info('Message list retrieved');
         return MessageResource::collection(Message::all());
     }
 
     public function show(int $id)
     {
-        $message = Message::findOrFail($id);
-        return new MessageResource($message);
+        Log::info('Message with id ' . $id . ' retrieved');
+        return new MessageResource(Message::findOrFail($id));
     }
 
     public function store(MessageRequest $request)
@@ -30,6 +32,7 @@ class MessageController extends Controller
         $req_validated = $request->validated();
 
         if (Job::findOrFail($request->job_id)->worker_username == null) {
+            Log::info('Message creation failed: Job with id ' . $request->job_id . ' has no worker');
             return response()->json([
                 'message' => "You can't create a message related to a job who hasn't a worker defined!"
             ], 400);
@@ -50,6 +53,8 @@ class MessageController extends Controller
 
         // Emails
         Event::create_mail_job($message->receiver_username);
+
+        Log::info('Message created: ' . $message->id);
 
         return new MessageResource($message);
     }

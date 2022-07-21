@@ -15,7 +15,10 @@
         "laravel/framework": "^9.2",
         "laravel/tinker": "^2.7",
         "pusher/pusher-php-server": "^7.0",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-rar": "*",
+        "ext-zip": "*",
+        "ext-fileinfo": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

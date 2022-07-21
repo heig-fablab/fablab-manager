@@ -196,6 +196,7 @@ return [
         'JobStatus' => App\Constants\JobStatus::class,
         'EventTypes' => App\Constants\EventTypes::class,
         'Roles' => App\Constants\Roles::class,
+        'PolicyHelper' => App\Policies\PolicyHelper::class,
     ])->toArray(),
 
 ];

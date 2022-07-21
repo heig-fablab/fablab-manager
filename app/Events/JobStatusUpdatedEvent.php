@@ -4,13 +4,12 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Job;
 
-class JobStatusUpdatedEvent implements ShouldBroadcast
+class JobStatusUpdatedEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -23,6 +22,6 @@ class JobStatusUpdatedEvent implements ShouldBroadcast
 
     public function broadcastOn(): Channel
     {
-        return new PrivateChannel('job.' . $this->job->client_username);
+        return new Channel('job.' . $this->job->client_username);
     }
 }
