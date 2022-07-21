@@ -33,4 +33,10 @@ class Message extends Model
     {
         return $this->belongsTo(Job::class);
     }
+
+    // Services methods
+    public function participate_in_message(User $user): bool {
+        return $this->sender_username == $user->username
+            || $this->receiver_username == $user->username;
+    }
 }

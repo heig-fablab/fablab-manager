@@ -112,7 +112,7 @@ class Job extends Model
     }
 
     // Services methods
-    public function participate_in_job(User $user)
+    public function participate_in_job(User $user): bool
     {
         return $this->client_username == $user->username
             || $this->worker_username == $user->username

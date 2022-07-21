@@ -71,11 +71,11 @@ Route::middleware('auth:api')->group(function () {
 
     Route::prefix('/job_categories')->controller(JobCategoryController::class)->group(function () {
             Route::get('', 'index')->can('viewAny', JobCategory::class);
-            Route::get('/{id}', 'show')->can('view', JobCategory::class);
-            Route::get('/{id}/image', 'image')->can('image', JobCategory::class);
+            Route::get('/{id}', 'show')->can('view', [JobCategory::class, 'id']);
+            Route::get('/{id}/image', 'image')->can('image', [JobCategory::class. 'id']);
             Route::post('', 'store')->can('create', JobCategory::class);
             Route::put('', 'update')->can('update', JobCategory::class);
-            Route::delete('/{id}', 'destroy')->can('destroy', JobCategory::class);
+            Route::delete('/{id}', 'destroy')->can('destroy', [JobCategory::class, 'id']);
         });
 
     // Admin routes
