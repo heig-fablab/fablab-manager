@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Models\FileType;
 use App\Models\User;
 use App\Constants\Roles;
 
@@ -13,6 +12,9 @@ class FileTypePolicy
 
     public function before(User $user, $ability)
     {
-        return $user->has_given_role(Roles::ADMIN);
+        return PolicyHelper::can_access(
+            $user->has_given_role(Roles::ADMIN),
+            "User can access file types route",
+            "User cannot access file types route");
     }
 }

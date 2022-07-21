@@ -24,8 +24,11 @@ class Event extends Model
     public static function create_mail_job(string $user_username)
     {
         static $id_counter = 0;
-        //NotificationsEmailJob::dispatch($id_counter, $user_username)->delay(now()->addMinutes(10));
-        NotificationsEmailJob::dispatch($id_counter, $user_username)->delay(now()->addSeconds(20));
+        if (env('APP_ENV') != 'production') {
+            NotificationsEmailJob::dispatch($id_counter, $user_username)->delay(now()->addMinutes(10));
+        } else {
+            NotificationsEmailJob::dispatch($id_counter, $user_username)->delay(now()->addSeconds(20));
+        }
         $id_counter += 1;
     }
 

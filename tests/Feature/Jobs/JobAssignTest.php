@@ -92,7 +92,7 @@ class JobAssignTest extends TestCase
 
         $this->actingAs($user, 'api')
             ->json(self::METHOD, self::ACTUAL_ROUTE, $payload)
-            ->assertStatus(403);
+            ->assertStatus(400);
     }
 
     public function test_worker_assign_job_success()

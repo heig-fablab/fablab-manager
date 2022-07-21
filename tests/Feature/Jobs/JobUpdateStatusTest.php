@@ -176,7 +176,7 @@ class JobUpdateStatusTest extends TestCase
     public function test_admin_update_status_job_not_participate_success()
     {
         $user = TestHelpers::create_test_user(array(Roles::ADMIN));
-        $job = TestHelpers::create_assigned_test_job('client.client', 'worker.worker');
+        $job = TestHelpers::create_assigned_test_job();
 
         $payload = [
             'id' => $job->id,

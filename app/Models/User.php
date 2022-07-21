@@ -76,7 +76,7 @@ class User extends Authenticatable
     }
 
     // User Service
-    public function has_given_role(string $role)
+    public function has_given_role(string $role): bool
     {
         return $this->roles->pluck('name')->contains($role);
     }

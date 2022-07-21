@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Constants\EventTypes;
+use RarArchive;
+use ZipArchive;
 
 class File extends Model
 {
@@ -44,6 +46,34 @@ class File extends Model
     public const HASH_ALGORITHM = 'sha256';
     public const MAX_FILE_SIZE = 10_000_000; // Size is in bytes 10'000'000 B = 10 Mo
 
+    // File Type not corrected detected by function ->extension() given by Laravel
+    public const FILE_TYPES_NOT_DETECTED_WITH_CORRESPONDENCE = [
+        'ai', // pdf detected
+        'dxf', // txt detected
+        'iges', // txt detected
+        'stl', // bin detected
+        'md', // txt detected
+    ];
+
+    public const FILE_TYPES_NOT_DETECTED_WITHOUT_CORRESPONDENCE = [
+        // These are not tested but are here in prevention
+        'step',
+        'Sldprt',
+        'gbr',
+        'PcbDoc',
+        'PrjPcb',
+        'SchDoc',
+    ];
+
+    private static function get_file_type_correspondence(string $file_type): string {
+        return match ($file_type) {
+            'ai' => 'pdf',
+            'dxf', 'iges', 'md' => 'txt',
+            'stl' => 'bin',
+            default => $file_type,
+        };
+    }
+
     private static function create_event_and_mail(int $job_id, File $file)
     {
         // Create and save Event (notify worker)
@@ -63,6 +93,23 @@ class File extends Model
         }
     }
 
+    private static function is_file_type_not_detected_with_correspondence(string $file_type): bool
+    {
+        return in_array($file_type, self::FILE_TYPES_NOT_DETECTED_WITH_CORRESPONDENCE);
+    }
+
+    private static function is_file_type_not_detected_without_correspondence(string $file_type): bool
+    {
+        return in_array($file_type, self::FILE_TYPES_NOT_DETECTED_WITHOUT_CORRESPONDENCE);
+    }
+
+    private static function is_file_type_not_detected(string $file_type): bool
+    {
+        return self::is_file_type_not_detected_with_correspondence($file_type)
+            || self::is_file_type_not_detected_without_correspondence($file_type);
+    }
+
+
     public static function is_valid_file($file, $accepted_file_types): bool
     {
         if ($file == null) {
@@ -78,7 +125,19 @@ class File extends Model
         log::Debug("mime type extension detected: " . $file->extension());
         log::Debug("original extension detected: " . $file->getClientOriginalExtension());
 
-        if ($file->getClientOriginalExtension() != $file->extension()) {
+        // Verify file type matching with file type detected from content
+        // Some types are detected false and we know them, a correspondence function is used
+        // Some other, we don't know yet the correspondence and go further
+        $file_type_matching_ok = true;
+        if (self::is_file_type_not_detected_with_correspondence($file->getClientOriginalExtension())) {
+            $file_type_correspondence = self::get_file_type_correspondence($file->getClientOriginalExtension());
+            $file_type_matching_ok = $file_type_correspondence == $file->extension();
+        } else if (!self::is_file_type_not_detected_without_correspondence($file->getClientOriginalExtension())
+            && $file->getClientOriginalExtension() != $file->extension()) {
+            $file_type_matching_ok = false;
+        }
+
+        if (!$file_type_matching_ok) {
             log::Info("Original extension and extension detected by mime type mismatch");
             return false;
         }
@@ -92,13 +151,14 @@ class File extends Model
 
         // $file->extension() = Determine the file's extension based on the file's MIME type
         // Check matching file type with file extension
-        if ($file_type->name != $file->extension()) {
+        if (!self::is_file_type_not_detected($file->getClientOriginalExtension())
+            && $file_type->name != $file->extension()) {
             log::Info("File type mismatch");
             return false;
         }
 
         // Verify if in accepted types
-        if (!in_array($file->extension(), $accepted_file_types)) {
+        if (!in_array($file->getClientOriginalExtension(), $accepted_file_types)) {
             log::Info("File type not accepted for this job category");
             return false;
         }
@@ -119,9 +179,6 @@ class File extends Model
     {
         if ($file != null) {
             return asset(Storage::url(File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash));
-            //return Storage::url(File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash);
-            /*return env('APP_FILE_STORAGE_FULL_PATH', '/www/var/')
-                . File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash;*/
         } else {
             return null;
         }
