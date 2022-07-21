@@ -40,9 +40,6 @@ class MessageController extends Controller
 
         $message = Message::create($req_validated);
 
-        // Notifications
-        broadcast(new MessageCreatedEvent($message)); //->toOthers();
-
         // Create and save Event (notify receiver)
         Event::create([
             'type' => EventTypes::MESSAGE,

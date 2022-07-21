@@ -125,21 +125,6 @@ class File extends Model
         log::Debug("mime type extension detected: " . $file->extension());
         log::Debug("original extension detected: " . $file->getClientOriginalExtension());
 
-        // TODO: try to validate files in rar and zip
-        /*if ($file->getClientOriginalExtension() == 'rar') {
-            if (!self::validate_rar_files($file)) {
-                log::Info("Invalid files in rar");
-                return false;
-            }
-        }
-
-        if ($file->getClientOriginalExtension() == 'zip') {
-            if (!self::validate_zip_files($file)) {
-                log::Info("Invalid files in zip");
-                return false;
-            }
-        }*/
-
         // Verify file type matching with file type detected from content
         // Some types are detected false and we know them, a correspondence function is used
         // Some other, we don't know yet the correspondence and go further
@@ -163,12 +148,6 @@ class File extends Model
             log::Info("File type not found in BD");
             return false;
         }
-
-        // Validate file type with mime type
-        /*if (!self::is_valid_file_mime_type($file, $file_type->mime_type)) {
-            log::Info("Invalid file mime type");
-            return false;
-        }*/
 
         // $file->extension() = Determine the file's extension based on the file's MIME type
         // Check matching file type with file extension
@@ -200,9 +179,6 @@ class File extends Model
     {
         if ($file != null) {
             return asset(Storage::url(File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash));
-            //return Storage::url(File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash);
-            /*return env('APP_FILE_STORAGE_FULL_PATH', '/www/var/')
-                . File::PUBLIC_FILE_STORAGE_PATH . $file->directory . '/' . $file->hash;*/
         } else {
             return null;
         }
@@ -277,68 +253,6 @@ class File extends Model
         // Delete only empty folder
         if (Storage::exists($file_storage_path. $file->directory)) {
             Storage::deleteDirectory($file_storage_path . $file->directory);
-        }
-    }
-
-    //-------------------------------------------
-    // To finish / debug / TODO
-
-    // TODO: try to validate files in rar
-    private static function validate_rar_files($file): bool {
-        // open the archive file
-        $archive = RarArchive::open($file);
-        // make sure it's valid
-        if ($archive === false) return false;
-
-        // retrieve a list of entries in the archive
-        $entries = $archive->getEntries();
-        // make sure the entry list is valid
-        if ($entries === false) return false;
-
-        // loop over entries
-        foreach ($entries as $e) {
-            Log::Debug($e);
-        }
-        // close the archive file
-        $archive->close();
-
-        return true;
-    }
-
-    // TODO: try to validate files in zip
-    private static function validate_zip_files($file): bool {
-        // open the archive file
-        $archive = new ZipArchive;
-        $valid = $archive->open($file);
-        // make sure it's valid (if not ZipArchive::open() returns various error codes)
-        if ($valid !== true) return false;
-
-        // make sure the entry list is valid
-        if ($archive->numFiles === 0) return false;
-        // example output of entry count
-
-        // loop over entries
-        for ($i = 0; $i < $archive->numFiles; $i++) {
-            $e = $archive->statIndex($i);
-            Log::Debug( $e['name']);
-        }
-        // close the archive file (redundant as called automatically at the end of the script)
-        $archive->close();
-
-        return true;
-    }
-
-    // TODO: Validate file type with mime type
-    // We can't validate some file type because they don't have one known.
-    // https://www.php.net/manual/fr/function.mime-content-type.php
-    // Doesn't work cause we need to give a path and not directly the file
-    private static function is_valid_file_mime_type($file, string $mime_type_waited): bool {
-        log::Debug("File mime type detected: " . mime_content_type($file->getClientOriginalName()));
-
-        if ($mime_type_waited == null) {
-            return true;
-        } else {
-            return mime_content_type($file->getClientOriginalName()) == $mime_type_waited;
         }
     }
 }

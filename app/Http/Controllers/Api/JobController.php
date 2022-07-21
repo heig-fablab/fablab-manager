@@ -20,11 +20,6 @@ use App\Models\File;
 use App\Models\Job;
 use Illuminate\Support\Facades\Log;
 
-// php artisan websockets:serve --host=127.0.0.1
-// -> to communicate only on localhost that is possible, wait and see if it works
-// php artisan websockets:serve --port=3030
-// -> TODO: define an port for websockets 80 or 443 -> perhaps 8000
-
 class JobController extends Controller
 {
     // API Standard function
@@ -83,12 +78,6 @@ class JobController extends Controller
 
             $job->status = JobStatus::ASSIGNED;
             $job->save();
-
-            // Notifications
-            broadcast(new JobAssignedEvent($job));
-        } else {
-            // Notifications
-            broadcast(new JobCreatedEvent($job));
         }
 
         if ($job->validator_username != null) {
@@ -108,9 +97,6 @@ class JobController extends Controller
         $req_validated = $request->validated();
 
         $job = Job::findOrFail($request->id);
-
-        // Notifications
-        broadcast(new JobUpdatedEvent($job));
 
         // Create and save Event for timeline
         Event::create([
@@ -196,9 +182,6 @@ class JobController extends Controller
         $job->status = JobStatus::ASSIGNED;
         $job->save();
 
-        // Notifications
-        broadcast(new JobAssignedEvent($job))->toOthers();
-
         // Create and save Event (notify client)
         Event::create([
             'type' => EventTypes::STATUS,
@@ -222,9 +205,6 @@ class JobController extends Controller
 
         $job = Job::findOrFail($request->id);
         $job->update($req_validated);
-
-        // Notifications
-        broadcast(new JobStatusUpdatedEvent($job)); //->toOthers();
 
         // Create and save Event (notify client)
         Event::create([
@@ -264,17 +244,12 @@ class JobController extends Controller
             ], 400);
         }
 
-        // TODO: do we suppress files and message if completed?
-
         // Update rating
         $job->update($req_validated);
 
         // Update status
         $job->status = JobStatus::CLOSED;
         $job->save();
-
-        // Notifications
-        broadcast(new JobClosedEvent($job)); //->toOthers();
 
         // Create and save Event (notify worker)
         Event::create([
@@ -307,7 +282,6 @@ class JobController extends Controller
         foreach ($events as $event) {
             $event->to_notify = false;
             $event->save();
-            //$event->delete();
         }
 
         Log::info('Job notifications updated: ' . $job->title);

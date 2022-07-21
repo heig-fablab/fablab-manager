@@ -24,9 +24,6 @@ class FileController extends Controller
 
         $file = File::store_file($request->file('file'), $request->job_id);
 
-        // Notifications
-        broadcast(new JobFileUpdatedEvent($file->job)); //->toOthers();
-
         Log::Info('File uploaded: ' . $file->name);
 
         return new FileResource($file);
@@ -41,9 +38,6 @@ class FileController extends Controller
         $file = File::findOrFail($request->id);
         $file = File::update_file($file, $request->file('file'));
         $file->save();
-
-        // Notifications
-        broadcast(new JobFileUpdatedEvent($file->job)); //->toOthers();
 
         Log::Info('File updated: ' . $file->name);
 
