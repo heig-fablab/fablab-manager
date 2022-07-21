@@ -43,6 +43,7 @@ sudo apache2ctl configtest
 
 ## Production architecture schema
 Here is a schema that represents production architecture:
+![prod-infra](https://user-images.githubusercontent.com/61196626/180137684-0a152d97-2834-4be4-aea6-a01f1615d59a.png)
 
 ## SSH Connection
 To start, connect yourself in ssh to the server. To do this, you need to be in HEIG-VD network. \
