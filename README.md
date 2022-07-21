@@ -189,7 +189,7 @@ vendor/bin/sail up -d --build
 ````
 
 You can see all websockets movement here: \
-http://localhost/laravel-websockets
+http://localhost:<port - default 3000>/laravel-websockets
 
 ### Seeders
 Seeders already creates all data necessary to make work the program.\

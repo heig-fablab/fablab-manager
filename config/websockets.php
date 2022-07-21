@@ -31,7 +31,6 @@ return [
             'capacity' => null,
             'enable_client_messages' => false,
             'enable_statistics' => false,
-            //'encrypted' => true,
         ],
     ],
 
