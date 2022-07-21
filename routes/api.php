@@ -90,3 +90,4 @@ Route::middleware('auth:api')->group(function () {
             Route::delete('/{id}', 'destroy');
         });
 });
+

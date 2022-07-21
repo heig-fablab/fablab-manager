@@ -18,6 +18,7 @@ use App\Http\Resources\JobResource;
 use App\Models\Event;
 use App\Models\File;
 use App\Models\Job;
+use Illuminate\Support\Facades\Log;
 
 // php artisan websockets:serve --host=127.0.0.1
 // -> to communicate only on localhost that is possible, wait and see if it works
@@ -29,13 +30,14 @@ class JobController extends Controller
     // API Standard function
     public function index()
     {
+        Log::info('Job list retrieved');
         return JobResource::collection(Job::all());
     }
 
     public function show(int $id)
     {
-        $job = Job::findOrFail($id);
-        return new JobResource($job);
+        Log::info('Job with id ' . $id . ' retrieved');
+        return new JobResource(Job::findOrFail($id));
     }
 
     public function store(JobRequest $request)
@@ -44,9 +46,10 @@ class JobController extends Controller
 
         // Verify if user has already max job submitted limit
         if (Job::get_client_jobs($request->client_username)->count() >= Job::JOBS_SUBMITTED_LIMIT) {
+            Log::info('Client with username ' . $request->client_username . ' has already max jobs submitted');
             return response()->json([
                 'message' => 'You have reached the maximum number of jobs you can submit',
-            ], 403);
+            ], 400);
         }
 
         $job = Job::create($req_validated);
@@ -93,6 +96,8 @@ class JobController extends Controller
             $job->save();
         }
 
+        Log::info('Job created: ' . $job->title);
+
         return new JobResource($job);
     }
 
@@ -117,12 +122,16 @@ class JobController extends Controller
         ]);
 
         $job->update($req_validated);
+
+        Log::info('Job updated: ' . $job->title);
+
         return new JobResource($job);
     }
 
     public function destroy(int $id)
     {
         Job::findOrFail($id)->delete();
+        Log::info('Job with id ' . $id . ' deleted');
         return response()->json([
             'message' => "Job deleted successfully!"
         ], 200);
@@ -131,26 +140,31 @@ class JobController extends Controller
     // Other functions
     public function unassigned_jobs()
     {
+        Log::info('Unassigned Job list retrieved');
         return JobResource::collection(Job::get_unassigned_jobs());
     }
 
     public function user_jobs(string $username)
     {
+        Log::info('User Job list retrieved');
         return JobResource::collection(Job::get_user_jobs($username));
     }
 
     public function user_as_client_jobs(string $username)
     {
+        Log::info('User as client Job list retrieved');
         return JobResource::collection(Job::get_client_jobs($username));
     }
 
     public function user_as_worker_jobs(string $username)
     {
+        Log::info('User as worker Job list retrieved');
         return JobResource::collection(Job::get_worker_jobs($username));
     }
 
     public function user_as_validator_jobs(string $username)
     {
+        Log::info('User as validator Job list retrieved');
         return JobResource::collection(Job::get_validator_jobs($username));
     }
 
@@ -160,15 +174,17 @@ class JobController extends Controller
 
         // Verify if user has already max job assigned limit
         if (Job::get_worker_jobs($request->worker_username)->count() >= Job::JOBS_ASSIGNED_LIMIT) {
+            Log::info('Worker with username ' . $request->worker_username . ' has already max jobs assigned');
             return response()->json([
                 'message' => 'You have reached the maximum number of jobs you can assigned to yourself',
-            ], 403);
+            ], 400);
         }
 
         $job = Job::findOrFail($request->id);
 
         // Verify if job is unassigned
         if ($job->worker_username != null) {
+            Log::info('Job with id ' . $job->id . ' is already assigned');
             return response()->json([
                 'message' => "Job is already assigned to a worker!"
             ], 400);
@@ -195,6 +211,8 @@ class JobController extends Controller
         // Emails
         Event::create_mail_job($job->client_username);
 
+        Log::info('Job assigned: ' . $job->title . ' to worker: ' . $job->worker_username);
+
         return new JobResource($job);
     }
 
@@ -203,13 +221,6 @@ class JobController extends Controller
         $req_validated = $request->validated();
 
         $job = Job::findOrFail($request->id);
-
-        if ($request->worker_username != $job->worker_username) {
-            return response()->json([
-                'message' => "You can't update a job that is not assigned to you!"
-            ], 400);
-        }
-
         $job->update($req_validated);
 
         // Notifications
@@ -227,6 +238,8 @@ class JobController extends Controller
         // Emails
         Event::create_mail_job($job->client_username);
 
+        Log::info('Job status updated: ' . $job->title . ' to status: ' . $job->status);
+
         return new JobResource($job);
     }
 
@@ -238,12 +251,14 @@ class JobController extends Controller
 
         // Verify if job is assigned
         if ($job->worker_username == null) {
+            Log::info('Job with id ' . $job->id . ' is not assigned');
             return response()->json([
                 'message' => "You can't rate of a job that has no worker assigned!"
             ], 400);
         }
 
         if ($job->status != JobStatus::COMPLETED) {
+            Log::info('Job with id ' . $job->id . ' is not completed');
             return response()->json([
                 'message' => "You can't rate of a job that is not completed!"
             ], 400);
@@ -273,6 +288,8 @@ class JobController extends Controller
         // Emails
         Event::create_mail_job($job->worker_username);
 
+        Log::info('Job rating updated: ' . $job->title . ' to rating: ' . $job->rating);
+
         return new JobResource($job);
     }
 
@@ -292,6 +309,8 @@ class JobController extends Controller
             $event->save();
             //$event->delete();
         }
+
+        Log::info('Job notifications updated: ' . $job->title);
 
         return $job;
     }

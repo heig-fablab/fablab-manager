@@ -8,6 +8,7 @@ use App\Http\Resources\JobCategoryResource;
 use App\Models\File;
 use App\Models\FileType;
 use App\Models\JobCategory;
+use Illuminate\Support\Facades\Log;
 
 class JobCategoryController extends Controller
 {
@@ -15,11 +16,13 @@ class JobCategoryController extends Controller
     public function index()
     {
         $job_categories = JobCategory::all();
+        Log::info('Job Category list retrieved');
         return JobCategoryResource::collection($job_categories);
     }
 
     public function show(int $id)
     {
+        Log::info('Job Category with id ' . $id . ' retrieved');
         return new JobCategoryResource(JobCategory::findOrFail($id));
     }
 
@@ -35,6 +38,8 @@ class JobCategoryController extends Controller
         $file = File::store_file($request->file('image'), null, true);
         $file->job_category_id = $job_category->id;
         $file->save();
+
+        Log::info('Job Category created: ' . $job_category->name);
 
         return new JobCategoryResource($job_category);
     }
@@ -68,6 +73,9 @@ class JobCategoryController extends Controller
         }
 
         $job_category->update($req_validated);
+
+        Log::info('Job Category updated: ' . $job_category->name);
+
         return new JobCategoryResource($job_category);
     }
 
@@ -76,6 +84,9 @@ class JobCategoryController extends Controller
         $job_category = JobCategory::findOrFail($id);
         File::delete_file($job_category->file);
         $job_category->delete();
+
+        Log::info('Job Category with id ' . $id . ' deleted');
+
         return response()->json([
             'message' => "Job category deleted successfully!"
         ], 200);

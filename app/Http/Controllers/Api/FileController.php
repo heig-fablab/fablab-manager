@@ -14,6 +14,7 @@ class FileController extends Controller
     // API Standard function
     public function show(int $id)
     {
+        Log::info('File with id ' . $id . ' retrieved');
         return new FileResource(File::findOrFail($id));
     }
 
@@ -25,6 +26,8 @@ class FileController extends Controller
 
         // Notifications
         broadcast(new JobFileUpdatedEvent($file->job)); //->toOthers();
+
+        Log::Info('File uploaded: ' . $file->name);
 
         return new FileResource($file);
     }
@@ -42,6 +45,8 @@ class FileController extends Controller
         // Notifications
         broadcast(new JobFileUpdatedEvent($file->job)); //->toOthers();
 
+        Log::Info('File updated: ' . $file->name);
+
         return new FileResource($file);
     }
 
@@ -57,6 +62,8 @@ class FileController extends Controller
 
         $file->delete();
 
+        Log::info('File with id ' . $id . ' deleted');
+
         return response()->json([
             'message' => "File deleted successfully!"
         ], 200);
@@ -65,6 +72,8 @@ class FileController extends Controller
     // Other functions
     public function download(int $id)
     {
+        Log::info('File with id ' . $id . ' downloaded');
+
         return File::download_file(File::findOrFail($id));
     }
 }
