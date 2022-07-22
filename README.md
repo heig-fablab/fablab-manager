@@ -132,7 +132,7 @@ or
 vendor/bin/sail artisan key:generate
 ````
 
-7. Add category images to storage for seeding:
+7. Add job category images to storage for seeding:
 ````
 mkdir storage/app/public/images
 ````
@@ -140,7 +140,7 @@ mkdir storage/app/public/images
 cd job-categories-images
 ````
 ````
-cp cat1.jpg cat2.jpg cat3.jpg cat4.jpg cat5.jpg cat6.jpg cat7.jpg cat8.jpg cat9.jpg cat10.jpg ../storage/app/public/images
+cp cat1.jpg cat2.jpg cat3.jpg cat4.jpg cat5.jpg cat6.jpg cat7.jpg cat8.jpg cat9.jpg ../storage/app/public/images
 ````
 ````
 cd ..
