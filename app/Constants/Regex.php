@@ -10,6 +10,9 @@ final class Regex
     // https://stackoverflow.com/questions/25201083/regex-to-match-and-validate-internet-media-type
     // https://www.rfc-editor.org/rfc/rfc2425.html
 
+    // Refs french char:
+    // https://stackoverflow.com/questions/1922097/regular-expression-for-french-characters
+
     public const ACRONYM = '/^[A-Z0-9]{2,4}$/';
     public const DESCRIPTION_TEXT = '/^[\w .,\-_:()\/\?\!\'À-ÿ]{1,65535}$/';
     public const FILE_TYPE_NAME = '/^[a-z0-9]{2,10}$/';
