@@ -317,6 +317,20 @@ Generate project keys:
 sudo php artisan key:generate
 ````
 
+Add job category images to storage for seeding:
+````
+mkdir storage/app/public/images
+````
+````
+cd job-categories-images
+````
+````
+cp cat1.jpg cat2.jpg cat3.jpg cat4.jpg cat5.jpg cat6.jpg cat7.jpg cat8.jpg cat9.jpg ../storage/app/public/images
+````
+````
+cd ..
+````
+
 Run all base migrations:
 ````
 sudo php artisan migrate --seed
