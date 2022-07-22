@@ -11,7 +11,7 @@ final class Regex
     // https://www.rfc-editor.org/rfc/rfc2425.html
 
     public const ACRONYM = '/^[A-Z0-9]{2,4}$/';
-    public const DESCRIPTION_TEXT = '/^[\w .,\-_:()\/\?\!]{1,65535}$/';
+    public const DESCRIPTION_TEXT = '/^[\w .,\-_:()\/\?\!\']{1,65535}$/';
     public const FILE_TYPE_NAME = '/^[a-z0-9]{2,10}$/';
     public const JOB_CATEGORY_NAME = '/^[\w .,\-_:()\/]{3,50}$/';
     public const MIME_TYPE = '/^\w+\/[\-.\w]+$/';
