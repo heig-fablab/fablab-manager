@@ -112,15 +112,6 @@ class JobController extends Controller
         // Notifications
         broadcast(new JobUpdatedEvent($job));
 
-        // Create and save Event for timeline
-        Event::create([
-            'type' => EventTypes::STATUS,
-            'to_notify' => false,
-            'data' => JobStatus::NEW,
-            'user_username' => $job->client_username,
-            'job_id' => $job->id
-        ]);
-
         $job->update($req_validated);
 
         Log::info('Job updated: ' . $job->title);
