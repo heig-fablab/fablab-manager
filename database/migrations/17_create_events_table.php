@@ -14,7 +14,7 @@ return new class extends Migration
             // Fields
             $table->enum('type', ['status', 'file', 'message']);
             $table->boolean('to_notify')->default(true);
-            $table->string('data', 12)->nullable(); // to store status type
+            $table->string('data', 255)->nullable(); // to store status type and file name
             // Options
             $table->timestamps();
             $table->softDeletes();
