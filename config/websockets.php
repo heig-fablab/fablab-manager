@@ -49,7 +49,6 @@ return [
      */
     'allowed_origins' => [
         //
-        // TODO: Add allowed origins here.
     ],
 
     /*
@@ -69,7 +68,6 @@ return [
      * the chance to add your own middleware to this list or change any of
      * the existing middleware. Or, you can simply stick with this list.
      */
-    // TODO: Add a gate to Dashboard or do it manually
     'middleware' => [
         'web',
         Authorize::class,

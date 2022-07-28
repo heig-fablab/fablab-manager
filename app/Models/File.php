@@ -125,21 +125,6 @@ class File extends Model
         log::Debug("mime type extension detected: " . $file->extension());
         log::Debug("original extension detected: " . $file->getClientOriginalExtension());
 
-        // TODO: try to validate files in rar and zip
-        /*if ($file->getClientOriginalExtension() == 'rar') {
-            if (!self::validate_rar_files($file)) {
-                log::Info("Invalid files in rar");
-                return false;
-            }
-        }
-
-        if ($file->getClientOriginalExtension() == 'zip') {
-            if (!self::validate_zip_files($file)) {
-                log::Info("Invalid files in zip");
-                return false;
-            }
-        }*/
-
         // Verify file type matching with file type detected from content
         // Some types are detected false and we know them, a correspondence function is used
         // Some other, we don't know yet the correspondence and go further
@@ -163,12 +148,6 @@ class File extends Model
             log::Info("File type not found in BD");
             return false;
         }
-
-        // Validate file type with mime type
-        /*if (!self::is_valid_file_mime_type($file, $file_type->mime_type)) {
-            log::Info("Invalid file mime type");
-            return false;
-        }*/
 
         // $file->extension() = Determine the file's extension based on the file's MIME type
         // Check matching file type with file extension
@@ -281,9 +260,9 @@ class File extends Model
     }
 
     //-------------------------------------------
-    // To finish / debug / TODO
+    // To finish / debug
 
-    // TODO: try to validate files in rar
+    // Validate files in rar
     private static function validate_rar_files($file): bool {
         // open the archive file
         $archive = RarArchive::open($file);
@@ -305,7 +284,7 @@ class File extends Model
         return true;
     }
 
-    // TODO: try to validate files in zip
+    // Validate files in zip
     private static function validate_zip_files($file): bool {
         // open the archive file
         $archive = new ZipArchive;
@@ -328,7 +307,7 @@ class File extends Model
         return true;
     }
 
-    // TODO: Validate file type with mime type
+    // Validate file type with mime type
     // We can't validate some file type because they don't have one known.
     // https://www.php.net/manual/fr/function.mime-content-type.php
     // Doesn't work cause we need to give a path and not directly the file

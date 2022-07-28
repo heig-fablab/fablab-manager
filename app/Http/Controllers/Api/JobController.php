@@ -20,11 +20,6 @@ use App\Models\File;
 use App\Models\Job;
 use Illuminate\Support\Facades\Log;
 
-// php artisan websockets:serve --host=127.0.0.1
-// -> to communicate only on localhost that is possible, wait and see if it works
-// php artisan websockets:serve --port=3030
-// -> TODO: define an port for websockets 80 or 443 -> perhaps 8000
-
 class JobController extends Controller
 {
     // API Standard function
@@ -254,8 +249,6 @@ class JobController extends Controller
                 'message' => "You can't rate of a job that is not completed!"
             ], 400);
         }
-
-        // TODO: do we suppress files and message if completed?
 
         // Update rating
         $job->update($req_validated);

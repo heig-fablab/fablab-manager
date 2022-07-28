@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class JobCategorySeeder extends Seeder
 {
-    // TODO: ask for description of each job category from m. Chevallier
-
     public function run()
     {
         DB::table('job_categories')->insert([
