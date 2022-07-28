@@ -461,9 +461,6 @@ sudo ufw allow 443
 sudo ufw allow 80
 ````
 
-
---------------------------
-TODO
 ## Extern processes
 We will use to the **Supervisor** tool to manage external processes to website such as Laravel Websockets and Laravel queue.
 I chose this tool because he can easily be integrated to a docker later.
