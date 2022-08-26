@@ -156,6 +156,11 @@ vendor/bin/sail artisan migrate:fresh --seed
 vendor/bin/sail artisan storage:link
 ````
 
+10. Start queue listener
+````
+vendor/bin/sail artisan queue:listen
+````
+
 You have now the Laravel backend running!
 
 ### Workflow / Git flow
