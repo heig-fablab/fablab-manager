@@ -191,6 +191,21 @@ vendor/bin/sail up -d --build
 You can see all websockets movement here: \
 http://localhost:<port - default 3000>/laravel-websockets
 
+### Queue worker and emails
+To delay emails, we use a queue worker connected to DB. \
+To test it and use it, you can run the following command:
+````
+vendor/bin/sail artisan queue:work
+````
+To restart it, you can run the following command:
+````
+vendor/bin/sail artisan queue:restart
+````
+To listen to the queue, you can run the following command:
+````
+vendor/bin/sail artisan queue:listen
+````
+
 ### Seeders
 Seeders already creates all data necessary to make work the program.\
 They also create some fake data when you aren't in production environment.
