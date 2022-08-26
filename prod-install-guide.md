@@ -512,6 +512,25 @@ redirect_stderr=true
 stdout_logfile=/srv/apache2/fablab-manager/storage/logs/worker.log
 ````
 
+Create a second new file .conf file:
+````
+sudo nano /etc/supervisor/conf.d/laravel-queue-listener.conf
+````
+
+Add these lines:
+````
+[program:laravel-queue-listener]
+process_name=%(program_name)s_%(process_num)02d
+command=sudo /usr/bin/php /srv/apache2/fablab-manager/artisan queue:listen
+user=fablab-admin
+autostart=true
+autorestart=true
+numprocs=1
+startsecs=0
+redirect_stderr=true
+stdout_logfile=/srv/apache2/fablab-manager/storage/logs/worker.log
+````
+
 ### Laravel Websockets
 To add Laravel Websockets program to Supervisor, I followed this doc: \
 https://beyondco.de/docs/laravel-websockets/basic-usage/starting
